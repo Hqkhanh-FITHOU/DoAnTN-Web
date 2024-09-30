@@ -1,5 +1,6 @@
 package com.graduate.hou.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.graduate.hou.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.security.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "tbl_orders")
@@ -25,6 +27,7 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
 
     @Column(nullable = false, precision = 10, scale = 2)
@@ -39,4 +42,15 @@ public class Order {
 
     @UpdateTimestamp
     private Timestamp updatedAt;
+
+    @OneToOne
+    @JoinColumn(name = "payment_id", nullable = false)
+    private Payment payment;
+
+    @OneToMany(mappedBy = "order")
+    private List<OrderItem> orderItems;
+
+    @OneToOne
+    @JoinColumn(name = "address_id", nullable = false)
+    private Address address;
 }

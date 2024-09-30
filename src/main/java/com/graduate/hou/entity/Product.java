@@ -8,8 +8,11 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.math.BigDecimal;
 import java.security.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "tbl_products")
@@ -33,6 +36,7 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
+    @JsonIgnore
     private Category category;
 
     @Column(nullable = false)
@@ -46,4 +50,13 @@ public class Product {
 
     @UpdateTimestamp
     private Timestamp updatedAt;
+
+    @OneToMany(mappedBy = "product")
+    private List<OrderItem> orderItems;
+
+    @OneToMany(mappedBy = "product")
+    private List<ProductImage> productImages;
+
+    @OneToMany(mappedBy = "product")
+    private List<Review> reviews;
 }
