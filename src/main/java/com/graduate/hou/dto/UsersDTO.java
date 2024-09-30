@@ -1,12 +1,15 @@
 package com.graduate.hou.dto;
 
 import com.graduate.hou.enums.RoleUsers;
-import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.*;
 
 import java.security.Timestamp;
 
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UsersDTO {
     private Long userId;
 
