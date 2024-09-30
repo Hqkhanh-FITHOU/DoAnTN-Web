@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.security.Timestamp;
 
 @Entity
@@ -29,6 +31,7 @@ public class Review {
     private User user;
 
     @OneToOne(mappedBy = "review", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Response response;
 
     @Column(nullable = false)
@@ -40,4 +43,5 @@ public class Review {
     @CreationTimestamp
     private Timestamp createdAt;
 
+    
 }

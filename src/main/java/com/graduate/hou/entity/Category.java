@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.security.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "tbl_categories")
@@ -32,4 +33,7 @@ public class Category {
 
     @UpdateTimestamp
     private Timestamp updatedAt;
+
+    @OneToMany(mappedBy = "category")
+    private List<Product> products;
 }

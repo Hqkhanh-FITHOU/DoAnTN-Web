@@ -1,5 +1,7 @@
 package com.graduate.hou.entity;
 
+import com.graduate.hou.enums.AddressType;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,15 +23,21 @@ public class Address {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(nullable = false, length = 255)
-    private String addressLine1;
+    @Column(nullable = false, length = 100)
+    private String number; //số nhà 
 
     @Column(nullable = false, length = 100)
-    private String province;
+    private String street; //đường
 
     @Column(nullable = false, length = 100)
-    private String district;
+    private String city; //thành phố/tỉnh
 
     @Column(nullable = false, length = 100)
-    private String commune;
+    private String district; // quận
+
+    @Column(nullable = false, length = 100)
+    private String ward; //phường
+
+    @Column(nullable = false, length = 100)
+    private AddressType addressType; //phường
 }
