@@ -28,6 +28,9 @@ public class Review {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @OneToOne(mappedBy = "review", cascade = CascadeType.ALL)
+    private Response response;
+
     @Column(nullable = false)
     private int rating;
 
@@ -36,4 +39,5 @@ public class Review {
 
     @CreationTimestamp
     private Timestamp createdAt;
+
 }

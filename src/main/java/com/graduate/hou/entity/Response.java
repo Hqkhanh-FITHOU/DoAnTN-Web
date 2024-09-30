@@ -6,34 +6,28 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.security.Timestamp;
 
 @Entity
-@Table(name = "tbl_product_images")
+@Table(name = "response")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductImage {
+public class Response {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long imageId;
+    private Long reponseId;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @OneToOne
+    @JoinColumn(name = "review_id", nullable = false)
+    private Review review;
 
     @Lob
-    private String description;
-
-    @Column
-    private String productLink;
+    private String reponseContent;
 
     @CreationTimestamp
     private Timestamp createdAt;
 
-    @UpdateTimestamp
-    private Timestamp updatedAt;
 }

@@ -24,11 +24,12 @@ public class Address {
     @Column(nullable = false, length = 255)
     private String addressLine1;
 
-    private String addressLine2;
+    @Column(nullable = false, length = 100)
+    private String province;
 
     @Column(nullable = false, length = 100)
-    private String city;
+    private String district;
 
     @Column(nullable = false, length = 100)
-    private String state;
+    private String commune;
 }

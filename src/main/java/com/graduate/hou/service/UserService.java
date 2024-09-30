@@ -1,4 +1,4 @@
 package com.graduate.hou.service;
 
-public class UsersService {
+public interface UserService {
 }
