@@ -10,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.security.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "tbl_users")
@@ -21,6 +22,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
+
+    @Column(nullable = false, length = 100)
+    private String fullname;
 
     @Column(nullable = false, length = 50)
     private String username;
@@ -38,9 +42,27 @@ public class User {
     @Column(nullable = false)
     private RoleUsers role;
 
+    @Column
+    private Long userPoint;
+
     @CreationTimestamp
     private Timestamp createdAt;
 
     @UpdateTimestamp
     private Timestamp updatedAt;
+
+    @OneToMany(mappedBy = "user")
+    List<Address> addresses;
+
+    @OneToMany(mappedBy = "user")
+    List<Notification> notifications;
+
+    @OneToMany(mappedBy = "user")
+    List<Order> orders;
+
+    @OneToMany(mappedBy = "user")
+    List<Review> reviews;
+
+    @OneToMany(mappedBy = "user")
+    List<Response> respone;
 }

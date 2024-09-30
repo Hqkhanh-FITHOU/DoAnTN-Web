@@ -8,6 +8,8 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.security.Timestamp;
 
 @Entity
@@ -23,13 +25,11 @@ public class ProductImage {
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
+    @JsonIgnore
     private Product product;
 
-    @Lob
-    private String description;
-
-    @Column
-    private String productLink;
+    @Column(name = "path_string")
+    private String pathString;
 
     @CreationTimestamp
     private Timestamp createdAt;
