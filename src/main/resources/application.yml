@@ -1,0 +1,24 @@
+server:
+  port: 8085
+  servlet:
+    context-path: /L1
+
+
+spring:
+  datasource:
+    url: "jdbc:mysql://localhost:3306/DoAnKhanh"
+    username: root
+    password: root
+
+  servlet:
+    multipart:
+      enabled: true        # Kích hoạt xử lý multipart
+      max-file-size: 10MB  # Kích thước tối đa của file
+      max-request-size: 10MB # Kích thước tối đa của request
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+
