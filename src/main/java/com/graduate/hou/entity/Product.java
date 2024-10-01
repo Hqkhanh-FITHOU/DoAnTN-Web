@@ -7,11 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import java.time.LocalDateTime;
 import java.math.BigDecimal;
-import java.security.Timestamp;
 import java.util.List;
 
 @Entity
@@ -46,10 +44,10 @@ public class Product {
     private boolean isHidden;
 
     @CreationTimestamp
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    private Timestamp updatedAt;
+    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "product")
     private List<OrderItem> orderItems;

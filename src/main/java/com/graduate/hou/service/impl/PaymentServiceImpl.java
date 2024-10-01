@@ -35,7 +35,7 @@ public class PaymentServiceImpl implements PaymentService {
                 .order(order)
                 .paymentMethod(paymentDTO.getPaymentMethod())
                 .paymentStatus(paymentDTO.getPaymentStatus())
-                .paymentDate(paymentDTO.getPaymentDate())
+                // .paymentDate(paymentDTO.getPaymentDate())
                 .build();
 
         return paymentRepository.save(payment);
@@ -51,7 +51,7 @@ public class PaymentServiceImpl implements PaymentService {
                 .order(order)
                 .paymentMethod(paymentDTO.getPaymentMethod())
                 .paymentStatus(paymentDTO.getPaymentStatus())
-                .paymentDate(paymentDTO.getPaymentDate())
+                // .paymentDate(paymentDTO.getPaymentDate())
                 .build();
 
         return paymentRepository.save(payment);

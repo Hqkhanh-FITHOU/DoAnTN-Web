@@ -6,10 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-
+import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.security.Timestamp;
 
 @Entity
 @Table(name = "tbl_reviews")
@@ -41,7 +40,7 @@ public class Review {
     private String comment;
 
     @CreationTimestamp
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 
     
 }

@@ -12,7 +12,6 @@ import com.graduate.hou.repository.PaymentRepository;
 import com.graduate.hou.repository.UsersRepository;
 import com.graduate.hou.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,8 +51,8 @@ public class OrderServiceImpl implements OrderService {
                 .user(user)
                 .totalAmount(orderDTO.getTotalAmount())
                 .status(orderDTO.getStatus())
-                .createdAt(orderDTO.getCreatedAt())
-                .updatedAt(orderDTO.getUpdatedAt())
+                // .createdAt(orderDTO.getCreatedAt())
+                // .updatedAt(orderDTO.getUpdatedAt())
                 .payment(payment)
                 .address(address)
                 .build();
@@ -77,8 +76,8 @@ public class OrderServiceImpl implements OrderService {
                 .user(user)
                 .totalAmount(orderDTO.getTotalAmount())
                 .status(orderDTO.getStatus())
-                .createdAt(orderDTO.getCreatedAt())
-                .updatedAt(orderDTO.getUpdatedAt())
+                // .createdAt(orderDTO.getCreatedAt())
+                // .updatedAt(orderDTO.getUpdatedAt())
                 .payment(payment)
                 .address(address)
                 .build();

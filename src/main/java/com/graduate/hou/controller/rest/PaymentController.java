@@ -1,10 +1,7 @@
 package com.graduate.hou.controller.rest;
 
-import com.graduate.hou.dto.OrderItemDTO;
 import com.graduate.hou.dto.PaymentDTO;
-import com.graduate.hou.entity.OrderItem;
 import com.graduate.hou.entity.Payment;
-import com.graduate.hou.service.impl.OrderItemServiceImpl;
 import com.graduate.hou.service.impl.PaymentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;

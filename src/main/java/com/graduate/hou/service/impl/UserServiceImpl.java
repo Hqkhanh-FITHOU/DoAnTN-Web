@@ -26,11 +26,11 @@ public class UserServiceImpl implements UserService {
 
         user.setUsername(usersDTO.getUsername());
         user.setPassword(usersDTO.getPassword());
+        user.setFullname(usersDTO.getFullname());
         user.setEmail(usersDTO.getEmail());
         user.setPhone(usersDTO.getPhone());
         user.setRole(usersDTO.getRole());
-        user.setCreatedAt(usersDTO.getCreatedAt());
-        user.setUpdatedAt(usersDTO.getUpdatedAt());
+
 
         return usersRepository.save(user);
     }
@@ -42,11 +42,11 @@ public class UserServiceImpl implements UserService {
 
         user.setUsername(usersDTO.getUsername());
         user.setPassword(usersDTO.getPassword());
+        user.setFullname(usersDTO.getFullname());
         user.setEmail(usersDTO.getEmail());
         user.setPhone(usersDTO.getPhone());
         user.setRole(usersDTO.getRole());
-        user.setCreatedAt(usersDTO.getCreatedAt());
-        user.setUpdatedAt(usersDTO.getUpdatedAt());
+        user.setUserPoint(0L);
 
         return usersRepository.save(user);
     }
@@ -54,5 +54,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(Long id) {
         usersRepository.deleteById(id);
+    }
+
+    @Override
+    public User addUser(User user) {
+        return usersRepository.save(user);
     }
 }

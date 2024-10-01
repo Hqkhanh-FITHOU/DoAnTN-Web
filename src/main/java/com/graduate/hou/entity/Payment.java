@@ -5,8 +5,7 @@ import com.graduate.hou.enums.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-
-import java.security.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tbl_payments")
@@ -33,5 +32,5 @@ public class Payment {
     private PaymentStatus paymentStatus;
 
     @CreationTimestamp
-    private Timestamp paymentDate;
+    private LocalDateTime paymentDate;
 }
