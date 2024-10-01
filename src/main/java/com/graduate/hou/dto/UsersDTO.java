@@ -23,7 +23,5 @@ public class UsersDTO {
 
     private RoleUsers role;
 
-    private Timestamp createdAt;
-
-    private Timestamp updatedAt;
+    private String fullname;
 }

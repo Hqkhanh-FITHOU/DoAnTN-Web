@@ -6,9 +6,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
 import java.math.BigDecimal;
-import java.security.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -36,10 +35,10 @@ public class Order {
     private OrderStatus status;
 
     @CreationTimestamp
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    private Timestamp updatedAt;
+    private LocalDateTime updatedAt;
 
     @OneToOne
     @JoinColumn(name = "payment_id", nullable = false)

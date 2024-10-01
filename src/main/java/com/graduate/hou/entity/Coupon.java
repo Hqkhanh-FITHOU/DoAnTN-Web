@@ -6,10 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.math.BigDecimal;
-import java.security.Timestamp;
-
+import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -35,14 +33,14 @@ public class Coupon {
     private BigDecimal discountValue;
 
     @Column(nullable = false)
-    private Timestamp expirationDate;
+    private LocalDateTime expirationDate;
 
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal minPurchase;
 
     @CreationTimestamp
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    private Timestamp updatedAt;
+    private LocalDateTime updatedAt;
 }
