@@ -1,9 +1,6 @@
 package com.graduate.hou.controller.rest;
 
 
-public class UsersController {
-
-
 import com.graduate.hou.dto.UsersDTO;
 import com.graduate.hou.entity.User;
 import com.graduate.hou.service.impl.UserServiceImpl;
