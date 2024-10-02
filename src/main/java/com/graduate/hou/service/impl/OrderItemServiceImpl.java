@@ -34,10 +34,10 @@ public class OrderItemServiceImpl implements OrderItemService {
 
     @Override
     public OrderItem createOrderItem(OrderItemDTO orderItemDTO) {
-        Order order = orderRepository.findById(orderItemDTO.getOrder())
+        Order order = orderRepository.findById(orderItemDTO.getOrderId())
                 .orElseThrow(()-> new RuntimeException("Mã order không tồn tại"));
 
-        Product product = productRepository.findById(orderItemDTO.getProduct())
+        Product product = productRepository.findById(orderItemDTO.getProductId())
                 .orElseThrow(()-> new RuntimeException("Sản phẩm không tồn tại"));
 
         OrderItem orderItem = OrderItem.builder()
@@ -54,10 +54,10 @@ public class OrderItemServiceImpl implements OrderItemService {
     public OrderItem updateOrderItem(Long id, OrderItemDTO orderItemDTO) {
         Optional<OrderItem> optionalOrderItem = orderItemRepository.findById(id);
 
-        Order order = orderRepository.findById(orderItemDTO.getOrder())
+        Order order = orderRepository.findById(orderItemDTO.getOrderId())
                 .orElseThrow(()-> new RuntimeException("Mã order không tồn tại"));
 
-        Product product = productRepository.findById(orderItemDTO.getProduct())
+        Product product = productRepository.findById(orderItemDTO.getProductId())
                 .orElseThrow(()-> new RuntimeException("Sản phẩm không tồn tại"));
 
         OrderItem orderItem = optionalOrderItem.get().builder()

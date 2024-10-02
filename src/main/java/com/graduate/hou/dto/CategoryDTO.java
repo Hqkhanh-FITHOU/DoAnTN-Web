@@ -1,10 +1,6 @@
 package com.graduate.hou.dto;
 
-import com.graduate.hou.entity.Product;
 import lombok.*;
-
-import java.security.Timestamp;
-import java.util.List;
 
 @Getter
 @Setter
@@ -18,9 +14,4 @@ public class CategoryDTO {
 
     private String description;
 
-    private Timestamp createdAt;
-
-    private Timestamp updatedAt;
-
-    private List<Product> products;
 }

@@ -1,8 +1,7 @@
 package com.graduate.hou.service;
 
-import com.graduate.hou.dto.CouponDTO;
+
 import com.graduate.hou.dto.DailyRevenueDTO;
-import com.graduate.hou.entity.Coupon;
 import com.graduate.hou.entity.DailyRevenue;
 
 import java.util.List;

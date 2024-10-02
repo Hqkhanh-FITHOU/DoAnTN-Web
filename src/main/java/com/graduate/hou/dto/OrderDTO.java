@@ -5,8 +5,7 @@ import com.graduate.hou.enums.OrderStatus;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.security.Timestamp;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -16,19 +15,17 @@ import java.util.List;
 public class OrderDTO {
     private Long orderId;
 
-    private Long user;
+    private Long userId;
 
     private BigDecimal totalAmount;
 
     private OrderStatus status;
 
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 
-    private Timestamp updatedAt;
+    private LocalDateTime updatedAt;
 
-    private Long payment;
+    private Long paymentId;
 
-    private List<OrderItemDTO> orderItemDTOS;
-
-    private Long address;
+    private Long addressId;
 }

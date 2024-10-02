@@ -3,8 +3,8 @@ package com.graduate.hou.dto;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -14,11 +14,11 @@ import java.sql.Time;
 public class DailyRevenueDTO {
     private Long dailyRevenueId;
 
-    private Time openTime;
+    private LocalTime openTime;
 
-    private Time closeTime;
+    private LocalTime closeTime;
 
-    private Date revenueDate;
+    private LocalDate revenueDate;
 
     private BigDecimal totalRevenue;
 

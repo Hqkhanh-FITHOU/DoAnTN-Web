@@ -1,6 +1,6 @@
 package com.graduate.hou.service.impl;
 
-import com.graduate.hou.dto.CouponDTO;
+
 import com.graduate.hou.dto.NotificationDTO;
 import com.graduate.hou.entity.Notification;
 import com.graduate.hou.entity.Order;
@@ -24,7 +24,7 @@ public class NotificationServiceImpl implements NotificationService {
     private OrderRepository orderRepository;
 
     @Autowired
-    private UsersRepository usersRepository;
+	private UsersRepository usersRepository;
 
     @Override
     public List<Notification> getAllNotification() {
@@ -33,10 +33,10 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public Notification createNotification(NotificationDTO notificationDTO) {
-        Order order = orderRepository.findById(notificationDTO.getOrder())
+        Order order = orderRepository.findById(notificationDTO.getOrderId())
                 .orElseThrow(()-> new RuntimeException("không tìm thấy hàng đặt"));
 
-        User user = usersRepository.findById(notificationDTO.getUser())
+        User user = usersRepository.findById(notificationDTO.getUserId())
                 .orElseThrow(()-> new RuntimeException("bạn phải đăng nhập"));
 
         Notification notification = Notification.builder()
@@ -56,10 +56,10 @@ public class NotificationServiceImpl implements NotificationService {
     public Notification updateNotification(Long id, NotificationDTO notificationDTO) {
         Optional<Notification> optionalNotification = notificationRepository.findById(id);
 
-        Order order = orderRepository.findById(notificationDTO.getOrder())
+        Order order = orderRepository.findById(notificationDTO.getOrderId())
                 .orElseThrow(()-> new RuntimeException("không tìm thấy hàng đặt"));
 
-        User user = usersRepository.findById(notificationDTO.getUser())
+        User user = usersRepository.findById(notificationDTO.getUserId())
                 .orElseThrow(()-> new RuntimeException("bạn phải đăng nhập"));
 
         Notification notification = optionalNotification.get().builder()
