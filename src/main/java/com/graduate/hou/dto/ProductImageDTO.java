@@ -1,6 +1,5 @@
 package com.graduate.hou.dto;
 
-import com.graduate.hou.entity.Product;
 import lombok.*;
 
 @Getter
