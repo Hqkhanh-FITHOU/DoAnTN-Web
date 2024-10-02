@@ -1,6 +1,5 @@
 package com.graduate.hou.service.impl;
 
-import com.fasterxml.jackson.annotation.OptBoolean;
 import com.graduate.hou.dto.OrderItemDTO;
 import com.graduate.hou.entity.Order;
 import com.graduate.hou.entity.OrderItem;
@@ -9,7 +8,6 @@ import com.graduate.hou.repository.OrderItemRepository;
 import com.graduate.hou.repository.OrderRepository;
 import com.graduate.hou.repository.ProductRepository;
 import com.graduate.hou.service.OrderItemService;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

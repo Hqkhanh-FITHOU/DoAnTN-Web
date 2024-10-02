@@ -15,8 +15,6 @@ public class ReviewDTO {
 
     private Long userId;
 
-    private Long responseId;
-
     private Float rating;
 
     private String comment;

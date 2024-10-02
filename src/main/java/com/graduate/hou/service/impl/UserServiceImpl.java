@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(usersDTO.getEmail());
         user.setPhone(usersDTO.getPhone());
         user.setRole(usersDTO.getRole());
-        user.setUserPoint(0L);
+        user.setUserPoint(usersDTO.getPoint());
 
         return usersRepository.save(user);
     }
@@ -56,8 +56,4 @@ public class UserServiceImpl implements UserService {
         usersRepository.deleteById(id);
     }
 
-    @Override
-    public User addUser(User user) {
-        return usersRepository.save(user);
-    }
 }

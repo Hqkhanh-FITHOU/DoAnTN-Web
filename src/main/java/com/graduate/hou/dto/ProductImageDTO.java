@@ -12,7 +12,7 @@ public class ProductImageDTO {
 
     private Long imageId;
 
-    private Product product;
+    private Long productId;
 
     private String pathString;
 

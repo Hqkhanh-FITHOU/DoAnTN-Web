@@ -7,7 +7,6 @@ import com.graduate.hou.repository.OrderRepository;
 import com.graduate.hou.repository.PaymentRepository;
 import com.graduate.hou.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

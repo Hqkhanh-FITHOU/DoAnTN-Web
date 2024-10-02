@@ -19,7 +19,7 @@ public class ProductDTO {
 
     private BigDecimal price;
 
-    private String category;
+    private Long categoryId;
 
     private boolean isServing;
 

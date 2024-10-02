@@ -1,6 +1,5 @@
 package com.graduate.hou.service.impl;
 
-import com.graduate.hou.dto.NotificationDTO;
 import com.graduate.hou.dto.OrderDTO;
 import com.graduate.hou.entity.Address;
 import com.graduate.hou.entity.Order;
