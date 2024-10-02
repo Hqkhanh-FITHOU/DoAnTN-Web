@@ -1,12 +1,7 @@
 package com.graduate.hou.dto;
 
 import com.graduate.hou.enums.DiscountType;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.security.Timestamp;

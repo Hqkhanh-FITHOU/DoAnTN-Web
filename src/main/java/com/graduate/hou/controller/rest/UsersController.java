@@ -21,9 +21,10 @@ public class UsersController {
     @Autowired
     private UserServiceImpl userService;
 
-    @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user){
-        User savedUser = userService.addUser(user);
+
+    @PostMapping("/new")
+    public ResponseEntity<User> createNewUser(@RequestBody UsersDTO usersDTO){
+        User savedUser = userService.createUser(usersDTO);
         return ResponseEntity.ok(savedUser);
     }
 

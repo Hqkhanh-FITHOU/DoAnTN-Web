@@ -1,15 +1,8 @@
 package com.graduate.hou.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.graduate.hou.entity.Address;
-import com.graduate.hou.entity.OrderItem;
-import com.graduate.hou.entity.Payment;
-import com.graduate.hou.entity.User;
+
 import com.graduate.hou.enums.OrderStatus;
-import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.security.Timestamp;

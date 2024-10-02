@@ -1,11 +1,6 @@
 package com.graduate.hou.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.graduate.hou.entity.Order;
-import com.graduate.hou.entity.Product;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+
 import lombok.*;
 
 import java.math.BigDecimal;
