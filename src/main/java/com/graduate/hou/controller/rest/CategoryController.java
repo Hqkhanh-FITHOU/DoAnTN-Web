@@ -1,10 +1,7 @@
 package com.graduate.hou.controller.rest;
 
-import com.graduate.hou.dto.AddressDTO;
 import com.graduate.hou.dto.CategoryDTO;
-import com.graduate.hou.entity.Address;
 import com.graduate.hou.entity.Category;
-import com.graduate.hou.service.AddressService;
 import com.graduate.hou.service.impl.CategoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;

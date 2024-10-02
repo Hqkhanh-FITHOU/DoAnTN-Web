@@ -1,10 +1,7 @@
 package com.graduate.hou.dto;
 
-import com.graduate.hou.entity.User;
+
 import com.graduate.hou.enums.AddressType;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.*;
 
 @Getter

@@ -1,10 +1,7 @@
 package com.graduate.hou.dto;
 
 import com.graduate.hou.entity.Product;
-import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.security.Timestamp;
 import java.util.List;
