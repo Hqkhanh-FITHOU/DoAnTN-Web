@@ -7,7 +7,6 @@ import com.graduate.hou.repository.OrderRepository;
 import com.graduate.hou.repository.PaymentRepository;
 import com.graduate.hou.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +27,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public Payment createPayment(PaymentDTO paymentDTO) {
-        Order order = orderRepository.findById(paymentDTO.getOrder())
+        Order order = orderRepository.findById(paymentDTO.getOrderId())
                 .orElseThrow(()-> new RuntimeException("order không tồn tại"));
 
         Payment payment = Payment.builder()
@@ -44,7 +43,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public Payment updatePayment(Long id, PaymentDTO paymentDTO) {
         Optional<Payment> optionalPayment = paymentRepository.findById(id);
-        Order order = orderRepository.findById(paymentDTO.getOrder())
+        Order order = orderRepository.findById(paymentDTO.getOrderId())
                 .orElseThrow(()-> new RuntimeException("order không tồn tại"));
 
         Payment payment = optionalPayment.get().builder()

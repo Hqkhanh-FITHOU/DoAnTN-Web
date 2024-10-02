@@ -34,7 +34,7 @@ public class Review {
     private Response response;
 
     @Column(nullable = false)
-    private int rating;
+    private Float rating;
 
     @Lob
     private String comment;

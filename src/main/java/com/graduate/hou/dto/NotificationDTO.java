@@ -13,9 +13,9 @@ import java.time.LocalDateTime;
 public class NotificationDTO {
     private Long orderNotificationId;
 
-    private Long order;
+    private Long orderId;
 
-    private Long user;
+    private Long userId;
 
     private String message;
 

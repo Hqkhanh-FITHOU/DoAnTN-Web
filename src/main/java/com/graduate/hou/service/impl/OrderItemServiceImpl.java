@@ -1,6 +1,5 @@
 package com.graduate.hou.service.impl;
 
-import com.fasterxml.jackson.annotation.OptBoolean;
 import com.graduate.hou.dto.OrderItemDTO;
 import com.graduate.hou.entity.Order;
 import com.graduate.hou.entity.OrderItem;
@@ -9,7 +8,6 @@ import com.graduate.hou.repository.OrderItemRepository;
 import com.graduate.hou.repository.OrderRepository;
 import com.graduate.hou.repository.ProductRepository;
 import com.graduate.hou.service.OrderItemService;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,10 +32,10 @@ public class OrderItemServiceImpl implements OrderItemService {
 
     @Override
     public OrderItem createOrderItem(OrderItemDTO orderItemDTO) {
-        Order order = orderRepository.findById(orderItemDTO.getOrder())
+        Order order = orderRepository.findById(orderItemDTO.getOrderId())
                 .orElseThrow(()-> new RuntimeException("Mã order không tồn tại"));
 
-        Product product = productRepository.findById(orderItemDTO.getProduct())
+        Product product = productRepository.findById(orderItemDTO.getProductId())
                 .orElseThrow(()-> new RuntimeException("Sản phẩm không tồn tại"));
 
         OrderItem orderItem = OrderItem.builder()
@@ -54,10 +52,10 @@ public class OrderItemServiceImpl implements OrderItemService {
     public OrderItem updateOrderItem(Long id, OrderItemDTO orderItemDTO) {
         Optional<OrderItem> optionalOrderItem = orderItemRepository.findById(id);
 
-        Order order = orderRepository.findById(orderItemDTO.getOrder())
+        Order order = orderRepository.findById(orderItemDTO.getOrderId())
                 .orElseThrow(()-> new RuntimeException("Mã order không tồn tại"));
 
-        Product product = productRepository.findById(orderItemDTO.getProduct())
+        Product product = productRepository.findById(orderItemDTO.getProductId())
                 .orElseThrow(()-> new RuntimeException("Sản phẩm không tồn tại"));
 
         OrderItem orderItem = optionalOrderItem.get().builder()

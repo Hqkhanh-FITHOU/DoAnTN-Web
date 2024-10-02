@@ -1,6 +1,5 @@
 package com.graduate.hou.service.impl;
 
-import com.graduate.hou.dto.NotificationDTO;
 import com.graduate.hou.dto.OrderDTO;
 import com.graduate.hou.entity.Address;
 import com.graduate.hou.entity.Order;
@@ -38,13 +37,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order createOrder(OrderDTO orderDTO) {
-        User user = usersRepository.findById(orderDTO.getUser())
+        User user = usersRepository.findById(orderDTO.getUserId())
                 .orElseThrow(()-> new RuntimeException("Chưa đăng nhập"));
 
-        Payment payment = paymentRepository.findById(orderDTO.getPayment())
+        Payment payment = paymentRepository.findById(orderDTO.getPaymentId())
                 .orElseThrow(()-> new RuntimeException("Chưa thanh toán"));
 
-        Address address = addressRepository.findById(orderDTO.getAddress())
+        Address address = addressRepository.findById(orderDTO.getAddressId())
                 .orElseThrow(()-> new RuntimeException("Chưa chọn địa chỉ"));
 
         Order order = Order.builder()
@@ -63,13 +62,13 @@ public class OrderServiceImpl implements OrderService {
     public Order updateOrder(Long id, OrderDTO orderDTO) {
         Optional<Order> optionalOrder = orderRepository.findById(id);
 
-        User user = usersRepository.findById(orderDTO.getUser())
+        User user = usersRepository.findById(orderDTO.getUserId())
                 .orElseThrow(()-> new RuntimeException("Chưa đăng nhập"));
 
-        Payment payment = paymentRepository.findById(orderDTO.getPayment())
+        Payment payment = paymentRepository.findById(orderDTO.getPaymentId())
                 .orElseThrow(()-> new RuntimeException("Chưa thanh toán"));
 
-        Address address = addressRepository.findById(orderDTO.getAddress())
+        Address address = addressRepository.findById(orderDTO.getAddressId())
                 .orElseThrow(()-> new RuntimeException("Chưa chọn địa chỉ"));
 
         Order order = optionalOrder.get().builder()

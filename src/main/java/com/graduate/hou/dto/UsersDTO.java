@@ -23,4 +23,6 @@ public class UsersDTO {
     private RoleUsers role;
 
     private String fullname;
+
+    private Long point;
 }

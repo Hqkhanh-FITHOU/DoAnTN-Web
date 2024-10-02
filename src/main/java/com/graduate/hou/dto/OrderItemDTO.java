@@ -13,9 +13,9 @@ import java.math.BigDecimal;
 public class OrderItemDTO {
     private Long orderItemId;
 
-    private Long order;
+    private Long orderId;
 
-    private Long product;
+    private Long productId;
 
     private Integer quantity;
 

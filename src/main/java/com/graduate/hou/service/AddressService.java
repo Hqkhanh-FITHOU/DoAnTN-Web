@@ -1,9 +1,8 @@
 package com.graduate.hou.service;
 
 import com.graduate.hou.dto.AddressDTO;
-import com.graduate.hou.dto.UsersDTO;
 import com.graduate.hou.entity.Address;
-import com.graduate.hou.entity.User;
+
 
 import java.util.List;
 

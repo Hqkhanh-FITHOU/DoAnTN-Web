@@ -12,7 +12,7 @@ import lombok.*;
 public class AddressDTO {
     private Long addressId;
 
-    private Long user;
+    private Long userId;
 
     private String number; //số nhà
 

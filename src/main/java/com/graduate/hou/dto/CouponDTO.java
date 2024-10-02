@@ -2,9 +2,8 @@ package com.graduate.hou.dto;
 
 import com.graduate.hou.enums.DiscountType;
 import lombok.*;
-
 import java.math.BigDecimal;
-import java.security.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -20,11 +19,8 @@ public class CouponDTO {
 
     private BigDecimal discountValue;
 
-    private Timestamp expirationDate;
+    private LocalDateTime expirationDate;
 
     private BigDecimal minPurchase;
 
-    private Timestamp createdAt;
-
-    private Timestamp updatedAt;
 }

@@ -4,8 +4,7 @@ package com.graduate.hou.dto;
 import com.graduate.hou.enums.PaymentMethod;
 import com.graduate.hou.enums.PaymentStatus;
 import lombok.*;
-
-import java.security.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -15,11 +14,11 @@ import java.security.Timestamp;
 public class PaymentDTO {
     private Long paymentId;
 
-    private Long order;
+    private Long orderId;
 
     private PaymentMethod paymentMethod;
 
     private PaymentStatus paymentStatus;
 
-    private Timestamp paymentDate;
+    private LocalDateTime paymentDate;
 }
