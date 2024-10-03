@@ -26,8 +26,8 @@ public class CategoryServiceImpl implements CategoryService {
 
         category.setName(categoryDTO.getName());
         category.setDescription(categoryDTO.getDescription());
-        category.setCreatedAt(categoryDTO.getCreatedAt());
-        category.setUpdatedAt(categoryDTO.getUpdatedAt());
+        // category.setCreatedAt(categoryDTO.getCreatedAt());
+        // category.setUpdatedAt(categoryDTO.getUpdatedAt());
 
         return categoryRepository.save(category);
     }
@@ -39,8 +39,8 @@ public class CategoryServiceImpl implements CategoryService {
 
         category.setName(categoryDTO.getName());
         category.setDescription(categoryDTO.getDescription());
-        category.setCreatedAt(categoryDTO.getCreatedAt());
-        category.setUpdatedAt(categoryDTO.getUpdatedAt());
+        // category.setCreatedAt(categoryDTO.getCreatedAt());
+        // category.setUpdatedAt(categoryDTO.getUpdatedAt());
 
         return categoryRepository.save(category);
     }

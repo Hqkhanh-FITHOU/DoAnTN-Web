@@ -1,10 +1,8 @@
 package com.graduate.hou.controller.rest;
 
-import com.graduate.hou.dto.DailyRevenueDTO;
+
 import com.graduate.hou.dto.NotificationDTO;
-import com.graduate.hou.entity.DailyRevenue;
 import com.graduate.hou.entity.Notification;
-import com.graduate.hou.service.impl.DailyRevenueServiceImpl;
 import com.graduate.hou.service.impl.NotificationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;

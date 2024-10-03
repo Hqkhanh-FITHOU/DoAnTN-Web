@@ -7,11 +7,12 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryDTO {
-    private Long categoryId;
+public class ProductImageDTO {
 
-    private String name;
+    private Long imageId;
 
-    private String description;
+    private Long productId;
+
+    private String pathString;
 
 }

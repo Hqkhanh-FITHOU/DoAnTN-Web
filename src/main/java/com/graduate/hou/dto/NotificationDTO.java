@@ -1,10 +1,6 @@
 package com.graduate.hou.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.graduate.hou.entity.Order;
-import com.graduate.hou.entity.User;
 import com.graduate.hou.enums.NotificationType;
-import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -17,9 +13,9 @@ import java.time.LocalDateTime;
 public class NotificationDTO {
     private Long orderNotificationId;
 
-    private Long order;
+    private Long orderId;
 
-    private Long user;
+    private Long userId;
 
     private String message;
 

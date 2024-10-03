@@ -1,15 +1,9 @@
 package com.graduate.hou.dto;
 
 import com.graduate.hou.enums.DiscountType;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
 import java.math.BigDecimal;
-import java.security.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -25,11 +19,8 @@ public class CouponDTO {
 
     private BigDecimal discountValue;
 
-    private Timestamp expirationDate;
+    private LocalDateTime expirationDate;
 
     private BigDecimal minPurchase;
 
-    private Timestamp createdAt;
-
-    private Timestamp updatedAt;
 }

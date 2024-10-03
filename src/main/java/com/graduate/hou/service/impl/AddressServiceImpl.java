@@ -8,8 +8,6 @@ import com.graduate.hou.repository.UsersRepository;
 import com.graduate.hou.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.lang.management.OperatingSystemMXBean;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +28,7 @@ public class AddressServiceImpl implements AddressService {
     public Address createAddress(AddressDTO addressDTO) {
         Address address = new Address();
 
-        User user = usersRepository.findById(addressDTO.getUser())
+        User user = usersRepository.findById(addressDTO.getUserId())
                 .orElseThrow(()-> new RuntimeException("chưa đăng nhập"));
         address.setUser(user);
 
@@ -49,7 +47,7 @@ public class AddressServiceImpl implements AddressService {
         Optional<Address> optionalAddress = addressRepository.findById(id);
         Address address = optionalAddress.get();
 
-        User user = usersRepository.findById(addressDTO.getUser())
+        User user = usersRepository.findById(addressDTO.getUserId())
                 .orElseThrow(()-> new RuntimeException("chưa đăng nhập"));
         address.setUser(user);
 

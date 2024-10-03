@@ -3,7 +3,6 @@ package com.graduate.hou.dto;
 import com.graduate.hou.enums.RoleUsers;
 import lombok.*;
 
-import java.security.Timestamp;
 
 @Getter
 @Setter
@@ -23,7 +22,7 @@ public class UsersDTO {
 
     private RoleUsers role;
 
-    private Timestamp createdAt;
+    private String fullname;
 
-    private Timestamp updatedAt;
+    private Long point;
 }

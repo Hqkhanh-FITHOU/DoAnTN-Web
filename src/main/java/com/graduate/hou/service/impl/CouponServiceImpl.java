@@ -26,10 +26,10 @@ public class CouponServiceImpl implements CouponService {
         coupon.setCode(couponDTO.getCode());
         coupon.setDiscountType(couponDTO.getDiscountType());
         coupon.setDiscountValue(couponDTO.getDiscountValue());
-        coupon.setExpirationDate(couponDTO.getExpirationDate());
+        // coupon.setExpirationDate(couponDTO.getExpirationDate());
         coupon.setMinPurchase(couponDTO.getMinPurchase());
-        coupon.setCreatedAt(couponDTO.getCreatedAt());
-        coupon.setUpdatedAt(couponDTO.getUpdatedAt());
+        // coupon.setCreatedAt(couponDTO.getCreatedAt());
+        // coupon.setUpdatedAt(couponDTO.getUpdatedAt());
 
         return couponRepository.save(coupon);
     }
@@ -42,10 +42,10 @@ public class CouponServiceImpl implements CouponService {
         coupon.setCode(couponDTO.getCode());
         coupon.setDiscountType(couponDTO.getDiscountType());
         coupon.setDiscountValue(couponDTO.getDiscountValue());
-        coupon.setExpirationDate(couponDTO.getExpirationDate());
+        // coupon.setExpirationDate(couponDTO.getExpirationDate());
         coupon.setMinPurchase(couponDTO.getMinPurchase());
-        coupon.setCreatedAt(couponDTO.getCreatedAt());
-        coupon.setUpdatedAt(couponDTO.getUpdatedAt());
+        // coupon.setCreatedAt(couponDTO.getCreatedAt());
+        // coupon.setUpdatedAt(couponDTO.getUpdatedAt());
 
         return couponRepository.save(coupon);
     }

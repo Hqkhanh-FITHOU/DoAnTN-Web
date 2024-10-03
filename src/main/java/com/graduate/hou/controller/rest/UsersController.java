@@ -2,12 +2,11 @@ package com.graduate.hou.controller.rest;
 
 
 
-
-
 import com.graduate.hou.dto.UsersDTO;
 import com.graduate.hou.entity.User;
 import com.graduate.hou.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,12 +19,14 @@ public class UsersController {
     @Autowired
     private UserServiceImpl userService;
 
-    @PostMapping
-    User createUser(@RequestBody UsersDTO usersDTO){
-        return userService.createUser(usersDTO);
+
+    @PostMapping("/new")
+    public ResponseEntity<User> createNewUser(@RequestBody UsersDTO usersDTO){
+        User savedUser = userService.createUser(usersDTO);
+        return ResponseEntity.ok(savedUser);
     }
 
-    @GetMapping
+    @GetMapping("/")
     List<User> getAllUser(){
         return userService.getAllUser();
     }

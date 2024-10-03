@@ -5,10 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.math.BigDecimal;
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "tbl_daily_revenue")
@@ -21,12 +20,12 @@ public class DailyRevenue {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long dailyRevenueId;
 
-    private Time openTime;
+    private LocalTime openTime;
 
-    private Time closeTime;
+    private LocalTime closeTime;
 
     @Column(nullable = false)
-    private Date revenueDate;
+    private LocalDate revenueDate;
 
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal totalRevenue;

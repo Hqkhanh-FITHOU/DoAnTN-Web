@@ -1,11 +1,6 @@
 package com.graduate.hou.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.graduate.hou.entity.Order;
-import com.graduate.hou.entity.Product;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -18,9 +13,9 @@ import java.math.BigDecimal;
 public class OrderItemDTO {
     private Long orderItemId;
 
-    private Long order;
+    private Long orderId;
 
-    private Long product;
+    private Long productId;
 
     private Integer quantity;
 
