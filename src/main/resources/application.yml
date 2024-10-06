@@ -10,6 +10,7 @@ spring:
         username: root
         password: root
 
+
     servlet:
         multipart:
             enabled: true           # Kích hoạt xử lý multipart
