@@ -38,5 +38,6 @@ public class Address {
     private String ward; //phường
 
     @Column(nullable = false, length = 100)
+    @Enumerated(EnumType.STRING)
     private AddressType addressType; //phường
 }
