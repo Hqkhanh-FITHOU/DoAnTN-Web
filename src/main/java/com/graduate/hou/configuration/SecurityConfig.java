@@ -48,6 +48,10 @@ public class SecurityConfig{
                 .disable())
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(
+                            "/css/**",
+                            "/img/**",
+                            "/js/**",
+                            "/fonts/**",
                             "/restaurant/dashboard/**",
                             "/ws/**"
                             ).permitAll()
