@@ -1,4 +1,4 @@
-package com.graduate.hou.dto;
+package com.graduate.hou.dto.request;
 
 import java.time.LocalDateTime;
 import lombok.*;
@@ -8,14 +8,16 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseDTO {
-    private Long reponseId;
-
+public class ReviewDTO {
     private Long reviewId;
+
+    private Long productId;
 
     private Long userId;
 
-    private String reponseContent;
+    private Float rating;
+
+    private String comment;
 
     private LocalDateTime createdAt;
 }

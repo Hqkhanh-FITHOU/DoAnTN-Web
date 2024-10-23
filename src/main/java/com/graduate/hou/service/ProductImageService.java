@@ -2,7 +2,7 @@ package com.graduate.hou.service;
 
 import java.util.List;
 
-import com.graduate.hou.dto.ProductImageDTO;
+import com.graduate.hou.dto.request.ProductImageDTO;
 import com.graduate.hou.entity.ProductImage;
 
 public interface ProductImageService {

@@ -1,7 +1,7 @@
 package com.graduate.hou.service;
 
 
-import com.graduate.hou.dto.PaymentDTO;
+import com.graduate.hou.dto.request.PaymentDTO;
 import com.graduate.hou.entity.Payment;
 
 import java.util.List;

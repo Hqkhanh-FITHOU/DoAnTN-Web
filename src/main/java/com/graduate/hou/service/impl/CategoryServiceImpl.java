@@ -1,6 +1,6 @@
 package com.graduate.hou.service.impl;
 
-import com.graduate.hou.dto.CategoryDTO;
+import com.graduate.hou.dto.request.CategoryDTO;
 import com.graduate.hou.entity.Category;
 import com.graduate.hou.repository.CategoryRepository;
 import com.graduate.hou.service.CategoryService;

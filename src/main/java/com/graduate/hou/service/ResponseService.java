@@ -2,7 +2,7 @@ package com.graduate.hou.service;
 
 import java.util.List;
 
-import com.graduate.hou.dto.ResponseDTO;
+import com.graduate.hou.dto.request.ResponseDTO;
 import com.graduate.hou.entity.Response;
 
 public interface ResponseService {

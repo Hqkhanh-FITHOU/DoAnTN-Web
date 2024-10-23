@@ -1,6 +1,6 @@
 package com.graduate.hou.service.impl;
 
-import com.graduate.hou.dto.AddressDTO;
+import com.graduate.hou.dto.request.AddressDTO;
 import com.graduate.hou.entity.Address;
 import com.graduate.hou.entity.User;
 import com.graduate.hou.repository.AddressRepository;

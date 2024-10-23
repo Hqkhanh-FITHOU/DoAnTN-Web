@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.graduate.hou.dto.ProductImageDTO;
+import com.graduate.hou.dto.request.ProductImageDTO;
 import com.graduate.hou.entity.ProductImage;
 import com.graduate.hou.service.impl.ProductImageServiceImpl;
 

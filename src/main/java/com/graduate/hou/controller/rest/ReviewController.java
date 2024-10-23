@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.graduate.hou.dto.ReviewDTO;
+import com.graduate.hou.dto.request.ReviewDTO;
 import com.graduate.hou.entity.Review;
 import com.graduate.hou.service.impl.ReviewServiceImpl;
 

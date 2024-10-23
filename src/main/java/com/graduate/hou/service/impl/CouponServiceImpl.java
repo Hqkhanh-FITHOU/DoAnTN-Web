@@ -1,6 +1,6 @@
 package com.graduate.hou.service.impl;
 
-import com.graduate.hou.dto.CouponDTO;
+import com.graduate.hou.dto.request.CouponDTO;
 import com.graduate.hou.entity.Coupon;
 import com.graduate.hou.repository.CouponRepository;
 import com.graduate.hou.service.CouponService;
