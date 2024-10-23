@@ -1,7 +1,7 @@
 package com.graduate.hou.service;
 
 
-import com.graduate.hou.dto.NotificationDTO;
+import com.graduate.hou.dto.request.NotificationDTO;
 import com.graduate.hou.entity.Notification;
 
 import java.util.List;

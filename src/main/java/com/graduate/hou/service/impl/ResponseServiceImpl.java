@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.graduate.hou.dto.ResponseDTO;
+import com.graduate.hou.dto.request.ResponseDTO;
 import com.graduate.hou.entity.Response;
 import com.graduate.hou.entity.Review;
 import com.graduate.hou.entity.User;

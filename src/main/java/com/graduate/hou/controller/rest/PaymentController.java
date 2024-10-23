@@ -1,6 +1,6 @@
 package com.graduate.hou.controller.rest;
 
-import com.graduate.hou.dto.PaymentDTO;
+import com.graduate.hou.dto.request.PaymentDTO;
 import com.graduate.hou.entity.Payment;
 import com.graduate.hou.service.impl.PaymentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

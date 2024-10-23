@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.graduate.hou.dto.ProductImageDTO;
+import com.graduate.hou.dto.request.ProductImageDTO;
 import com.graduate.hou.entity.Product;
 import com.graduate.hou.entity.ProductImage;
 import com.graduate.hou.repository.ProductImageRepository;

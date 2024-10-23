@@ -1,6 +1,6 @@
 package com.graduate.hou.service.impl;
 
-import com.graduate.hou.dto.OrderItemDTO;
+import com.graduate.hou.dto.request.OrderItemDTO;
 import com.graduate.hou.entity.Order;
 import com.graduate.hou.entity.OrderItem;
 import com.graduate.hou.entity.Product;

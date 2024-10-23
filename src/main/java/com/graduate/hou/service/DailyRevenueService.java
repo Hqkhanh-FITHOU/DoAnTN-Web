@@ -1,7 +1,7 @@
 package com.graduate.hou.service;
 
 
-import com.graduate.hou.dto.DailyRevenueDTO;
+import com.graduate.hou.dto.request.DailyRevenueDTO;
 import com.graduate.hou.entity.DailyRevenue;
 
 import java.util.List;

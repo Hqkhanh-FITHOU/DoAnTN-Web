@@ -1,17 +1,27 @@
 package com.graduate.hou.configuration;
 
+import com.graduate.hou.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -21,15 +31,29 @@ import lombok.AllArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
-@AllArgsConstructor
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
 public class SecurityConfig{
 
+    private final PreFilter preFilter;
+    @Lazy
     @Autowired
-    private final UsersRepository userRepository;
+    private UserService userService;
 
+
+
+    private String[] WHILELIST = {"/css/**",
+                                    "/img/**",
+                                    "/js/**",
+                                    "/fonts/**",
+                                    "/restaurant/dashboard/**",
+                                    "/ws/**",
+                                    "/auth/**",
+                                    "/category/**"
+    };
 
     @Bean
-    public WebMvcConfigurer cosConfigurer(){ //cấu hình các giao thực được chấp nhận
+    public WebMvcConfigurer cosConfigurer(){
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(@SuppressWarnings("null") CorsRegistry registry) {
@@ -44,44 +68,42 @@ public class SecurityConfig{
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception { //thực hiện phân quyền các request nào phải xác thực, request nào được phép truy cập công khai
-        http.csrf(csrf -> csrf
-                .disable())
-                .authorizeHttpRequests(requests -> requests
-                        .requestMatchers(
-                            "/css/**",
-                            "/img/**",
-                            "/js/**",
-                            "/fonts/**",
-                            "/restaurant/dashboard/**",
-                            "/ws/**"
-                            ).permitAll()
-                        .anyRequest().authenticated())
-                .sessionManagement(management -> management
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider());
-                // .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
+        http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeRequests(authorizeRequests -> {authorizeRequests.requestMatchers(WHILELIST).permitAll()
+                        .anyRequest().authenticated();})
+                .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider()).addFilterBefore(preFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
+    }
+
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return webSecurity -> {
+            webSecurity.ignoring()
+                    .requestMatchers("/actuator/**","/v3/**","/webjars/**","/swagger-ui*/*swagger-initializer.js", "/swagger-ui*/**");
+        };
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
     AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
-        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setUserDetailsService(userService.userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
 
         return authProvider;
     }
 
-    @Bean
-    UserDetailsService userDetailsService(){
-        return username -> userRepository.findByUsername(username)
-            .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-    }
 
-    @Bean
-    BCryptPasswordEncoder passwordEncoder() { //mã hóa mật khẩu mà người dùng nhập vào
-        return new BCryptPasswordEncoder();
-    }
 }

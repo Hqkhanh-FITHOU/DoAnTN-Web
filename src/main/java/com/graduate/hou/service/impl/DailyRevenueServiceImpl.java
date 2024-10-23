@@ -1,6 +1,6 @@
 package com.graduate.hou.service.impl;
 
-import com.graduate.hou.dto.DailyRevenueDTO;
+import com.graduate.hou.dto.request.DailyRevenueDTO;
 import com.graduate.hou.entity.DailyRevenue;
 import com.graduate.hou.repository.DailyRevenueRepository;
 import com.graduate.hou.service.DailyRevenueService;

@@ -1,4 +1,4 @@
-package com.graduate.hou.dto;
+package com.graduate.hou.dto.request;
 
 import java.math.BigDecimal;
 import lombok.*;
