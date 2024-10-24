@@ -1,12 +1,11 @@
 package com.graduate.hou.controller.rest;
 
-import com.graduate.hou.dto.AddressDTO;
+import com.graduate.hou.dto.request.AddressDTO;
 import com.graduate.hou.entity.Address;
 import com.graduate.hou.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @Validated

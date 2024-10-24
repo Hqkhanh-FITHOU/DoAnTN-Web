@@ -1,13 +1,12 @@
 package com.graduate.hou.controller.rest;
 
 
-import com.graduate.hou.dto.CouponDTO;
+import com.graduate.hou.dto.request.CouponDTO;
 import com.graduate.hou.entity.Coupon;
 import com.graduate.hou.service.impl.CouponServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @Validated

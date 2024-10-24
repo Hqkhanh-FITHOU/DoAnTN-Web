@@ -1,12 +1,11 @@
 package com.graduate.hou.service.impl;
 
-import com.graduate.hou.dto.CouponDTO;
+import com.graduate.hou.dto.request.CouponDTO;
 import com.graduate.hou.entity.Coupon;
 import com.graduate.hou.repository.CouponRepository;
 import com.graduate.hou.service.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 

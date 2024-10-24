@@ -1,13 +1,12 @@
 package com.graduate.hou.controller.rest;
 
 
-import com.graduate.hou.dto.DailyRevenueDTO;
+import com.graduate.hou.dto.request.DailyRevenueDTO;
 import com.graduate.hou.entity.DailyRevenue;
 import com.graduate.hou.service.impl.DailyRevenueServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @Validated
