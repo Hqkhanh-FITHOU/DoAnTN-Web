@@ -52,7 +52,7 @@ public class SecurityConfig{
                             "/img/**",
                             "/js/**",
                             "/fonts/**",
-                            "/restaurant/dashboard/**",
+                            "/restaurant/**",
                             "/ws/**"
                             ).permitAll()
                         .anyRequest().authenticated())

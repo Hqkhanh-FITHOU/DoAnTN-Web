@@ -22,5 +22,5 @@ public class DailyRevenueDTO {
 
     private BigDecimal totalRevenue;
 
-    private Integer totalOrders;
+    private Long totalOrders;
 }

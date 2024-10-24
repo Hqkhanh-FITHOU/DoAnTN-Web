@@ -45,7 +45,6 @@ public class NotificationServiceImpl implements NotificationService {
                 .notificationType(notificationDTO.getNotificationType())
                 .isRead(notificationDTO.isRead())
                 .createdAt(notificationDTO.getCreatedAt())
-                .updatedAt(notificationDTO.getUpdatedAt())
                 .build();
 
         return notificationRepository.save(notification);
@@ -68,7 +67,6 @@ public class NotificationServiceImpl implements NotificationService {
                 .notificationType(notificationDTO.getNotificationType())
                 .isRead(notificationDTO.isRead())
                 .createdAt(notificationDTO.getCreatedAt())
-                .updatedAt(notificationDTO.getUpdatedAt())
                 .build();
 
         return notificationRepository.save(notification);
