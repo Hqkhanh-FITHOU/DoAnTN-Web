@@ -1,7 +1,10 @@
 package com.graduate.hou.controller.rest;
 
 import com.graduate.hou.dto.request.UserLoginDTO;
+import com.graduate.hou.dto.response.TokenResponse;
 import com.graduate.hou.service.AuthenticationService;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +33,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/refresh")
-    public String refresh(){
-        return "Success";
+    public ResponseEntity<?> refresh(HttpServletRequest request){
+        return new ResponseEntity<>(authenticationService.refresh(request), HttpStatus.OK);
     }
 
     @PostMapping("/logout")
