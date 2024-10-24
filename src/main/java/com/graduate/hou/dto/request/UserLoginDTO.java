@@ -1,9 +1,10 @@
 package com.graduate.hou.dto.request;
 
 import lombok.Getter;
-import org.hibernate.annotations.processing.Pattern;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class UserLoginDTO {
     private String username;
 

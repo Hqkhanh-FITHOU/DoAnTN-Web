@@ -1,12 +1,13 @@
+'use strict'
 var ctx = document.getElementById('statisticsChart').getContext('2d');
 var myLegendContainer = document.getElementById("myChartLegend");
-var dailySalesChart = document.getElementById('dailySalesChart').getContext('2d');
-
+// var dailySalesChart = document.getElementById('dailySalesChart').getContext('2d');
+const btnSignUp = document.getElementById('btn-login')
 //Notify
 $.notify({
 	icon: 'icon-user',
 	title: 'Xin chào',
-	message: 'Đâu là đồ án tốt nghiệp của Khánh',
+	message: 'Đây là đồ án tốt nghiệp của Khánh',
 },{
 	type: 'secondary',
 	placement: {
@@ -16,6 +17,18 @@ $.notify({
 	time: 1000,
 });
 
+function onClickSignUp(){
+	$('.container-signup').attr('style','display: none')
+	$('.container-login').attr('style','display: block')
+}
+
+function onComfirmOrder(){
+	const row = document.getElementById('item-2')
+	setTimeout(function() {
+		row.remove()
+		
+	}, 1000)
+}
 // Cicle Chart
 // Circles.create({
 // 	id:           'task-complete',
@@ -203,50 +216,50 @@ for (var i = 0; i < legendItems.length; i += 1) {
 
 
 
-var myDailySalesChart = new Chart(dailySalesChart, {
-	type: 'line',
-	data: {
-		labels:["January",
-		"February",
-		"March",
-		"April",
-		"May",
-		"June",
-		"July",
-		"August",
-		"September"],
-		datasets:[ {
-			label: "Sales Analytics", fill: !0, backgroundColor: "rgba(255,255,255,0.2)", borderColor: "#fff", borderCapStyle: "butt", borderDash: [], borderDashOffset: 0, pointBorderColor: "#fff", pointBackgroundColor: "#fff", pointBorderWidth: 1, pointHoverRadius: 5, pointHoverBackgroundColor: "#fff", pointHoverBorderColor: "#fff", pointHoverBorderWidth: 1, pointRadius: 1, pointHitRadius: 5, data: [65, 59, 80, 81, 56, 55, 40, 35, 30]
-		}]
-	},
-	options : {
-		maintainAspectRatio:!1, legend: {
-			display: !1
-		}
-		, animation: {
-			easing: "easeInOutBack"
-		}
-		, scales: {
-			yAxes:[ {
-				display:!1, ticks: {
-					fontColor: "rgba(0,0,0,0.5)", fontStyle: "bold", beginAtZero: !0, maxTicksLimit: 10, padding: 0
-				}
-				, gridLines: {
-					drawTicks: !1, display: !1
-				}
-			}
-			], xAxes:[ {
-				display:!1, gridLines: {
-					zeroLineColor: "transparent"
-				}
-				, ticks: {
-					padding: -20, fontColor: "rgba(255,255,255,0.2)", fontStyle: "bold"
-				}
-			}
-			]
-		}
-	}
-});
+// var myDailySalesChart = new Chart(dailySalesChart, {
+// 	type: 'line',
+// 	data: {
+// 		labels:["January",
+// 		"February",
+// 		"March",
+// 		"April",
+// 		"May",
+// 		"June",
+// 		"July",
+// 		"August",
+// 		"September"],
+// 		datasets:[ {
+// 			label: "Sales Analytics", fill: !0, backgroundColor: "rgba(255,255,255,0.2)", borderColor: "#fff", borderCapStyle: "butt", borderDash: [], borderDashOffset: 0, pointBorderColor: "#fff", pointBackgroundColor: "#fff", pointBorderWidth: 1, pointHoverRadius: 5, pointHoverBackgroundColor: "#fff", pointHoverBorderColor: "#fff", pointHoverBorderWidth: 1, pointRadius: 1, pointHitRadius: 5, data: [65, 59, 80, 81, 56, 55, 40, 35, 30]
+// 		}]
+// 	},
+// 	options : {
+// 		maintainAspectRatio:!1, legend: {
+// 			display: !1
+// 		}
+// 		, animation: {
+// 			easing: "easeInOutBack"
+// 		}
+// 		, scales: {
+// 			yAxes:[ {
+// 				display:!1, ticks: {
+// 					fontColor: "rgba(0,0,0,0.5)", fontStyle: "bold", beginAtZero: !0, maxTicksLimit: 10, padding: 0
+// 				}
+// 				, gridLines: {
+// 					drawTicks: !1, display: !1
+// 				}
+// 			}
+// 			], xAxes:[ {
+// 				display:!1, gridLines: {
+// 					zeroLineColor: "transparent"
+// 				}
+// 				, ticks: {
+// 					padding: -20, fontColor: "rgba(255,255,255,0.2)", fontStyle: "bold"
+// 				}
+// 			}
+// 			]
+// 		}
+// 	}
+// });
 
 // $("#activeUsersChart").sparkline([112,109,120,107,110,85,87,90,102,109,120,99,110,85,87,94], {
 // 	type: 'bar',

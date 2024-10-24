@@ -6,7 +6,6 @@ import com.graduate.hou.repository.DailyRevenueRepository;
 import com.graduate.hou.service.DailyRevenueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
