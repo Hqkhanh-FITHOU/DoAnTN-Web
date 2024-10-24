@@ -1,6 +1,5 @@
 package com.graduate.hou.service.impl;
 
-
 import com.graduate.hou.dto.request.NotificationDTO;
 import com.graduate.hou.entity.Notification;
 import com.graduate.hou.entity.Order;
@@ -45,7 +44,6 @@ public class NotificationServiceImpl implements NotificationService {
                 .notificationType(notificationDTO.getNotificationType())
                 .isRead(notificationDTO.isRead())
                 .createdAt(notificationDTO.getCreatedAt())
-                .updatedAt(notificationDTO.getUpdatedAt())
                 .build();
 
         return notificationRepository.save(notification);
@@ -68,7 +66,6 @@ public class NotificationServiceImpl implements NotificationService {
                 .notificationType(notificationDTO.getNotificationType())
                 .isRead(notificationDTO.isRead())
                 .createdAt(notificationDTO.getCreatedAt())
-                .updatedAt(notificationDTO.getUpdatedAt())
                 .build();
 
         return notificationRepository.save(notification);

@@ -3,6 +3,9 @@ package com.graduate.hou.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.graduate.hou.enums.NotificationType;
 
@@ -16,10 +19,11 @@ import com.graduate.hou.enums.NotificationType;
 public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderNotificationId;
+    @Column(name = "notification_id")
+    private Long notificationId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", nullable = false)
+    @JoinColumn(name = "order_id", nullable = true)
     @JsonIgnore
     private Order order;
 
@@ -31,6 +35,9 @@ public class Notification {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String message;
 
+    @Column(nullable = false)
+    private String title;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private NotificationType notificationType;
@@ -39,10 +46,8 @@ public class Notification {
     private boolean isRead;
 
     @Column(name = "created_at", nullable = false)
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 
-    
 }

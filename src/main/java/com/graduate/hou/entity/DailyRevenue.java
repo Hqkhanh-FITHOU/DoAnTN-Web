@@ -31,5 +31,5 @@ public class DailyRevenue {
     private BigDecimal totalRevenue;
 
     @Column(nullable = false)
-    private Integer totalOrders;
+    private Long totalOrders;
 }
