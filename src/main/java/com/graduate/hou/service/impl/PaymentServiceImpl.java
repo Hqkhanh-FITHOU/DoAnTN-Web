@@ -8,7 +8,6 @@ import com.graduate.hou.repository.PaymentRepository;
 import com.graduate.hou.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +39,7 @@ public class PaymentServiceImpl implements PaymentService {
         return paymentRepository.save(payment);
     }
 
+    @SuppressWarnings("static-access")
     @Override
     public Payment updatePayment(Long id, PaymentDTO paymentDTO) {
         Optional<Payment> optionalPayment = paymentRepository.findById(id);

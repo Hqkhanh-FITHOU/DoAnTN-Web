@@ -47,6 +47,7 @@ public class OrderItemServiceImpl implements OrderItemService {
         return orderItemRepository.save(orderItem);
     }
 
+    @SuppressWarnings("static-access")
     @Override
     public OrderItem updateOrderItem(Long id, OrderItemDTO orderItemDTO) {
         Optional<OrderItem> optionalOrderItem = orderItemRepository.findById(id);

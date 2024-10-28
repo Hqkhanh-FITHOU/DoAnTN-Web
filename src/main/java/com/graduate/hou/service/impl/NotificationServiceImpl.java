@@ -49,6 +49,7 @@ public class NotificationServiceImpl implements NotificationService {
         return notificationRepository.save(notification);
     }
 
+    @SuppressWarnings("static-access")
     @Override
     public Notification updateNotification(Long id, NotificationDTO notificationDTO) {
         Optional<Notification> optionalNotification = notificationRepository.findById(id);

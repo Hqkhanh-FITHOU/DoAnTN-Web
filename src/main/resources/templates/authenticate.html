@@ -1,44 +1,26 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<title>Đăng nhập - Cơm tấm Tư Mập</title>
-    <meta charset="UTF-8">
-	<meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
-	<link rel="icon" th:href="@{/img/kaiadmin/favicon.ico}" type="image/x-icon" />
-
-	<!-- Fonts and icons -->
-	<script th:src="@{/js/plugin/webfont/webfont.min.js}"></script>
-
-
-	<!-- CSS Files -->
-	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
-	<link rel="stylesheet" th:href="@{/css/plugins.min.css}" />
-	<link rel="stylesheet" th:href="@{/css/kaiadmin.min.css}" />
-
-	<!-- CSS Just for demo purpose, don't include it in your project -->
-	<!-- <link rel="stylesheet" th:href="@{/css/demo.css}" /> -->
-	<link rel="stylesheet" th:href="@{/css/fonts.min.css}" />
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security6">
+<head th:replace="~{fragments/head :: head}"></head>
 <body class="login bg-primary">
 
     <div class="wrapper wrapper-login">
 		<!-- Sign in form -->
         <div class="container container-login animated fadeIn" style="display: block;">
+			<form method="post" th:action="@{/restaurant/login}">
 			<h3 class="text-center">ĐĂNG NHẬP</h3>
 			<div class="login-form">
 			<div class="form-sub">
-				<div class="form-floating form-floating-custom mb-3">
-				<input id="username" name="username" type="text" class="form-control" placeholder="username" required="" fdprocessedid="v9g2ier">
-				<label for="username">Tên đăng nhập</label>
-				</div>
-				<div class="form-floating form-floating-custom mb-3">
-				<input id="password" name="password" type="password" class="form-control" placeholder="password" required="" fdprocessedid="fky5no">
-				<label for="password">Mật khẩu</label>
-				<div class="show-password">
-					<i class="icon-eye"></i>
-				</div>
-				</div>
+					<div class="form-floating form-floating-custom mb-3">
+						<input id="username" name="username" type="text" class="form-control" placeholder="username" required="" >
+						<label for="username">Tên đăng nhập</label>
+					</div>
+					<div class="form-floating form-floating-custom mb-3">
+						<input id="password" name="password" type="password" class="form-control" placeholder="password" required="">
+						<label for="password">Mật khẩu</label>
+						<div class="show-password">
+							<i class="icon-eye"></i>
+						</div>
+					</div>
 			</div>
 			<div class="row m-0">
 				<div class="d-flex form-sub">
@@ -51,13 +33,14 @@
 				</div>
 			</div>
 			<div class="form-action mb-3">
-				<a id="btn_login" th:href="@{/restaurant/dashboard}" class="btn btn-primary w-100 btn-login">Đăng nhập</a>
+				<button id="btn_login" type="submit" class="btn btn-primary w-100 btn-login">Đăng nhập</button>
 			</div>
 			<div class="login-account">
 				<span class="msg">Chưa có tài khoản ?</span>
 				<a href="#" id="show-signup" class="link">Đăng ký</a>
 			</div>
 			</div>
+			</form>
 		</div>
 		<!-- End sign in form -->
 		
@@ -98,38 +81,8 @@
 		<!-- End sign up form -->
     </div>
 
-    <!--   Core JS Files   -->
-	<script th:src="@{/js/core/jquery-3.7.1.min.js}"></script>
-	<script th:src="@{/js/core/popper.min.js}"></script>
-	<script th:src="@{/js/core/bootstrap.min.js}"></script>
+	<div th:replace="~{fragments/script :: script}">
+	</div>
 
-	<!-- jQuery Scrollbar -->
-	<script th:src="@{/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js}"></script>
-
-	<!-- Chart JS -->
-	<script th:src="@{/js/plugin/chart.js/chart.min.js}"></script>
-
-	<!-- jQuery Sparkline -->
-	<script th:src="@{/js/plugin/jquery.sparkline/jquery.sparkline.min.js}"></script>
-
-	<!-- Chart Circle -->
-	<script th:src="@{/js/plugin/chart-circle/circles.min.js}"></script>
-
-	<!-- Datatables -->
-	<script th:src="@{/js/plugin/datatables/datatables.min.js}"></script>
-
-	<!-- Bootstrap Notify -->
-	<script th:src="@{/js/plugin/bootstrap-notify/bootstrap-notify.min.js}"></script>
-
-	<!-- jQuery Vector Maps -->
-	<script th:src="@{/js/plugin/jsvectormap/jsvectormap.min.js}"></script>
-	<script th:src="@{/js/plugin/jsvectormap/world.js}"></script>
-
-	<!-- Sweet Alert -->
-	<script th:src="@{/js/plugin/sweetalert/sweetalert.min.js}"></script>
-
-	<!-- Kaiadmin JS -->
-	<script th:src="@{/js/kaiadmin.min.js}"></script>
-	<script th:src="@{/js/demo2.js}"></script>
 </body>
 </html>
