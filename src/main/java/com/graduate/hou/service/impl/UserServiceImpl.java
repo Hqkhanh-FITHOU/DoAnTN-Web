@@ -5,9 +5,7 @@ import com.graduate.hou.entity.User;
 import com.graduate.hou.repository.UsersRepository;
 import com.graduate.hou.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -16,11 +14,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UsersRepository usersRepository;
 
-    @Override
-    public UserDetailsService userDetailsService() {
-        return username -> usersRepository.findByUsername(username)
-                .orElseThrow(()-> new RuntimeException("Không tìm thấy username"));
-    }
 
     @Override
     public List<User> getAllUser() {
@@ -36,7 +29,7 @@ public class UserServiceImpl implements UserService {
         user.setFullname(usersDTO.getFullname());
         user.setEmail(usersDTO.getEmail());
         user.setPhone(usersDTO.getPhone());
-        user.setRole(usersDTO.getRole());
+        user.setRoles(usersDTO.getRoles());
 
 
         return usersRepository.save(user);
@@ -52,7 +45,7 @@ public class UserServiceImpl implements UserService {
         user.setFullname(usersDTO.getFullname());
         user.setEmail(usersDTO.getEmail());
         user.setPhone(usersDTO.getPhone());
-        user.setRole(usersDTO.getRole());
+        user.setRoles(usersDTO.getRoles());
         user.setUserPoint(usersDTO.getPoint());
 
         return usersRepository.save(user);
@@ -61,6 +54,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(Long id) {
         usersRepository.deleteById(id);
+    }
+
+    @Override
+    public Optional<User> findByUserName(String username) {
+        return usersRepository.findByUsername(username);
     }
 
 }

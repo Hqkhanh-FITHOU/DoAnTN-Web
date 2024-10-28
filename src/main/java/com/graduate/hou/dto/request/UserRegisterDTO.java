@@ -2,16 +2,15 @@ package com.graduate.hou.dto.request;
 
 import com.graduate.hou.enums.RoleUsers;
 import lombok.*;
-import java.util.*;
-
+import java.util.Set;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UsersDTO {
-    private Long userId;
+@Data
+public class UserRegisterDTO {
 
     private String username;
 
@@ -25,5 +24,4 @@ public class UsersDTO {
 
     private String fullname;
 
-    private Long point;
 }

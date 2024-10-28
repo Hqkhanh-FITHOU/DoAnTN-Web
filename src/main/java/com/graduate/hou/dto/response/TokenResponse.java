@@ -9,7 +9,5 @@ import java.io.Serializable;
 @Builder
 public class TokenResponse implements Serializable {
     private String accessToken;
-    private String resfreshToken;
-    private Long userId;
-
+    private String username;
 }
