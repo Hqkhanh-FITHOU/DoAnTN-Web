@@ -26,7 +26,6 @@ function onComfirmOrder(){
 	const row = document.getElementById('item-2')
 	setTimeout(function() {
 		row.remove()
-		
 	}, 1000)
 }
 // Cicle Chart

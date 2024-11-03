@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security6">
+<head th:replace="~{fragments/head :: head}"></head>
+<body>
+    <div class="wrapper">
+        <!-- Sidebar -->
+		<div class="sidebar" data-background-color="dark">
+			<div class="sidebar-logo">
+				<!-- Logo Header -->
+                <div th:replace="~{fragments/head :: logo_header}">
+                </div>
+				<!-- End Logo Header -->
+			</div>
+			<div class="sidebar-wrapper scrollbar scrollbar-inner">
+				<div class="sidebar-content">
+					<ul class="nav nav-secondary">
+						<li class="nav-item">
+							<a th:href="@{/restaurant/dashboard}" class="py-3">
+								<i class="fas fa-home"></i>
+								<p>Dashboard</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a th:href="@{/restaurant/orders}" class="py-3">
+								<i class="fas fa-clipboard"></i>
+								<p>Quản lý đơn hàng</p>
+							</a>
+						</li>
+						<li class="nav-item active">
+							<a th:href="@{/restaurant/products}" class="py-3">
+								<i class="fas fa-utensils"></i>
+								<p>Quản lý món ăn</p>
+							</a>
+						</li>
+                        <li class="nav-item">
+							<a th:href="@{/restaurant/categories}" class="py-3">
+								<i class="fas fa-grip-horizontal"></i>
+								<p>Quản lý danh mục món ăn</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a th:href="@{/restaurant/coupons}" class="py-3">
+								<i class="fas fa-percentage"></i>
+								<p>Quản lý khuyến mãi</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a th:href="@{/restaurant/accounts}" class="py-3">
+								<i class="fas fa-users"></i>
+								<p>Quản lý tài khoản</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a data-bs-toggle="collapse" href="#report" class="collapsed py-3" aria-expanded="false">
+								<i class="fas fa-chart-pie"></i>
+								<p>Quản lý thống kê</p>
+								<span class="caret"></span>
+							</a>
+							<div class="collapse" id="report">
+								<ul class="nav nav-collapse">
+									<li>
+										<a th:href="@{/restaurant/revenue}" class="py-2">
+											<span class="sub-item">Doanh số</span>
+										</a>
+									</li>
+									<li>
+										<a th:href="@{/restaurant/reviews}" class="py-2">
+											<span class="sub-item">Đánh giá</span>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- End Sidebar -->
+
+        <div class="main-panel">
+            <!-- Header -->
+            <div class="main-header">
+                <div class="main-header-logo">
+                    <!-- Logo Header -->
+                    <div th:replace="~{fragments/head :: logo_header}">
+					</div>
+                    <!-- End Logo Header -->
+                </div>
+                <!-- Navbar Header -->
+                <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+                    <div class="container-fluid">
+                        <nav
+                            class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
+                            <!-- <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <button type="submit" class="btn btn-search pe-1">
+                                        <i class="fa fa-search search-icon"></i>
+                                    </button>
+                                </div>
+                                <input type="text" placeholder="Search ..." class="form-control" />
+                            </div> -->
+                            <h3 class="fw-bold mb-0">Quản lý món ăn</h3>
+                        </nav>
+                        <ul th:replace="~{fragments/head :: user_box}"></ul>
+                    </div>
+                </nav>
+                <!-- End Navbar -->
+            </div>
+            <!-- End header -->
+
+
+
+            <!-- Main content -->
+            <div class="container">
+                <div class="page-inner">
+                    <!-- Breadcrum -->
+                    <div class="page-header">
+                        <ul class="breadcrumbs mb-3">
+                            <li class="nav-home">
+                                <a th:href="@{/restaurant/dashboard}">
+                                    <i class="icon-home"></i>
+                                </a>
+                            </li>
+                            <li class="separator">
+                                <i class="icon-arrow-right"></i>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#">Quản lý món ăn</a>
+                            </li>
+                            <li class="separator">
+                                <i class="icon-arrow-right"></i>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#">Chỉnh sửa thông tin món ăn</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!--TODO: code main view here  -->
+                    <div class="row">
+                        <form role="form" th:action="@{/restaurant/products/{id}/edit(id=${product.productId})}" th:object="${product}" method="post" enctype="multipart/form-data">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Thông tin món ăn</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="productName">Tên món</label>
+                                            <input type="text" class="form-control" id="productName" placeholder="Nhập tên món ăn" th:field="*{name}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="category">Loại</label>
+                                            <select class="form-select" id="category" th:field="*{categoryId}">
+                                                <option th:each="category : ${categories}" th:value="${category.categoryId}" th:text="${category.name}"></option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="price">Giá tiền</label>
+                                            <input type="number" class="form-control" id="price" placeholder="Nhập giá tiền" th:field="*{price}" >
+                                        </div>
+                                        <div class="form-check ms-1">
+                                            <label for="isServing">Đang phục vụ</label>
+                                            <input type="checkbox" class="form-check-input" id="isServing" th:field="*{isServing}">
+                                        </div>
+                                        <div class="form-check ms-1">
+                                            <label for="isHidden">Ẩn món</label>
+                                            <input type="checkbox" class="form-check-input" id="isHidden" th:field="*{isHidden}">
+                                            <small class="form-text text-muted">(Món ăn sẽ không hiện trên menu của khách hàng.)</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="images">Ảnh món ăn</label>
+                                            <input type="file" class="form-control" id="images" th:field="*{images}" multiple>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="d-flex align-content-start flex-wrap rounded overflow-auto" id="preview-images" style="max-height: 300px; border: 1px solid #ccc;">
+                                                <div th:each="image : ${product.imagesDTO}" class="m-2 image-preview-container" th:id="'product-image'+${image.imageId}">
+                                                    <button class="delete-image-icon btn btn-icon text-danger" type="button" th:onclick="'addImageDelate('+${image.imageId}+')'"><i class="fas fa-times"></i></button>
+                                                    <img th:src="@{'/uploads/product/'+${image.pathString}}" class="shadow-sm rounded mx-auto d-block" alt="" width="100px">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="description">Mô tả</label>
+                                            <textarea class="form-control" id="description" th:field="*{description}" rows="5" spellcheck="false">Mô tả cho món ăn</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-action">
+                                <button type="submit" th:onclick="'deleteImagesUnused('+${product.productId}+')'" class="btn btn-success">Lưu</button>
+                                <!-- <button type="button" th:onclick="'deleteImagesUnused('+${product.productId}+')'" class="btn btn-success">Lưu1</button> -->
+                                <a th:href="@{/restaurant/products}" class="btn btn-danger">Hủy</a>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- End main content -->
+
+
+
+
+            <!-- Footer -->
+            <footer th:replace="~{fragments/footer :: footer}">
+            </footer>
+            <!-- End footer -->
+        </div>
+    </div>
+    
+	<div th:replace="~{fragments/script :: script}">
+	</div>
+    <script>
+        $(document).ready(function(){
+            $('#description').summernote({
+                tabsize: 2,
+                height: 200,
+                focus: false,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['para', ['ul', 'ol', 'paragraph']]
+                ]
+            })
+            $('#preview-images')
+        })
+
+        const deleteImages = []
+
+        function addImageDelate(imageId) {
+            if(!deleteImages.includes(imageId)){
+                let image = document.getElementById('product-image'+imageId)
+                deleteImages.push(imageId)
+                image.remove() //xóa phần tử khỏi viewport
+            }
+            console.log('deleteImages', deleteImages)
+        }
+
+        function deleteImagesUnused(productId){
+            $.ajax({
+                url: '/L1/restaurant/products/'+productId+'/delete-image',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(deleteImages),
+                success: function (response) {
+                    console.log("deleteImages successful: " + response);
+                },
+                error: function (xhr, status, error) {
+                    console.log("deleteImages Error: " + error);
+                }
+            })
+        }
+    </script>
+</body>
+</html>

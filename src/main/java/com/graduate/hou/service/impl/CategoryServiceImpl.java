@@ -32,20 +32,41 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category updateCategory(Long id, CategoryDTO categoryDTO) {
+    public boolean updateCategory(Long id, CategoryDTO categoryDTO) {
         Optional<Category> optionalCategory = categoryRepository.findById(id);
         Category category = optionalCategory.get();
-
-        category.setName(categoryDTO.getName());
-        category.setDescription(categoryDTO.getDescription());
-        // category.setCreatedAt(categoryDTO.getCreatedAt());
-        // category.setUpdatedAt(categoryDTO.getUpdatedAt());
-
-        return categoryRepository.save(category);
+        if(category != null){
+            category.setName(categoryDTO.getName());
+            category.setDescription(categoryDTO.getDescription());
+            try {
+                categoryRepository.save(category);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 
     @Override
-    public void deleteCategory(Long id) {
-        categoryRepository.deleteById(id);
+    public boolean deleteCategory(Long id) {
+        Category category = categoryRepository.findById(id).get();
+        if(category != null){
+            if(!category.getProducts().isEmpty()){
+                return false; //không xóa danh mục đã có món ăn trực thuộc
+            }
+            try {
+                categoryRepository.deleteById(id);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public Category getCategory(Long id) {
+        return categoryRepository.findById(id).get();
     }
 }

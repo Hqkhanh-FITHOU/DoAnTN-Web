@@ -1,6 +1,8 @@
 package com.graduate.hou.dto.request;
 
+import java.util.List;
 import java.math.BigDecimal;
+import org.springframework.web.multipart.MultipartFile;
 import lombok.*;
 
 
@@ -21,7 +23,11 @@ public class ProductDTO {
 
     private Long categoryId;
 
-    private boolean isServing;
+    private Boolean isServing;
 
-    private boolean isHidden;
+    private Boolean isHidden;
+
+    private List<MultipartFile> images;
+
+    private List<ProductImageDTO> imagesDTO;
 }

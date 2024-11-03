@@ -4,7 +4,6 @@ package com.graduate.hou.configuration;
 import com.graduate.hou.service.impl.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.session.SimpleRedirectSessionInformationExpiredStrategy;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -57,6 +57,7 @@ public class SecurityConfig {
         };
     }
 
+    @SuppressWarnings("unused")
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf
@@ -83,8 +84,10 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/restaurant/login?logout") // Trang chuyển hướng sau khi logout
                         .invalidateHttpSession(true) // Vô hiệu hóa session
                         .permitAll())
-                .sessionManagement(management -> management
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                        .maximumSessions(1) //mỗi người dùng chỉ có 1 phiên đăng nhập
+                        .expiredSessionStrategy(new SimpleRedirectSessionInformationExpiredStrategy("/restaurant/login?logout")))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(preFilter, UsernamePasswordAuthenticationFilter.class);
         log.debug("security-config.securityFilterChain: go authenticate.html");

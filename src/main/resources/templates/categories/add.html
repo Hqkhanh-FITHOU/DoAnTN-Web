@@ -14,7 +14,7 @@
 			<div class="sidebar-wrapper scrollbar scrollbar-inner">
 				<div class="sidebar-content">
 					<ul class="nav nav-secondary">
-						<li class="nav-item active">
+						<li class="nav-item">
 							<a th:href="@{/restaurant/dashboard}" class="py-3">
 								<i class="fas fa-home"></i>
 								<p>Dashboard</p>
@@ -26,15 +26,15 @@
 								<p>Quản lý đơn hàng</p>
 							</a>
 						</li>
-						<li class="nav-item">
+						<li class="nav-item active">
 							<a th:href="@{/restaurant/products}" class="py-3">
 								<i class="fas fa-utensils"></i>
 								<p>Quản lý món ăn</p>
 							</a>
 						</li>
-						<li class="nav-item">
+                        <li class="nav-item">
 							<a th:href="@{/restaurant/categories}" class="py-3">
-								<i class="fas fa-utensils"></i>
+								<i class="fas fa-grip-horizontal"></i>
 								<p>Quản lý danh mục món ăn</p>
 							</a>
 						</li>
@@ -99,7 +99,7 @@
                                 </div>
                                 <input type="text" placeholder="Search ..." class="form-control" />
                             </div> -->
-                            <h3 class="fw-bold mb-0">Quản lý đơn hàng</h3>
+                            <h3 class="fw-bold mb-0">Quản lý danh mục món ăn</h3>
                         </nav>
                         <ul th:replace="~{fragments/head :: user_box}"></ul>
                     </div>
@@ -125,13 +125,45 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Quản lý đơn hàng</a>
+                                <a href="#">Quản lý danh mục món ăn</a>
+                            </li>
+                            <li class="separator">
+                                <i class="icon-arrow-right"></i>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#">Thêm mới danh mục</a>
                             </li>
                         </ul>
                     </div>
 
-                <!--TODO: code main view here  -->
-                    
+                    <!--TODO: code main view here  -->
+                    <div class="row">
+                        <form role="form" th:action="@{/restaurant/categories/new}" th:object="${category}" method="post" enctype="multipart/form-data">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Thông tin danh mục</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="productName">Tên danh mục</label>
+                                            <input type="text" class="form-control" id="productName" placeholder="Nhập tên món ăn" th:field="*{name}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="description">Mô tả danh mục</label>
+                                            <textarea class="form-control" id="description" th:field="*{description}" rows="5" spellcheck="false">Mô tả cho danh mục món ăn</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-action">
+                                <button type="submit" class="btn btn-success">Lưu</button>
+                                <a th:href="@{categories}" class="btn btn-danger">Hủy</a>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
                 </div>
             </div>
             <!-- End main content -->
@@ -148,5 +180,6 @@
     
 	<div th:replace="~{fragments/script :: script}">
 	</div>
+    
 </body>
 </html>
