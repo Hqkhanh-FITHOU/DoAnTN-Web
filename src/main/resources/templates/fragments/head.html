@@ -8,7 +8,6 @@
 	<!-- Fonts and icons -->
 	<script th:src="@{/js/plugin/webfont/webfont.min.js}"></script>
 
-
 	<!-- CSS Files -->
 	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
 	<link rel="stylesheet" th:href="@{/css/plugins.min.css}" />
@@ -17,6 +16,7 @@
 	<!-- CSS Just for demo purpose, don't include it in your project -->
 	<!-- <link rel="stylesheet" th:href="@{/css/demo.css}" /> -->
 	<link rel="stylesheet" th:href="@{/css/fonts.min.css}" />
+	<link rel="stylesheet" th:href="@{/css/demo2.css}" />
 </head>
 
 
@@ -80,7 +80,7 @@
 						</a>
 						<a href="#">
 							<div class="notif-img">
-								<img src="static/img/profile2.jpg" alt="Img Profile" />
+								<img th:src="@{/img/profile.jpg}" alt="Img Profile" />
 							</div>
 							<div class="notif-content">
 								<span class="block">
@@ -127,7 +127,7 @@
 				<li>
 					<div class="user-box">
 						<div class="avatar-lg">
-							<img src="static/img/profile.jpg" alt="image profile"
+							<img th:src="@{/img/profile.jpg}" alt="image profile"
 								class="avatar-img rounded" />
 						</div>
 						<div class="u-text">

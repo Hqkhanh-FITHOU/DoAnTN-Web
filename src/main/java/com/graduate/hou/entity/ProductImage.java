@@ -34,4 +34,11 @@ public class ProductImage {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    @Override
+    public String toString() {
+        return "ProductImage [imageId=" + imageId + ", product=" + product + ", pathString=" + pathString
+                + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
+    }
+
 }

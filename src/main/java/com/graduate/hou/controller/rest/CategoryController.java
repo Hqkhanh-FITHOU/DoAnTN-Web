@@ -26,7 +26,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    Category updateCategory (@PathVariable Long id, @RequestBody CategoryDTO categoryDTO){
+    Boolean updateCategory (@PathVariable Long id, @RequestBody CategoryDTO categoryDTO){
         return categoryService.updateCategory(id, categoryDTO);
     }
 

@@ -1,7 +1,10 @@
 package com.graduate.hou;
 
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import com.graduate.hou.service.StorageService;
 
 @SpringBootApplication
 public class HouApplication {
@@ -10,4 +13,11 @@ public class HouApplication {
 		SpringApplication.run(HouApplication.class, args);
 	}
 
+	@SuppressWarnings("unused")
+	@Bean
+	CommandLineRunner init(StorageService storageService){
+		return (arg) -> {
+			storageService.init();
+		};
+	}
 }
