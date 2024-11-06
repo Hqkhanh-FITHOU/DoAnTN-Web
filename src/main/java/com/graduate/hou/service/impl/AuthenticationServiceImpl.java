@@ -2,6 +2,7 @@ package com.graduate.hou.service.impl;
 
 import com.graduate.hou.dto.request.UserLoginDTO;
 import com.graduate.hou.dto.response.TokenResponse;
+import com.graduate.hou.entity.Token;
 import com.graduate.hou.entity.User;
 import com.graduate.hou.enums.TokenType;
 import com.graduate.hou.repository.UsersRepository;
@@ -23,6 +24,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UsersRepository usersRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final TokenService tokenService;
     @Override
     public TokenResponse login(UserLoginDTO loginDTO) {
         try {
@@ -36,6 +38,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         String accessToken = jwtService.generateToken(user);
         String resfeshToken = jwtService.generateRefreshToken(user);
+
+        tokenService.save(Token.builder().username(user.getUsername()).accessToken(accessToken).refressToken(resfeshToken).build());
 
         return TokenResponse.builder()
                 .accessToken(accessToken)
@@ -51,10 +55,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RuntimeException("Token must be not blank");
         }
         //extract user from token
-        final String username=jwtService.extractUsername(refreshToken);
+        final String username=jwtService.extractUsername(refreshToken, TokenType.REFRESH_TOKEN);
         //check it into db
         Optional<User> user = usersRepository.findByUsername(username);
-        System.out.println("userID" + user.get().getUserId());
 
         if (!jwtService.isValidate(refreshToken, TokenType.REFRESH_TOKEN,user.get())) {
             throw new RuntimeException("Token is invalid");
@@ -69,6 +72,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public String logout(HttpServletRequest request) {
-        return null;
+        String refreshToken=request.getHeader("x-token");
+        if (StringUtils.isBlank(refreshToken)) {
+            throw new RuntimeException("ErrorCode.TOKEN_IS_NOT_BLANK");
+        }
+        //extract user from token
+        final String username = jwtService.extractUsername(refreshToken, TokenType.ACCESS_TOKEN);
+        Token currentToken=tokenService.getByUserName(username);
+        tokenService.delete(currentToken);
+        return "Deleted!";
     }
 }

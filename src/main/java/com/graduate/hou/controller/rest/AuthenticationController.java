@@ -2,6 +2,7 @@ package com.graduate.hou.controller.rest;
 
 import com.graduate.hou.dto.request.UserLoginDTO;
 import com.graduate.hou.service.AuthenticationService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,12 +29,12 @@ public class AuthenticationController {
     }
 
     @PostMapping("/refresh")
-    public String refresh(){
-        return "Success";
+    public ResponseEntity<?> refresh(HttpServletRequest request) {
+        return ResponseEntity.ok().body(authenticationService.refresh(request));
     }
 
     @PostMapping("/logout")
-    public String logout(){
-        return "Success";
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        return ResponseEntity.ok().body(authenticationService.logout(request));
     }
 }
