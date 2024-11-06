@@ -63,8 +63,21 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void deleteProduct(Long id) {
-        productRepository.deleteById(id);
+    public boolean deleteProduct(Long id) {
+        Product product = productRepository.findById(id).get();
+        if(product != null){
+            /**
+             * TODO: kiểm tra xem món ăn có trong chu kỳ tính doanh thu không nếu có thì không cho xóa 
+             */
+            try {
+                productRepository.deleteById(id);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override

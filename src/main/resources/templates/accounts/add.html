@@ -20,13 +20,13 @@
 								<p>Dashboard</p>
 							</a>
 						</li>
-						<li class="nav-item">
+						<li class="nav-item active">
 							<a th:href="@{/restaurant/orders}" class="py-3">
 								<i class="fas fa-clipboard"></i>
 								<p>Quản lý đơn hàng</p>
 							</a>
 						</li>
-						<li class="nav-item active">
+						<li class="nav-item">
 							<a th:href="@{/restaurant/products}" class="py-3">
 								<i class="fas fa-utensils"></i>
 								<p>Quản lý món ăn</p>
@@ -99,7 +99,7 @@
                                 </div>
                                 <input type="text" placeholder="Search ..." class="form-control" />
                             </div> -->
-                            <h3 class="fw-bold mb-0">Quản lý món ăn</h3>
+                            <h3 class="fw-bold mb-0">Quản lý đơn hàng</h3>
                         </nav>
                         <ul th:replace="~{fragments/head :: user_box}"></ul>
                     </div>
@@ -125,66 +125,78 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Quản lý món ăn</a>
+                                <a href="#">Quản lý người dùng</a>
                             </li>
                             <li class="separator">
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Thêm món ăn</a>
+                                <a href="#">Cấp tài khoản người dùng</a>
                             </li>
                         </ul>
                     </div>
 
                     <!--TODO: code main view here  -->
                     <div class="row">
-                        <form role="form" th:action="@{/restaurant/products/new}" th:object="${product}" method="post" enctype="multipart/form-data">
+                        <form role="form" th:action="@{/restaurant/accounts/new}" th:object="${user}" method="post" enctype="multipart/form-data">
                         <div class="card">
                             <div class="card-header">
-                                <div class="card-title">Thông tin món ăn</div>
+                                <div class="card-title">Thông tin tài khoản</div>
                             </div>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6 col-lg-6">
-                                        <div class="form-group">
-                                            <label for="productName">Tên món<span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" id="productName" placeholder="Nhập tên món ăn" th:field="*{name}" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="category">Loại<span class="text-danger">*</span></label>
-                                            <select class="form-select" id="category" th:field="*{categoryId}">
-                                                <option th:each="category : ${categories}" th:value="${category.categoryId}" th:text="${category.name}"></option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="price">Giá tiền<span class="text-danger">*</span></label>
-                                            <input type="number" class="form-control" id="price" placeholder="Nhập giá tiền" th:field="*{price}" required>
-                                        </div>
-                                        <div class="form-check ms-1">
-                                            <label for="isServing">Đang phục vụ</label>
-                                            <input type="checkbox" class="form-check-input" id="isServing" th:field="*{isServing}">
-                                        </div>
-                                        <div class="form-check ms-1">
-                                            <label for="isHidden">Ẩn món</label>
-                                            <input type="checkbox" class="form-check-input" id="isHidden" th:field="*{isHidden}">
-                                            <small class="form-text text-muted">(Món ăn sẽ không hiện trên menu của khách hàng.)</small>
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="card-title">Thông tin chung</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label for="productName">Họ và tên</label>
+                                                    <input type="email" class="form-control" id="productName" th:field="*{fullname}" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="productName">Email</label>
+                                                    <input type="email" class="form-control" id="productName" th:field="*{email}" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="productName">Điện thoại</label>
+                                                    <input type="tel" class="form-control" id="productName" th:field="*{phone}" required>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-lg-6">
-                                        <div class="form-group">
-                                            <label for="images">Ảnh món ăn</label>
-                                            <input type="file" class="form-control" id="images" th:field="*{images}" multiple>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="description">Mô tả</label>
-                                            <textarea class="form-control" id="description" th:field="*{description}" rows="5" spellcheck="false">Mô tả cho món ăn</textarea>
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="card-title">Thông tin đăng nhập</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label for="productName">Tên tài khoản</label>
+                                                    <input type="text" class="form-control" id="productName" th:field="*{username}" required>
+                                                </div>
+                                                <div class="form-check">
+                                                    <label for="productName">Mật khẩu</label>
+                                                    <input type="password" class="form-control" id="productName" th:field="*{password}" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div>Vai trò</div>
+                                                    <div class="d-flex" >
+                                                        <div class="form-check" th:each="role : ${roles}">
+                                                            <label th:for="'role-'+${role}" class="form-check-label" th:text="${role}">role</label>
+                                                            <input type="checkbox" class="form-check-input" th:id="'role-'+${role}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="card-action">
                                 <button type="submit" class="btn btn-success">Lưu</button>
-                                <a th:href="@{/restaurant/products}" class="btn btn-danger">Hủy</a>
+                                <a th:href="@{categories}" class="btn btn-danger">Hủy</a>
                             </div>
                         </div>
                         </form>
@@ -205,19 +217,6 @@
     
 	<div th:replace="~{fragments/script :: script}">
 	</div>
-    <script>
-        $(document).ready(function(){
-            $('#description').summernote({
-                tabsize: 2,
-                height: 200,
-                focus: false,
-                toolbar: [
-                    ['style', ['style']],
-                    ['font', ['bold', 'underline', 'clear']],
-                    ['para', ['ul', 'ol', 'paragraph']]
-                ]
-            })
-        })
-    </script>
+    
 </body>
 </html>
