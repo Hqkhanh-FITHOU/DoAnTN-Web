@@ -12,7 +12,10 @@ import com.graduate.hou.repository.CategoryRepository;
 import com.graduate.hou.repository.ProductRepository;
 import com.graduate.hou.service.ProductService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class ProductServiceImpl implements ProductService{
 
     @Autowired
@@ -31,32 +34,56 @@ public class ProductServiceImpl implements ProductService{
         Optional<Category> category = categoryRepository.findById(productDTO.getCategoryId());
         product.setCategory(category.get());
         product.setName(productDTO.getName());
-        product.setHidden(productDTO.isHidden());
-        product.setServing(productDTO.isServing());
+        product.setHidden(productDTO.getIsHidden());
+        product.setServing(productDTO.getIsServing());
         product.setPrice(productDTO.getPrice());
         product.setDescription(productDTO.getDescription());
-        
+        log.info("ProductService: [creat product]");
         return productRepository.save(product);
     }
 
     @Override
-    public Product updateProduct(Long id, ProductDTO productDTO) {
+    public boolean updateProduct(Long id, ProductDTO productDTO) {
         Optional<Product> product = productRepository.findById(id);
         Product productUpdate = product.get();
         Optional<Category> category = categoryRepository.findById(productDTO.getCategoryId());
         productUpdate.setCategory(category.get());
         productUpdate.setName(productDTO.getName());
-        productUpdate.setHidden(productDTO.isHidden());
-        productUpdate.setServing(productDTO.isServing());
+        productUpdate.setHidden(productDTO.getIsHidden());
+        productUpdate.setServing(productDTO.getIsServing());
         productUpdate.setPrice(productDTO.getPrice());
         productUpdate.setDescription(productDTO.getDescription());
-
-        return productRepository.save(productUpdate);
+        try {
+            productRepository.save(productUpdate);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
-    public void deleteProduct(Long id) {
-        productRepository.deleteById(id);
+    public boolean deleteProduct(Long id) {
+        Product product = productRepository.findById(id).get();
+        if(product != null){
+            /**
+             * TODO: kiểm tra xem món ăn có trong chu kỳ tính doanh thu không nếu có thì không cho xóa 
+             */
+            try {
+                productRepository.deleteById(id);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public Product findProductById(Long id) {
+        Optional<Product> product = productRepository.findById(id);
+        return product.get();
     }
 
 }

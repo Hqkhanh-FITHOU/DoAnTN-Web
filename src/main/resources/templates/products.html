@@ -1,50 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<title>Quản lý món ăn - Cơm tấm Tư Mập</title>
-	<meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
-	<link rel="icon" th:href="@{/img/logo_comtam2.png}" type="image/x-icon" />
-
-	<!-- Fonts and icons -->
-	<script th:src="@{/js/plugin/webfont/webfont.min.js}"></script>
-
-
-	<!-- CSS Files -->
-	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
-	<link rel="stylesheet" th:href="@{/css/plugins.min.css}" />
-	<link rel="stylesheet" th:href="@{/css/kaiadmin.min.css}" />
-
-	<!-- CSS Just for demo purpose, don't include it in your project -->
-	<!-- <link rel="stylesheet" th:href="@{/css/demo.css}" /> -->
-	<link rel="stylesheet" th:href="@{/css/fonts.min.css}" />
-	<link rel="stylesheet" th:href="@{/css/demo2.css}" />
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security6">
+<head th:replace="~{fragments/head :: head}"></head>
 <body>
     <div class="wrapper">
         <!-- Sidebar -->
 		<div class="sidebar" data-background-color="dark">
 			<div class="sidebar-logo">
 				<!-- Logo Header -->
-				<div class="logo-header" data-background-color="dark">
-					<a th:href="@{/restaurant/dashboard}" class="logo">
-						<img th:src="@{/img/logo_comtam2.png}" alt="navbar brand" class="navbar-brand"
-							height="60" />
-						<span class="text-white">Tư Mập</span>
-					</a>
-					<div class="nav-toggle">
-						<button class="btn btn-toggle toggle-sidebar">
-							<i th:class="gg-menu-right"></i>
-						</button>
-						<button class="btn btn-toggle sidenav-toggler">
-							<i class="gg-menu-left"></i>
-						</button>
-					</div>
-					<button class="topbar-toggler more">
-						<i class="gg-more-vertical-alt"></i>
-					</button>
-				</div>
+                <div th:replace="~{fragments/head :: logo_header}">
+                </div>
 				<!-- End Logo Header -->
 			</div>
 			<div class="sidebar-wrapper scrollbar scrollbar-inner">
@@ -66,6 +30,12 @@
 							<a href="#" class="py-3">
 								<i class="fas fa-utensils"></i>
 								<p>Quản lý món ăn</p>
+							</a>
+						</li>
+                        <li class="nav-item">
+							<a th:href="@{/restaurant/categories}" class="py-3">
+								<i class="fas fa-grip-horizontal"></i>
+								<p>Quản lý danh mục món ăn</p>
 							</a>
 						</li>
 						<li class="nav-item">
@@ -112,23 +82,8 @@
             <div class="main-header">
                 <div class="main-header-logo">
                     <!-- Logo Header -->
-                    <div class="logo-header" data-background-color="dark">
-                        <a th:href="@{/restaurant/dashboard}" class="logo">
-                            <img src="static/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand"
-                                height="20" />
-                        </a>
-                        <div class="nav-toggle">
-                            <button class="btn btn-toggle toggle-sidebar">
-                                <i class="gg-menu-right"></i>
-                            </button>
-                            <button class="btn btn-toggle sidenav-toggler">
-                                <i class="gg-menu-left"></i>
-                            </button>
-                        </div>
-                        <button class="topbar-toggler more">
-                            <i class="gg-more-vertical-alt"></i>
-                        </button>
-                    </div>
+                    <div th:replace="~{fragments/head :: logo_header}">
+					</div>
                     <!-- End Logo Header -->
                 </div>
                 <!-- Navbar Header -->
@@ -147,129 +102,7 @@
                             <h3 class="fw-bold mb-0">Quản lý món ăn</h3>
                         </nav>
 
-                        <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
-                            <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
-                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-                                    aria-expanded="false" aria-haspopup="true">
-                                    <i class="fa fa-search"></i>
-                                </a>
-                                <ul class="dropdown-menu dropdown-search animated fadeIn">
-                                    <form class="navbar-left navbar-form nav-search">
-                                        <div class="input-group">
-                                            <input type="text" placeholder="Search ..." class="form-control" />
-                                        </div>
-                                    </form>
-                                </ul>
-                            </li>
-                            <!-- Notification icon -->
-                            <li class="nav-item topbar-icon dropdown hidden-caret">
-                                <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fa fa-bell"></i>
-                                    <span class="notification">4</span>
-                                </a>
-                                <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
-                                    <li>
-                                        <div class="dropdown-title">
-                                            You have 4 new notification
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="notif-scroll scrollbar-outer">
-                                            <div class="notif-center">
-                                                <a href="#">
-                                                    <div class="notif-icon notif-primary">
-                                                        <i class="fa fa-user-plus"></i>
-                                                    </div>
-                                                    <div class="notif-content">
-                                                        <span class="block"> New user registered </span>
-                                                        <span class="time">5 minutes ago</span>
-                                                    </div>
-                                                </a>
-                                                <a href="#">
-                                                    <div class="notif-icon notif-success">
-                                                        <i class="fa fa-comment"></i>
-                                                    </div>
-                                                    <div class="notif-content">
-                                                        <span class="block">
-                                                            Rahmad commented on Admin
-                                                        </span>
-                                                        <span class="time">12 minutes ago</span>
-                                                    </div>
-                                                </a>
-                                                <a href="#">
-                                                    <div class="notif-img">
-                                                        <img src="static/img/profile2.jpg" alt="Img Profile" />
-                                                    </div>
-                                                    <div class="notif-content">
-                                                        <span class="block">
-                                                            Reza send messages to you
-                                                        </span>
-                                                        <span class="time">12 minutes ago</span>
-                                                    </div>
-                                                </a>
-                                                <a href="#">
-                                                    <div class="notif-icon notif-danger">
-                                                        <i class="fa fa-heart"></i>
-                                                    </div>
-                                                    <div class="notif-content">
-                                                        <span class="block"> Farrah liked Admin </span>
-                                                        <span class="time">17 minutes ago</span>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <a class="see-all" href="javascript:void(0);">See all notifications<i
-                                                class="fa fa-angle-right"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <!-- End notification icon -->
-
-                            <!-- Profile preview -->
-                            <li class="nav-item topbar-user dropdown hidden-caret">
-                                <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
-                                    aria-expanded="false">
-                                    <div class="avatar-sm">
-                                        <img src="static/img/profile.jpg" alt="..." class="avatar-img rounded-circle" />
-                                    </div>
-                                    <span class="profile-username">
-                                        <span class="op-7">Hi,</span>
-                                        <span class="fw-bold">Hizrian</span>
-                                    </span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-user animated fadeIn">
-                                    <div class="dropdown-user-scroll scrollbar-outer">
-                                        <li>
-                                            <div class="user-box">
-                                                <div class="avatar-lg">
-                                                    <img src="static/img/profile.jpg" alt="image profile"
-                                                        class="avatar-img rounded" />
-                                                </div>
-                                                <div class="u-text">
-                                                    <h4>Hizrian</h4>
-                                                    <p class="text-muted">hello@example.com</p>
-                                                    <a href="profile.html" class="btn btn-xs btn-secondary btn-sm">View
-                                                        Profile</a>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">My Profile</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Account Setting</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" th:href="@{/restaurant/authenticate}">Logout</a>
-                                        </li>
-                                    </div>
-                                </ul>
-                            </li>
-                            <!-- End profile preview -->
-                        </ul>
+                        <ul th:replace="~{fragments/head :: user_box}"></ul>
                     </div>
                 </nav>
                 <!-- End Navbar -->
@@ -305,10 +138,10 @@
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
                                         <h4 class="card-title">Danh sách món ăn</h4>
-                                        <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal" data-bs-target="#addRowModal">
+                                        <a class="btn btn-primary btn-round ms-auto" th:href="@{products/new}">
                                             <i class="fa fa-plus"></i>
                                             Thêm mới
-                                        </button>
+                                        </a>
                                         <div class="card-tools">
 
                                         </div>
@@ -320,10 +153,7 @@
                                             <thead>
                                                 <tr role="row">
                                                     <th>
-                                                        Ảnh
-                                                    </th>
-                                                    <th>
-                                                        Tên món
+                                                        Món ăn
                                                     </th>
                                                     <th>
                                                         Đơn giá
@@ -332,6 +162,7 @@
                                                         Loại món
                                                     </th>
                                                     <th>Phục vụ</th>
+                                                    <th>Hiển thị</th>
                                                     <th style="width: 10%;">
                                                         Thao tác
                                                     </th>
@@ -339,31 +170,49 @@
                                             </thead>
                                             <tfoot>
                                                 <tr>
-                                                    <th>Ảnh</th>
-                                                    <th>Tên món</th>
+                                                    <th>Món ăn</th>
                                                     <th>Đơn giá</th>
                                                     <th>Loại món</th>
                                                     <th>Phục vụ</th>
+                                                    <th>Hiển thị</th>
                                                     <th>Thao tác</th>
                                                 </tr>
                                             </tfoot>
                                             <tbody>
-                                                <tr class="old" role="row">
-                                                    <td><img th:src="@{/img/examples/example1.jpeg}" alt="image" class="img-fluid rounded" width="140px"></td>
-                                                    <td>Cơm xào me</td>
-                                                    <td>123,000đ</td>
-                                                    <td class="text-success">Cơm sườn</td>
-                                                    <td class="text-primary">Đang phục vụ</td>
+                                                <tr th:each="product : ${products}" class="old" role="row">
+                                                    <td th:if="${product.productImages != null && !product.productImages.isEmpty()}">
+                                                        <img th:src="@{'/uploads/product/'+${product.productImages[0].pathString}}" alt="image" class="img-fluid rounded" width="40px">
+                                                        <span th:text="${product.name}" class="fw-bold ms-1"></span>
+                                                    </td>
+                                                    <td th:if="${product.productImages == null || product.productImages.isEmpty()}">
+                                                        <!-- <img th:src="@{'/uploads/'+${product.productImages[0].pathString}}" alt="image" class="img-fluid rounded" width="40px"> -->
+                                                        <span th:text="${product.name}" class="fw-bold ms-1"></span>
+                                                    </td>
+                                                    <td th:text="${product.price}"></td>
+                                                    <td th:text="${product.category.name}"></td>
+                                                    <td th:if="${product.isServing}" th:text="'Đang phục vụ'" class="text-success"></td>
+                                                    <td th:if="${!product.isServing}" th:text="'Tạm ngưng phục vụ'" class="text-warning"></td>
+                                                    <td th:if="${product.isHidden}" th:text="'ẨN'" class="text-danger"></td>
+                                                    <td th:if="${!product.isHidden}" th:text="'HIỆN'" class="text-primary"></td>
                                                     <td>
                                                         <div class="form-button-action">
-                                                            <button type="button" title="" class="btn btn-outline-dark me-1 btn-sm" data-original-title="See" data-bs-toggle="modal" data-bs-target="#detailProductModal">
+                                                            <button type="button" title="" class="btn btn-outline-dark me-1 btn-sm" data-original-title="See" data-bs-toggle="modal" data-bs-target="#detailProductModal"
+                                                                    th:data-product-name="${product.name}"
+                                                                    th:data-product-price="${product.price}"
+                                                                    th:data-product-category="${product.category.name}"
+                                                                    th:data-product-serving="${product.isServing ? 'Đang phục vụ' : 'Tạm ngưng phục vụ'}"
+                                                                    th:data-product-hidden="${product.isHidden ? 'Ẩn' : 'Hiện'}"
+                                                                    th:data-product-description="${product.description}"
+                                                                    th:data-product-create="${product.createdAt}"
+                                                                    th:data-product-update="${product.updatedAt}"
+                                                                    th:onclick="'loadProductImageToModal(' + ${product.productId} + ')'">
                                                                 <i class="fas fa-eye"></i>
                                                             </button>
-                                                            <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-outline-primary me-1 btn-sm" data-original-title="Edit Task">
+                                                            <a th:href="@{/restaurant/products/{id}/edit(id=${product.productId})}" data-bs-toggle="tooltip" title="" class="btn btn-outline-primary me-1 btn-sm" data-original-title="Edit Task">
                                                                 <i class="fa fa-edit"></i>
-                                                            </button>
-                                                            <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-outline-danger btn-sm" data-original-title="Cancel" data-bs-placement="top" data-bs-title="Hủy đơn">
-                                                                <i class="fa fa-times"></i>
+                                                            </a>
+                                                            <button type="button" data-bs-toggle="tooltip" th:onclick="'deleteProduct('+${product.productId}+')'" title="" class="btn btn-outline-danger btn-sm" data-original-title="Delete" data-bs-placement="top" data-bs-title="Xóa">
+                                                                <i class="fas fa-trash-alt"></i>
                                                             </button>
                                                         </div>
                                                     </td>
@@ -372,7 +221,7 @@
                                         </table>
                                     </div>
 
-                                    <div class="modal fade modal-lg " id="detailProductModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+                                    <div class="modal fade modal-xl" id="detailProductModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -381,59 +230,78 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div id="carouselIndicators" class="carousel slide" data-bs-ride="carousel">
-                                                            <div class="carousel-indicators">
-                                                                <button type="button" data-bs-target="#carouselIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                                                                <button type="button" data-bs-target="#carouselIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                                                                <button type="button" data-bs-target="#carouselIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                                    <div class="col-md-4">
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <div class="card-title">Hình ảnh</div>
                                                             </div>
-                                                            <div class="carousel-inner">
-                                                                <div class="carousel-item active">
-                                                                    <img th:src="@{/img/examples/example1.jpeg}" class="d-block w-100" alt="...">
-                                                                </div>
-                                                                <div class="carousel-item">
-                                                                    <img th:src="@{/img/examples/example2.jpeg}" class="d-block w-100" alt="...">
-                                                                </div>
-                                                                <div class="carousel-item">
-                                                                    <img th:src="@{/img/examples/example3.jpeg}" class="d-block w-100" alt="...">
+                                                            <div class="card-body">
+                                                                <div id="carouselIndicators" class="carousel slide" data-bs-ride="carousel">
+                                                                    <div class="carousel-indicators" id="img-indicators">
+                                                                        <button type="button" data-bs-target="#carouselIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                                                        <button type="button" data-bs-target="#carouselIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                                                        <button type="button" data-bs-target="#carouselIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                                                    </div>
+                                                                    <div class="carousel-inner" id="modal-product-images">
+                                                                        <div class="carousel-item active">
+                                                                            <img th:src="@{/img/examples/example1.jpeg}" class="d-block w-100" alt="...">
+                                                                        </div>
+                                                                    </div>
+                                                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselIndicators" data-bs-slide="prev">
+                                                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                                        <span class="visually-hidden">Previous</span>
+                                                                    </button>
+                                                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselIndicators" data-bs-slide="next">
+                                                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                                        <span class="visually-hidden">Next</span>
+                                                                    </button>
                                                                 </div>
                                                             </div>
-                                                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselIndicators" data-bs-slide="prev">
-                                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                                <span class="visually-hidden">Previous</span>
-                                                            </button>
-                                                            <button class="carousel-control-next" type="button" data-bs-target="#carouselIndicators" data-bs-slide="next">
-                                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                                <span class="visually-hidden">Next</span>
-                                                            </button>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <h3 class="fw-bold">Cơm xào me</h3>
-                                                        <div class="mb-1 fs-6 text-success">
-                                                            Cơm sườn
+                                                    <div class="col-md-8">
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <div class="card-title">Thông tin</div>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="d-flex justify-content-between">
+                                                                    <div>
+                                                                        <h5><b id="modal-product-name">Cơm xào me</b></h5>
+                                                                        <p class="text-muted" id="modal-product-category">
+                                                                            Cơm sườn
+                                                                        </p>
+                                                                    </div>
+                                                                    
+                                                                    <h5 class="text-secondary fw-bold" id="modal-product-price">
+                                                                        189,000đ
+                                                                    </h5>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <p>Phục vụ</p>
+                                                                    <p class="text-muted" id="modal-product-serving-state">Đang phục vụ</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <p>Hiển thị</p>
+                                                                    <p class="text-muted" id="modal-product-hidden-state">Hiện</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between mt-2">
+                                                                    <p>Khởi tạo</p> 
+                                                                    <p class="text-muted" id="modal-product-createDate">19/10/2024 14:23:12</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <p>Cập nhật</p> 
+                                                                    <p class="text-muted" id="modal-product-updateDate">20/10/2024 18:32:04</p>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <div class="mb-1 fs-6">
-                                                            189,000đ
-                                                        </div>
-                                                        <div class="mb-1 fs-6 text-primary">
-                                                            Đang phục vụ
-                                                        </div>
-                                                        <div class="mb-1 form-switch">
-                                                            <input class="form-check-input" type="checkbox" id="hiddenCheckbox" checked disabled>
-                                                            <label class="form-check-label" for="hiddenCheckbox">Ẩn</label>
-                                                        </div>
-                                                        <div class="fs-6">
-                                                            Khởi tạo: <span class="text-muted">19/10/2024 14:23:12</span>
-                                                        </div>
-                                                        <div class="fs-6 mb-1">
-                                                            Cập nhật: <span class="text-muted">20/10/2024 18:32:04</span>
-                                                        </div>
-                                                        
-                                                        <div class="fs-6 mt-1">
-                                                            <div class="fw-bold">Mô tả</div>
-                                                            <p class="text-muted ms-1">Ngon hết xảy con bà bảy luôn!</p>
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <div class="card-title">Mô tả</div>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <p id="modal-product-description">askdf laksnbakd nasdlgknadg alsdnfalgnlas slknf</p>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -456,62 +324,15 @@
 
 
             <!-- Footer -->
-            <footer class="footer">
-                <div class="container-fluid d-flex justify-content-between">
-                    <nav class="pull-left">
-                        <ul class="nav">
-                            <li class="nav-item">
-                                <!-- <a class="nav-link" href="http://www.themekita.com">
-                                    ThemeKita
-                                </a> -->
-                            </li>
-                        </ul>
-                    </nav>
-                    <div class="copyright">
-                        2024, made with by
-                        <a href="#">HqKhanh-Fithou</a>
-                    </div>
-                </div>
+            <footer th:replace="~{fragments/footer :: footer}">
             </footer>
             <!-- End footer -->
         </div>
     </div>
 
-    <!--   Core JS Files   -->
-	<script th:src="@{/js/core/jquery-3.7.1.min.js}"></script>
-	<script th:src="@{/js/core/popper.min.js}"></script>
-	<script th:src="@{/js/core/bootstrap.min.js}"></script>
+    <div th:replace="~{fragments/script :: script}">
+	</div>
 
-	<!-- jQuery Scrollbar -->
-	<script th:src="@{/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js}"></script>
-
-	<!-- Chart JS -->
-	<script th:src="@{/js/plugin/chart.js/chart.min.js}"></script>
-
-	<!-- jQuery Sparkline -->
-	<script th:src="@{/js/plugin/jquery.sparkline/jquery.sparkline.min.js}"></script>
-
-	<!-- Chart Circle -->
-	<script th:src="@{/js/plugin/chart-circle/circles.min.js}"></script>
-
-	<!-- Datatables -->
-	<script th:src="@{/js/plugin/datatables/datatables.min.js}"></script>
-
-	<!-- Bootstrap Notify -->
-	<script th:src="@{/js/plugin/bootstrap-notify/bootstrap-notify.min.js}"></script>
-
-	<!-- jQuery Vector Maps -->
-	<script th:src="@{/js/plugin/jsvectormap/jsvectormap.min.js}"></script>
-	<script th:src="@{/js/plugin/jsvectormap/world.js}"></script>
-
-	<!-- Sweet Alert -->
-	<script th:src="@{/js/plugin/sweetalert/sweetalert.min.js}"></script>
-
-	<!-- Kaiadmin JS -->
-	<script th:src="@{/js/kaiadmin.min.js}"></script>
-
-	<!-- Kaiadmin DEMO methods, don't include it in your project! -->
-	<script th:src="@{/js/demo2.js}"></script>
     <script>
         $(document).ready(function(){
             $("#multi-filter-select").DataTable({
@@ -562,6 +383,146 @@
                 },
             });
         })
+
+        const detailProductModal = document.getElementById('detailProductModal')
+        detailProductModal.addEventListener('show.bs.modal', event => {
+            const button = event.relatedTarget;
+            const productName = button.getAttribute('data-product-name')
+            const productPrice = button.getAttribute('data-product-price')
+            const productCategory = button.getAttribute('data-product-category')
+            const productServingState = button.getAttribute('data-product-serving')
+            const productHiddenState = button.getAttribute('data-product-hidden')
+            const productDescription = button.getAttribute('data-product-description')
+            const productCreateAt = button.getAttribute('data-product-create')
+            const productUpdateAt = button.getAttribute('data-product-update')
+            
+            detailProductModal.querySelector('#modal-product-name').textContent = productName;
+            detailProductModal.querySelector('#modal-product-price').textContent = productPrice;
+            detailProductModal.querySelector('#modal-product-category').textContent = productCategory;
+            detailProductModal.querySelector('#modal-product-serving-state').textContent = productServingState;
+            detailProductModal.querySelector('#modal-product-hidden-state').textContent = productHiddenState;
+            detailProductModal.querySelector('#modal-product-description').textContent = productDescription;
+            const options = {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            };
+            const createAt = new Date(productCreateAt)
+            const updateAt = new Date(productUpdateAt)
+            detailProductModal.querySelector('#modal-product-createDate').textContent = new Intl.DateTimeFormat('vi-VN',options).format(createAt)
+            detailProductModal.querySelector('#modal-product-updateDate').textContent = new Intl.DateTimeFormat('vi-VN',options).format(updateAt)
+            const productImagesElement = detailProductModal.querySelector('#modal-product-images');
+        }) 
+        
+
+
+        function loadProductImageToModal(productId){
+                $.ajax({
+                    url: 'products/'+productId+'/imgs',
+                    method: 'GET',
+                    success: function(response){
+                        data = JSON.parse(response);
+                        console.log('product_images',data)
+                        const productImagesElement = detailProductModal.querySelector('#modal-product-images')
+                        const imagesIndicator = detailProductModal.querySelector('#img-indicators')
+                        productImagesElement.innerHTML = ''
+                        imagesIndicator.innerHTML = ''
+                        data.forEach((image, index) => {
+
+                            const div = document.createElement('div')
+                            div.className = 'carousel-item'
+
+                            const img = document.createElement('img')
+                            img.src = '/L1/uploads/product/' + image.pathString
+                            img.className = 'd-block w-100'
+                            img.alt = '...'
+                            
+                            const indicatorButton = document.createElement('button')
+                            indicatorButton.type = 'button'
+                            indicatorButton.setAttribute('data-bs-target', '#carouselIndicators')
+                            indicatorButton.setAttribute('data-bs-slide-to', index)
+                            indicatorButton.setAttribute('aria-label', 'Slide '+(index+1))
+
+                            if(index === 0) {
+                                div.classList.add('active')
+                                indicatorButton.className = 'active'
+                                indicatorButton.setAttribute('aria-current', true)
+                            }
+                            div.appendChild(img)
+                            productImagesElement.appendChild(div)
+                            imagesIndicator.appendChild(indicatorButton)
+                            // console.log('modal_div',div)
+                        })
+                    },
+                    error: function(response){
+                        console.log('product_images',response.error)
+                    }
+                })
+            }
+    
+        function deleteProduct(productId){
+            swal({
+				title: 'Bạn có chắc muốn xóa?',
+				text: "Bạn sẽ không thể hoàn tác sau khi thực hiện việc này!",
+				icon: 'warning',
+				buttons:{
+					confirm: {
+						text : 'Có, xóa!',
+						className : 'btn btn-success'
+					},
+					cancel: {
+						visible: true,
+						text : 'Không',
+						className: 'btn btn-danger'
+					},
+				}
+			}).then((willDelete) => {
+				if (willDelete) {
+					$.ajax({
+						url: 'products/'+productId+'/delete',
+						method: 'GET',
+						success: function(response) {
+							result = JSON.parse(response)
+							//console.log('delete', result)
+							if(result.delete){
+								swal("Món ăn đã bị xóa!", {
+									icon: "success",
+									buttons : {
+										confirm : {
+											className: 'btn btn-success'
+										}
+									}
+								}).then((ok) => {
+									if(ok){
+										window.location.href = 'products'
+									}
+									window.location.href = 'products'
+								})
+							} else {
+								swal("Món ăn đang trong chu kỳ tính doanh thu, không thể xóa", {
+									icon: "error",
+									buttons : {
+										confirm : {
+											className: 'btn btn-danger'
+										}
+									}
+								});
+							}
+						},
+						error: function(error) {
+							alert('Đã có lỗi xảy ra!')
+							console.log('product category',error)
+						}
+					})
+				} else {
+					//do nothing when cancel
+					swal.close()
+				}
+			});
+        }
     </script>
 </body>
 </html>

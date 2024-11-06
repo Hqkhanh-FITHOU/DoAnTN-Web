@@ -2,6 +2,7 @@ package com.graduate.hou.dto.request;
 
 import com.graduate.hou.enums.RoleUsers;
 import lombok.*;
+import java.util.*;
 
 
 @Getter
@@ -20,7 +21,7 @@ public class UsersDTO {
 
     private String phone;
 
-    private RoleUsers role;
+    private Set<RoleUsers> roles;
 
     private String fullname;
 

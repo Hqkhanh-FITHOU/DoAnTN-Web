@@ -8,6 +8,8 @@ import com.graduate.hou.entity.ProductImage;
 public interface ProductImageService {
     List<ProductImage> getAllProductImages();
 
+    ProductImage finProductImageById(Long id);
+
     ProductImage saveProductImage(ProductImageDTO productImageDTO);
 
     ProductImage updateProductImage(Long id, ProductImageDTO productImageDTO);

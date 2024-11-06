@@ -52,4 +52,9 @@ public class ProductImageServiceImpl implements ProductImageService{
         productImageRepository.deleteById(id);
     }
 
+    @Override
+    public ProductImage finProductImageById(Long id) {
+        return productImageRepository.findById(id).get();
+    }
+
 }

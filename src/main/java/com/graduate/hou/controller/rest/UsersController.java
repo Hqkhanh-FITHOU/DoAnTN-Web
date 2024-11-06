@@ -28,12 +28,12 @@ public class UsersController {
         return userService.getAllUser();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     User updateUser (@PathVariable Long id, @RequestBody UsersDTO usersDTO){
         return userService.updateUser(id, usersDTO);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     String deleteUser(@PathVariable Long id){
         userService.deleteUser(id);
         return "Xóa thành công";
