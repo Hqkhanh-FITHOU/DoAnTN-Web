@@ -4,7 +4,8 @@ import com.graduate.hou.enums.PaymentMethod;
 import com.graduate.hou.enums.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -31,6 +32,6 @@ public class Payment {
     @Column(nullable = false)
     private PaymentStatus paymentStatus;
 
-    @CreationTimestamp
+    @UpdateTimestamp
     private LocalDateTime paymentDate;
 }

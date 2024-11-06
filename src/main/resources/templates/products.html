@@ -211,7 +211,7 @@
                                                             <a th:href="@{/restaurant/products/{id}/edit(id=${product.productId})}" data-bs-toggle="tooltip" title="" class="btn btn-outline-primary me-1 btn-sm" data-original-title="Edit Task">
                                                                 <i class="fa fa-edit"></i>
                                                             </a>
-                                                            <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-outline-danger btn-sm" data-original-title="Delete" data-bs-placement="top" data-bs-title="Xóa">
+                                                            <button type="button" data-bs-toggle="tooltip" th:onclick="'deleteProduct('+${product.productId}+')'" title="" class="btn btn-outline-danger btn-sm" data-original-title="Delete" data-bs-placement="top" data-bs-title="Xóa">
                                                                 <i class="fas fa-trash-alt"></i>
                                                             </button>
                                                         </div>
@@ -402,8 +402,18 @@
             detailProductModal.querySelector('#modal-product-serving-state').textContent = productServingState;
             detailProductModal.querySelector('#modal-product-hidden-state').textContent = productHiddenState;
             detailProductModal.querySelector('#modal-product-description').textContent = productDescription;
-            detailProductModal.querySelector('#modal-product-createDate').textContent = productCreateAt;
-            detailProductModal.querySelector('#modal-product-updateDate').textContent = productUpdateAt;
+            const options = {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            };
+            const createAt = new Date(productCreateAt)
+            const updateAt = new Date(productUpdateAt)
+            detailProductModal.querySelector('#modal-product-createDate').textContent = new Intl.DateTimeFormat('vi-VN',options).format(createAt)
+            detailProductModal.querySelector('#modal-product-updateDate').textContent = new Intl.DateTimeFormat('vi-VN',options).format(updateAt)
             const productImagesElement = detailProductModal.querySelector('#modal-product-images');
         }) 
         
@@ -426,7 +436,7 @@
                             div.className = 'carousel-item'
 
                             const img = document.createElement('img')
-                            img.src = '/L1/uploads/' + image.pathString
+                            img.src = '/L1/uploads/product/' + image.pathString
                             img.className = 'd-block w-100'
                             img.alt = '...'
                             
@@ -452,6 +462,67 @@
                     }
                 })
             }
+    
+        function deleteProduct(productId){
+            swal({
+				title: 'Bạn có chắc muốn xóa?',
+				text: "Bạn sẽ không thể hoàn tác sau khi thực hiện việc này!",
+				icon: 'warning',
+				buttons:{
+					confirm: {
+						text : 'Có, xóa!',
+						className : 'btn btn-success'
+					},
+					cancel: {
+						visible: true,
+						text : 'Không',
+						className: 'btn btn-danger'
+					},
+				}
+			}).then((willDelete) => {
+				if (willDelete) {
+					$.ajax({
+						url: 'products/'+productId+'/delete',
+						method: 'GET',
+						success: function(response) {
+							result = JSON.parse(response)
+							//console.log('delete', result)
+							if(result.delete){
+								swal("Món ăn đã bị xóa!", {
+									icon: "success",
+									buttons : {
+										confirm : {
+											className: 'btn btn-success'
+										}
+									}
+								}).then((ok) => {
+									if(ok){
+										window.location.href = 'products'
+									}
+									window.location.href = 'products'
+								})
+							} else {
+								swal("Món ăn đang trong chu kỳ tính doanh thu, không thể xóa", {
+									icon: "error",
+									buttons : {
+										confirm : {
+											className: 'btn btn-danger'
+										}
+									}
+								});
+							}
+						},
+						error: function(error) {
+							alert('Đã có lỗi xảy ra!')
+							console.log('product category',error)
+						}
+					})
+				} else {
+					//do nothing when cancel
+					swal.close()
+				}
+			});
+        }
     </script>
 </body>
 </html>

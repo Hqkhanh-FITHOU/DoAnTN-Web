@@ -130,10 +130,10 @@
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
                                         <h4 class="card-title">Danh sách tài khoản</h4>
-                                        <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal" data-bs-target="#addRowModal">
+                                        <a th:href="@{/restaurant/accounts/new}" class="btn btn-primary btn-round ms-auto">
                                             <i class="fa fa-plus"></i>
                                             Cấp mới tài khoản
-                                        </button>
+                                        </a>
                                     </div>
                                     <div class="card-tools">
 
@@ -148,7 +148,7 @@
                                                     <th>Email</th>
                                                     <th>Điện thoại</th>
                                                     <th>Vai trò</th>
-                                                    <th>Địa chỉ</th>
+                                                    <th>Điểm</th>
                                                     <th>Thao tác</th>
                                                 </tr>
                                             </thead>
@@ -157,7 +157,7 @@
                                                 <th>Email</th>
                                                 <th>Điện thoại</th>
                                                 <th>Vai trò</th>
-                                                <th>Địa chỉ</th>
+                                                <th>Điểm</th>
                                                 <th>Thao tác</th>
                                             </tfoot>
                                             <tbody>

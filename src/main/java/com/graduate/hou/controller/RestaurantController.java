@@ -16,9 +16,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.graduate.hou.dto.request.CategoryDTO;
 import com.graduate.hou.dto.request.ProductDTO;
 import com.graduate.hou.dto.request.ProductImageDTO;
+import com.graduate.hou.dto.request.UserRegisterDTO;
 import com.graduate.hou.entity.Category;
 import com.graduate.hou.entity.Product;
 import com.graduate.hou.entity.ProductImage;
+import com.graduate.hou.enums.RoleUsers;
 import com.graduate.hou.mapper.CategoryMapper;
 import com.graduate.hou.mapper.ProductMapper;
 import com.graduate.hou.service.CategoryService;
@@ -29,9 +31,6 @@ import java.util.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestBody;
-
-
-
 
 
 
@@ -217,4 +216,24 @@ public class RestaurantController {
     }
     
 
+    @GetMapping("/products/{id}/delete")
+    @ResponseBody
+    public String deleteProduct(@PathVariable("id") Long id) {
+        Product product = productService.findProductById(id);
+        for(ProductImage img : product.getProductImages()){
+            storageService.removeProductImage(img.getPathString());
+            productImageService.deleteProductImage(img.getImageId());
+        }
+        return "{ \"delete\":"+ productService.deleteProduct(id) +"}";
+    }
+
+
+    @GetMapping("/accounts/new")
+    public String goAddNewUser(Model model) {
+        model.addAttribute("user", new UserRegisterDTO());
+        model.addAttribute("roles", RoleUsers.values());
+        log.info("sdf",RoleUsers.values().toString());
+        return "accounts/add";
+    }
+    
 }

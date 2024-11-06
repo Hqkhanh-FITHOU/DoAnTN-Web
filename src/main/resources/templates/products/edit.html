@@ -147,18 +147,18 @@
                                 <div class="row">
                                     <div class="col-md-6 col-lg-6">
                                         <div class="form-group">
-                                            <label for="productName">Tên món</label>
-                                            <input type="text" class="form-control" id="productName" placeholder="Nhập tên món ăn" th:field="*{name}">
+                                            <label for="productName">Tên món<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="productName" placeholder="Nhập tên món ăn" th:field="*{name}" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="category">Loại</label>
+                                            <label for="category">Loại<span class="text-danger">*</span></label>
                                             <select class="form-select" id="category" th:field="*{categoryId}">
                                                 <option th:each="category : ${categories}" th:value="${category.categoryId}" th:text="${category.name}"></option>
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <label for="price">Giá tiền</label>
-                                            <input type="number" class="form-control" id="price" placeholder="Nhập giá tiền" th:field="*{price}" >
+                                            <label for="price">Giá tiền<span class="text-danger">*</span></label>
+                                            <input type="number" class="form-control" id="price" placeholder="Nhập giá tiền" th:field="*{price}" required>
                                         </div>
                                         <div class="form-check ms-1">
                                             <label for="isServing">Đang phục vụ</label>
