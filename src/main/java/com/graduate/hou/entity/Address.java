@@ -1,5 +1,6 @@
 package com.graduate.hou.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.graduate.hou.enums.AddressType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,7 @@ public class Address {
     private Long addressId;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "user_id", nullable = true)
     private User user;
 
