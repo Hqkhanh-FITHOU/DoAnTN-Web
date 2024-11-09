@@ -221,10 +221,10 @@
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
                                         <h4 class="card-title">Danh sách đơn hàng</h4>
-                                        <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal" data-bs-target="#addRowModal">
+                                        <a class="btn btn-primary btn-round ms-auto" th:href="@{orders/new}">
                                             <i class="fa fa-plus"></i>
                                             Tạo đơn
-                                        </button>
+                                        </a>
                                         <div class="card-tools">
 
                                         </div>
@@ -270,63 +270,55 @@
                                                 </tr>
                                             </tfoot>
                                             <tbody>
-                                                <tr role="row">
-                                                    <td>hong khạnh</td>
-                                                    <td>20/10/2024 12:22:21</td>
-                                                    <td>123,000đ</td>
-                                                    <td class="text-info">Banking</td>
-                                                    <td class="text-success">Đã thanh toán</td>
-                                                    <td class="text-warning">Chờ xác nhận</td>
-                                                    <td>
-                                                        <div class="form-button-action">
-                                                            <button type="button" title="" class="btn btn-outline-dark me-1 btn-sm" data-original-title="See" data-bs-toggle="modal" data-bs-target="#detailOrderModal">
-                                                                <i class="fas fa-eye"></i>
-                                                            </button>
-                                                            <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-outline-primary me-1 btn-sm" data-original-title="Edit Task">
-                                                                <i class="fa fa-edit"></i>
-                                                            </button>
-                                                            <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-outline-danger btn-sm" data-original-title="Cancel" data-bs-placement="top" data-bs-title="Hủy đơn">
-                                                                <i class="fa fa-times"></i>
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr role="row">
-                                                    <td>hong khạnh</td>
-                                                    <td>20/11/2024 12:22:21</td>
-                                                    <td>123,000đ</td>
-                                                    <td class="text-info">Banking</td>
-                                                    <td class="text-success">Đã thanh toán</td>
-                                                    <td class="text-warning">Chờ xác nhận</td>
-                                                    <td>
-                                                        <div class="form-button-action">
-                                                            <button type="button" title="" class="btn btn-outline-dark me-1 btn-sm" data-original-title="See" data-bs-toggle="modal" data-bs-target="#detailOrderModal">
-                                                                <i class="fas fa-eye"></i>
-                                                            </button>
-                                                            <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-outline-primary me-1 btn-sm" data-original-title="Edit Task">
-                                                                <i class="fa fa-edit"></i>
-                                                            </button>
-                                                            <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-outline-danger btn-sm" data-original-title="Cancel" data-bs-placement="top" data-bs-title="Hủy đơn">
-                                                                <i class="fa fa-times"></i>
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr class="old" role="row">
-                                                    <td>aong ghạnh</td>
-                                                    <td>21/10/2024 12:32:21</td>
-                                                    <td>189,000đ</td>
-                                                    <td class="text-warning">Khi nhận hàng</td>
-                                                    <td class="text-success">Đã thanh toán</td>
-                                                    <td class="text-success">Hoàn thành</td>
-                                                    <td>
-                                                        <div class="form-button-action">
-                                                            <button type="button" title="" class="btn btn-outline-dark me-1 btn-sm" data-original-title="See" data-bs-toggle="modal" data-bs-target="#detailOrderModal">
-                                                                <i class="fas fa-eye"></i>
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                            <tr th:each="order : ${orders}" class="old" role="row">
+                                                <!-- Hiển thị số điện thoại người dùng -->
+                                                <td th:text="${order.user.fullname}"></td>
+
+                                                <!-- Hiển thị ngày tạo đơn hàng -->
+                                                <td th:text="${order.createdAt}"></td>
+
+                                                <!-- Hiển thị tổng tiền đơn hàng -->
+                                                <td th:text="${order.totalAmount + ' đồng'}"></td>
+
+                                                <!-- Hiển thị phương thức thanh toán -->
+                                                <td th:text="${order.payment.paymentMethod.name() == 'CREDIT_CARD' ? 'Thẻ tín dụng' : 'Khi giao hàng'}" class="text-secondary"></td>
+
+                                                <!-- Hiển thị trạng thái thanh toán -->
+                                                <td th:classappend="${order.payment.paymentStatus.name() == 'PENDING' ? 'text-danger' : (order.payment.paymentStatus.name() == 'COMPLETED' ? 'text-success' : 'text-warning')}"
+                                                    th:text="${order.payment.paymentStatus.name() == 'PENDING' ? 'Chưa thanh toán' : (order.payment.paymentStatus.name() == 'COMPLETED' ? 'Đã thanh toán' : 'Thanh toán thất bại')}"></td>
+
+                                                <!-- Hiển thị trạng thái đơn hàng -->
+                                                <td th:classappend="${order.status.name() == 'PENDING' ? 'text-warning' : (order.status.name() == 'COMPLETED' ? 'text-success' : 'text-danger')}"
+                                                    th:text="${order.status.name() == 'PENDING' ? 'Chưa giao hàng' : (order.status.name() == 'COMPLETED' ? 'Giao hàng thành công' : 'Đã hủy đơn')}"></td>
+
+                                                <!-- Các hành động trên đơn hàng -->
+                                                <td>
+                                                    <div class="form-button-action">
+                                                        <!-- Nút xem chi tiết đơn hàng -->
+                                                        <button type="button" title="Xem chi tiết" class="btn btn-outline-dark me-1 btn-sm" data-bs-toggle="modal" data-bs-target="#detailOrderModal"
+                                                                th:data-order-user-name="${order.user.username}"
+                                                                th:data-order-create="${order.createdAt}"
+                                                                th:data-order-totalAmount="${order.totalAmount}"
+                                                                th:data-order-payment-method="${order.payment.paymentMethod.name() == 'CREDIT_CARD' ? 'Thẻ tín dụng' : 'Khi giao hàng'}"
+                                                                th:data-order-payment-status="${order.payment.paymentStatus.name() == 'PENDING' ? 'Chưa thanh toán' : (order.payment.paymentStatus.name() == 'COMPLETED' ? 'Đã thanh toán' : 'Thanh toán thất bại')}"
+                                                                th:data-order-status="${order.status.name() == 'PENDING' ? 'Chưa giao hàng' : (order.status.name() == 'COMPLETED' ? 'Giao hàng thành công' : 'Đã hủy đơn')}"
+                                                                th:data-order-update="${order.updatedAt}"
+                                                                th:onclick="'loadorderImageToModal(' + ${order.orderId} + ')'">
+                                                            <i class="fas fa-eye"></i>
+                                                        </button>
+
+                                                        <!-- Nút chỉnh sửa đơn hàng -->
+                                                        <a th:href="@{/restaurant/orders/{id}/edit(id=${order.orderId})}" data-bs-toggle="tooltip" title="Chỉnh sửa đơn hàng" class="btn btn-outline-primary me-1 btn-sm">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+
+                                                        <!-- Nút xóa đơn hàng -->
+                                                        <button type="button" data-bs-toggle="tooltip" th:onclick="'deleteOrder(' + ${order.orderId} + ')'" title="Xóa đơn hàng" class="btn btn-outline-danger btn-sm">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -339,44 +331,44 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="flex-1">
-                                                        <h6 class="fw-bold mb-1">
-                                                            Nguyễn Ngọc Ngạn
-                                                            <span class="ps-3 fw-normal">8:40 PM</span>
-                                                        </h6>
-                                                        <div>
-                                                            <span class="text-muted">0983746573</span>
-                                                            <span> - </span>
-                                                            <span class="text-muted">84/2 Đàm Quang Trung, Long Biên, Long Biên, Hà Nội</span>
+                                                <div class="col-md-8">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <div class="card-title">Thông tin đơn hàng</div>
                                                         </div>
-                                                        <div class="text-dark">
-                                                            189,000đ
-                                                        </div>
-                                                        <div>
-                                                            <span class="text-muted">Thanh toán khi nhận hàng</span>
-                                                            <span> - </span>
-                                                            <span class="text-warning">Chưa thanh toán</span>
-                                                        </div>
-                                                        <div>
-                                                            <table class="table">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th scope="col">#</th>
-                                                                        <th scope="col">Món ăn</th>
-                                                                        <th scope="col">Số lượng</th>
-                                                                        <th scope="col">Đơn giá</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <th scope="row">1</th>
-                                                                        <td>Cơm xào me</td>
-                                                                        <td>4</td>
-                                                                        <td>34,000</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
+                                                        <div class="card-body">
+                                                            <div class="d-flex justify-content-between">
+                                                                <div>
+                                                                    <h5 class="text-muted" id="modal-order-price">
+                                                                        Khách hàng:
+                                                                    </h5>
+                                                                    <h5><b id="modal-order-username">Cơm xào me</b></h5>
+                                                                </div>
+
+                                                                <h5 class="text-secondary fw-bold" id="modal-order-totalamount">
+                                                                    189,000đ
+                                                                </h5>
+                                                            </div>
+                                                            <div class="d-flex justify-content-between">
+                                                                <p>Phương thức thanh toán</p>
+                                                                <p class="text-muted" id="modal-order-payment-method">Đang phục vụ</p>
+                                                            </div>
+                                                            <div class="d-flex justify-content-between">
+                                                                <p>Trạng thái thanh toán</p>
+                                                                <p class="text-muted" id="modal-order-payment-status">Hiện</p>
+                                                            </div>
+                                                            <div class="d-flex justify-content-between mt-2">
+                                                                <p>Trạng thái đơn hàng</p>
+                                                                <p class="text-muted" id="modal-order-status">19/10/2024 14:23:12</p>
+                                                            </div>
+                                                            <div class="d-flex justify-content-between">
+                                                                <p>Khởi tạo</p>
+                                                                <p class="text-muted" id="modal-order-createDate">20/10/2024 18:32:04</p>
+                                                            </div>
+                                                            <div class="d-flex justify-content-between">
+                                                                <p>Cập nhật</p>
+                                                                <p class="text-muted" id="modal-order-updateDate">20/10/2024 18:32:04</p>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -459,6 +451,99 @@
             });
         })
 
+        const detailOrderModal = document.getElementById('detailOrderModal')
+        detailOrderModal.addEventListener('show.bs.modal', event => {
+            const button = event.relatedTarget;
+            const orderUsername = button.getAttribute('data-order-user-name')
+            const orderTotalAmount = button.getAttribute('data-order-totalAmount')
+            const orderPaymentMethod = button.getAttribute('data-order-payment-method')
+            const orderPaymentStatus = button.getAttribute('data-order-payment-status')
+            const orderStatus = button.getAttribute('data-order-status')
+            const orderCreate = button.getAttribute('data-order-create')
+            const orderUpdate = button.getAttribute('data-order-update')
+
+
+
+
+            detailOrderModal.querySelector('#modal-order-username').textContent = orderUsername;
+            detailOrderModal.querySelector('#modal-order-totalamount').textContent = orderTotalAmount;
+            detailOrderModal.querySelector('#modal-order-payment-method').textContent = orderPaymentMethod;
+            detailOrderModal.querySelector('#modal-order-payment-status').textContent = orderPaymentStatus;
+            detailOrderModal.querySelector('#modal-order-status').textContent = orderStatus;
+            const options = {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            };
+            const createAt = new Date(orderCreate)
+            const updateAt = new Date(orderUpdate)
+            detailOrderModal.querySelector('#modal-order-createDate').textContent = new Intl.DateTimeFormat('vi-VN',options).format(createAt)
+            detailOrderModal.querySelector('#modal-order-updateDate').textContent = new Intl.DateTimeFormat('vi-VN',options).format(updateAt)
+        })
+
+        function deleteOrder(orderId) {
+            swal({
+                title: 'Bạn có chắc muốn xóa?',
+                text: "Bạn sẽ không thể hoàn tác sau khi thực hiện việc này!",
+                icon: 'warning',
+                buttons:{
+                    confirm: {
+                        text : 'Có, xóa!',
+                        className : 'btn btn-success'
+                    },
+                    cancel: {
+                        visible: true,
+                        text : 'Không',
+                        className: 'btn btn-danger'
+                    },
+                }
+            }).then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        url: 'orders/'+orderId+'/delete',
+                        method: 'GET',
+                        success: function(response) {
+                            result = JSON.parse(response)
+                            //console.log('delete', result)
+                            if(result.delete){
+                                swal("Danh mục đã bị xóa!", {
+                                    icon: "success",
+                                    buttons : {
+                                        confirm : {
+                                            className: 'btn btn-success'
+                                        }
+                                    }
+                                }).then((ok) => {
+                                    if(ok){
+                                        window.location.href = 'orders'
+                                    }
+                                    window.location.href = 'orders'
+                                })
+                            } else {
+                                swal("Danh mục đã có món ăn, không thể xóa", {
+                                    icon: "error",
+                                    buttons : {
+                                        confirm : {
+                                            className: 'btn btn-danger'
+                                        }
+                                    }
+                                });
+                            }
+                        },
+                        error: function(error) {
+                            alert('Đã có lỗi xảy ra!')
+                            console.log('delete orders',error)
+                        }
+                    })
+                } else {
+                    //do nothing when cancel
+                    swal.close()
+                }
+            });
+        }
 
     </script>
 </body>

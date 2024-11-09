@@ -64,8 +64,10 @@ public class SecurityConfig {
                 .disable())
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(WHILELIST).permitAll()
-                        .requestMatchers("/*").permitAll()
-                        .requestMatchers("/restaurant/**").hasAuthority("ADMIN")
+                        .requestMatchers(
+                                "/restaurant/**",
+                                "/user/**"
+                        ).hasAuthority("ADMIN")
                         .requestMatchers("/restaurant/login/**").permitAll()
                         .requestMatchers("/user/**").hasAuthority("ADMIN")
                         .requestMatchers("/auth/**").permitAll()
@@ -111,5 +113,4 @@ public class SecurityConfig {
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
-
 }

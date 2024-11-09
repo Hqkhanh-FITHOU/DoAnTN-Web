@@ -30,7 +30,6 @@ public class PaymentServiceImpl implements PaymentService {
                 .orElseThrow(()-> new RuntimeException("order không tồn tại"));
 
         Payment payment = Payment.builder()
-                .order(order)
                 .paymentMethod(paymentDTO.getPaymentMethod())
                 .paymentStatus(paymentDTO.getPaymentStatus())
                 // .paymentDate(paymentDTO.getPaymentDate())
@@ -47,7 +46,6 @@ public class PaymentServiceImpl implements PaymentService {
                 .orElseThrow(()-> new RuntimeException("order không tồn tại"));
 
         Payment payment = optionalPayment.get().builder()
-                .order(order)
                 .paymentMethod(paymentDTO.getPaymentMethod())
                 .paymentStatus(paymentDTO.getPaymentStatus())
                 // .paymentDate(paymentDTO.getPaymentDate())

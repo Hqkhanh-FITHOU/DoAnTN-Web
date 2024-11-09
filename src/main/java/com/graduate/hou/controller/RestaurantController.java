@@ -1,5 +1,9 @@
 package com.graduate.hou.controller;
 
+import com.graduate.hou.dto.request.*;
+import com.graduate.hou.entity.Order;
+import com.graduate.hou.mapper.OrderMapper;
+import com.graduate.hou.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -13,20 +17,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.graduate.hou.dto.request.CategoryDTO;
-import com.graduate.hou.dto.request.ProductDTO;
-import com.graduate.hou.dto.request.ProductImageDTO;
-import com.graduate.hou.dto.request.UserRegisterDTO;
 import com.graduate.hou.entity.Category;
 import com.graduate.hou.entity.Product;
 import com.graduate.hou.entity.ProductImage;
 import com.graduate.hou.enums.RoleUsers;
 import com.graduate.hou.mapper.CategoryMapper;
 import com.graduate.hou.mapper.ProductMapper;
-import com.graduate.hou.service.CategoryService;
-import com.graduate.hou.service.ProductImageService;
-import com.graduate.hou.service.ProductService;
-import com.graduate.hou.service.StorageService;
+
 import java.util.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -40,6 +37,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/restaurant")
 @Slf4j
 public class RestaurantController {
+    @Autowired
+    private AddressService addressService;
+    @Autowired
+    private PaymentService paymentService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private OrderService orderService;
     @Autowired
     private CategoryService categoryService;
     @Autowired
@@ -65,8 +70,52 @@ public class RestaurantController {
     }
 
     @GetMapping("/orders")
-    public String goOrdersManagement() {
+    public String goOrdersManagement(Model model) {
+        List<Order> orders = this.orderService.getAllOrder();
+        model.addAttribute("orders", orders);
         return "orders";
+    }
+
+    @GetMapping("/orders/new")
+    public String goAddNewOrder(Model model) {
+        model.addAttribute("order", new OrderDTO());
+        model.addAttribute("user", userService.getAllUser());
+        model.addAttribute("payment", paymentService.getAllPayment());
+        model.addAttribute("address", addressService.getAllAddress());
+
+        return "orders/add";
+    }
+
+    @PostMapping("/orders/new")
+    public String saveOrder(@ModelAttribute OrderDTO orderDTO) {
+        Order order = orderService.createOrder(orderDTO);
+        if(order == null){
+            return "orders/add";
+        }
+        return "redirect:/restaurant/orders";
+    }
+
+    @GetMapping("/orders/{id}/edit")
+    public String goEditOrder(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("user", userService.getAllUser());
+        model.addAttribute("payment", paymentService.getAllPayment());
+        model.addAttribute("address", addressService.getAllAddress());
+        model.addAttribute("order", OrderMapper.toDTO(orderService.findOrderById(id)));
+        return "orders/edit";
+    }
+
+    @PostMapping("/orders/{id}/edit")
+    public String updateCOrder(@PathVariable("id") Long id, @ModelAttribute OrderDTO orderDTO) {
+        if(orderService.updateOrder(id, orderDTO)){
+            return "redirect:/restaurant/orders";
+        }
+        return "orders/edit";
+    }
+
+    @GetMapping("/orders/{id}/delete")
+    @ResponseBody
+    public String deleteOrder(@PathVariable("id") Long id) {
+        return "{ \"delete\":"+ orderService.deleteOrder(id) +"}";
     }
 
     @GetMapping("/categories")
@@ -81,6 +130,8 @@ public class RestaurantController {
         model.addAttribute("category", new CategoryDTO());
         return "categories/add";
     }
+
+
 
     @PostMapping("/categories/new")
     public String saveCategory(@ModelAttribute CategoryDTO categoryDTO) {
@@ -105,8 +156,6 @@ public class RestaurantController {
         }
         return "categories/edit";
     }
-    
-    
 
     @GetMapping("/categories/{id}/delete")
     @ResponseBody

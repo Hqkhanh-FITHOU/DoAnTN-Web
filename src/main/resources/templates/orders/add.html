@@ -138,7 +138,7 @@
 
                     <!--TODO: code main view here  -->
                     <div class="row">
-                        <form role="form" th:action="@{/restaurant/categories/new}" th:object="${category}" method="post" enctype="multipart/form-data">
+                        <form role="form" th:action="@{/restaurant/orders/new}" th:object="${order}" method="post" enctype="multipart/form-data">
                         <div class="card">
                             <div class="card-header">
                                 <div class="card-title">Thông tin</div>
@@ -146,16 +146,50 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6 col-lg-6">
+<!--                                        người đặt hàng-->
                                         <div class="form-group">
-                                            <label for="productName">Tên danh mục</label>
-                                            <input type="text" class="form-control" id="productName" placeholder="Nhập tên món ăn" th:field="*{name}">
+                                            <label for="user">Số điện thoại người đặt hàng<span class="text-danger">*</span></label>
+                                            <select class="form-select" id="user" th:field="*{userId}">
+                                                <option th:each="user : ${user}" th:value="${user.userId}" th:text="${user.phone}"></option>
+                                            </select>
                                         </div>
+<!--                                         giá tiền-->
+                                        <div class="form-group">
+                                            <label for="totalAmount">Tổng tiền<span class="text-danger">*</span></label>
+                                            <input type="number" class="form-control" id="totalAmount" placeholder="Nhập giá tiền" th:field="*{totalAmount}" required>
+                                        </div>
+
+<!--                                        trạng thái đơn hàng-->
+                                        <div class="form-group">
+                                            <label for="status">Trạng thái đơn hàng<span class="text-danger">*</span></label>
+                                            <select class="form-control" id="status" th:field="*{status}" required>
+                                                <option th:each="status : ${T(com.graduate.hou.enums.OrderStatus).values()}"
+                                                        th:value="${status}" th:text="${status}">Status</option>
+                                            </select>
+                                        </div>
+
+<!--                                        địa chỉ-->
+                                        <div class="form-group">
+                                            <label for="address">Địa chỉ<span class="text-danger">*</span></label>
+                                            <select class="form-select" id="address" th:field="*{addressId}">
+                                                <option th:each="address : ${address}" th:value="${address.addressId}" th:text="${address.city}"></option>
+                                            </select>
+                                        </div>
+<!--                                        thanh toán-->
+                                        <div class="form-group">
+                                            <label for="payment">Thanh toán<span class="text-danger">*</span></label>
+                                            <select class="form-select" id="payment" th:field="*{paymentId}">
+                                                <option th:each="payment : ${payment}" th:value="${payment.paymentId}" th:text="${payment.paymentId}"></option>
+                                            </select>
+                                        </div>
+
+
                                     </div>
                                 </div>
                             </div>
                             <div class="card-action">
                                 <button type="submit" class="btn btn-success">Lưu</button>
-                                <a th:href="@{categories}" class="btn btn-danger">Hủy</a>
+                                <a th:href="@{/restaurant/orders}" class="btn btn-danger">Hủy</a>
                             </div>
                         </div>
                         </form>
