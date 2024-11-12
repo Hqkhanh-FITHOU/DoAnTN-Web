@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security6">
+<head th:replace="~{fragments/head :: head}"></head>
+<body>
+<div class="wrapper">
+    <!-- Sidebar -->
+    <div class="sidebar" data-background-color="dark">
+        <div class="sidebar-logo">
+            <!-- Logo Header -->
+            <div th:replace="~{fragments/head :: logo_header}">
+            </div>
+            <!-- End Logo Header -->
+        </div>
+        <div class="sidebar-wrapper scrollbar scrollbar-inner">
+            <div class="sidebar-content">
+                <ul class="nav nav-secondary">
+                    <li class="nav-item">
+                        <a th:href="@{/restaurant/dashboard}" class="py-3">
+                            <i class="fas fa-home"></i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/restaurant/orders}" class="py-3">
+                            <i class="fas fa-clipboard"></i>
+                            <p>Quản lý đơn hàng</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/restaurant/products}" class="py-3">
+                            <i class="fas fa-utensils"></i>
+                            <p>Quản lý món ăn</p>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a th:href="@{/restaurant/categories}" class="py-3">
+                            <i class="fas fa-grip-horizontal"></i>
+                            <p>Quản lý danh mục món ăn</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/restaurant/coupons}" class="py-3">
+                            <i class="fas fa-percentage"></i>
+                            <p>Quản lý khuyến mãi</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/restaurant/accounts}" class="py-3">
+                            <i class="fas fa-users"></i>
+                            <p>Quản lý tài khoản</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#report" class="collapsed py-3" aria-expanded="false">
+                            <i class="fas fa-chart-pie"></i>
+                            <p>Quản lý thống kê</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="report">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a th:href="@{/restaurant/revenue}" class="py-2">
+                                        <span class="sub-item">Doanh số</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a th:href="@{/restaurant/reviews}" class="py-2">
+                                        <span class="sub-item">Đánh giá</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- End Sidebar -->
+
+    <div class="main-panel">
+        <!-- Header -->
+        <div class="main-header">
+            <div class="main-header-logo">
+                <!-- Logo Header -->
+                <div th:replace="~{fragments/head :: logo_header}">
+                </div>
+                <!-- End Logo Header -->
+            </div>
+            <!-- Navbar Header -->
+            <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+                <div class="container-fluid">
+                    <nav
+                            class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
+                        <!-- <div class="input-group">
+                            <div class="input-group-prepend">
+                                <button type="submit" class="btn btn-search pe-1">
+                                    <i class="fa fa-search search-icon"></i>
+                                </button>
+                            </div>
+                            <input type="text" placeholder="Search ..." class="form-control" />
+                        </div> -->
+                        <h3 class="fw-bold mb-0">Quản lý danh mục tài khoản</h3>
+                    </nav>
+                    <ul th:replace="~{fragments/head :: user_box}"></ul>
+                </div>
+            </nav>
+            <!-- End Navbar -->
+        </div>
+        <!-- End header -->
+
+
+
+        <!-- Main content -->
+        <div class="container">
+            <div class="page-inner">
+                <!-- Breadcrum -->
+                <div class="page-header">
+                    <ul class="breadcrumbs mb-3">
+                        <li class="nav-home">
+                            <a th:href="@{/restaurant/dashboard}">
+                                <i class="icon-home"></i>
+                            </a>
+                        </li>
+                        <li class="separator">
+                            <i class="icon-arrow-right"></i>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#">Quản lý danh mục tài khoản</a>
+                        </li>
+                        <li class="separator">
+                            <i class="icon-arrow-right"></i>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#">Chỉnh sửa danh mục</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!--TODO: code main view here  -->
+                <div class="row">
+                    <form role="form" th:action="@{'/restaurant/accounts/'+${accounts.userId}+'/edit'}" th:object="${accounts}" method="post" enctype="multipart/form-data">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Thông tin tài khoản</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="card-title">Thông tin chung</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label for="productName">Họ và tên</label>
+                                                    <input type="text" class="form-control" id="productName" th:field="*{fullname}" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="productName">Email</label>
+                                                    <input type="email" class="form-control" id="productName" th:field="*{email}" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="productName">Điện thoại</label>
+                                                    <input type="tel" class="form-control" id="productName" th:field="*{phone}" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="card-title">Thông tin đăng nhập</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label for="productName">Tên tài khoản</label>
+                                                    <input type="text" class="form-control" id="productName" th:field="*{username}" readonly>
+                                                </div>
+                                                <div class="form-check">
+                                                    <label for="productName">Mật khẩu</label>
+                                                    <input type="text" class="form-control" id="productName" th:field="*{password}" readonly >
+                                                </div>
+                                                <div class="form-group">
+                                                    <div>Vai trò</div>
+                                                    <div class="d-flex" >
+                                                        <div class="form-check" th:each="role : ${roles}">
+                                                            <label th:for="'role-'+${role.name()}" class="form-check-label" th:text="${role.name()}">Role</label>
+                                                            <input type="checkbox" class="form-check-input" th:id="'role-'+${role.name()}" th:name="roles" th:value="${role.name()}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-action">
+                                <button type="submit" class="btn btn-success">Lưu</button>
+                                <a th:href="@{/restaurant/accounts}" class="btn btn-danger">Hủy</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- End main content -->
+
+
+
+
+        <!-- Footer -->
+        <footer th:replace="~{fragments/footer :: footer}">
+        </footer>
+        <!-- End footer -->
+    </div>
+</div>
+
+<div th:replace="~{fragments/script :: script}">
+</div>
+<script>
+    $(document).ready(function(){
+        $('#description').summernote({
+            tabsize: 2,
+            height: 200,
+            focus: false,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['para', ['ul', 'ol', 'paragraph']]
+            ]
+        })
+        $('#preview-images')
+    })
+</script>
+</body>
+</html>

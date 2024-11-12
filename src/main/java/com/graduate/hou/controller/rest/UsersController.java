@@ -29,7 +29,7 @@ public class UsersController {
     }
 
     @PutMapping("/update/{id}")
-    User updateUser (@PathVariable Long id, @RequestBody UsersDTO usersDTO){
+    boolean updateUser (@PathVariable Long id, @RequestBody UsersDTO usersDTO){
         return userService.updateUser(id, usersDTO);
     }
 
