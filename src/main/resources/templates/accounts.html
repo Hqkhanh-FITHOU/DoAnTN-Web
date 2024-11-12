@@ -161,26 +161,88 @@
                                                 <th>Thao tác</th>
                                             </tfoot>
                                             <tbody>
-                                                <tr role="row">
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td>
-                                                        <button type="button" title="" class="btn btn-outline-dark me-1 btn-sm" data-original-title="See" data-bs-toggle="modal" data-bs-target="#detailOrderModal">
+                                            <tr th:each="account : ${accounts}" class="old" role="row">
+                                                <td th:text="${account.fullname}"></td>
+                                                <td th:text="${account.email}"></td>
+                                                <td th:text="${account.phone}"></td>
+                                                <td>
+                                                    <span th:each="role : ${account.roles}" th:text="${role.name()}"></span>
+                                                </td>
+
+                                                <td th:text="${account.userPoint}"></td>
+                                                <td>
+                                                    <div class="form-button-action">
+                                                        <button th:each="role : ${account.roles}" type="button" title="See" class="btn btn-outline-dark me-1 btn-sm" data-bs-toggle="modal" data-bs-target="#detailAccountModal"
+                                                                th:data-account-name="${account.fullname}"
+                                                                th:data-account-email="${account.email}"
+                                                                th:data-account-phone="${account.phone}"
+                                                                th:data-account-role="${role.name()}"
+                                                                th:data-account-create="${account.createdAt}"
+                                                                th:data-account-update="${account.updatedAt}"
+                                                                th:onclick="'loadAccountImageToModal(' + ${account.userId} + ')'">
                                                             <i class="fas fa-eye"></i>
                                                         </button>
-                                                        <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-outline-primary me-1 btn-sm" data-original-title="Edit Task">
+                                                        <a th:href="@{/restaurant/accounts/{id}/edit(id=${account.userId})}" data-bs-toggle="tooltip" title="Edit Task" class="btn btn-outline-primary me-1 btn-sm">
                                                             <i class="fa fa-edit"></i>
+                                                        </a>
+                                                        <button type="button" data-bs-toggle="tooltip" th:onclick="'deleteAccount(' + ${account.userId} + ')'" title="Delete" class="btn btn-outline-danger btn-sm" data-bs-placement="top" data-bs-title="Xóa">
+                                                            <i class="fas fa-trash-alt"></i>
                                                         </button>
-                                                        <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-outline-danger btn-sm" data-original-title="Cancel" data-bs-placement="top" data-bs-title="">
-                                                            <i class="fas fa-ban"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                             </tbody>
                                         </table>
+                                    </div>
+                                    <div class="modal fade modal-lg modal-dialog-scrollable" id="detailAccountModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="col-md-8">
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <div class="card-title">Thông tin đơn hàng</div>
+                                                            </div>
+                                                            <div class="card-body">
+
+                                                                <div class="d-flex justify-content-between">
+                                                                    <p>Tên tài khoản</p>
+                                                                    <p class="text-muted" id="modal-account-name">Đang phục vụ</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <p>Email</p>
+                                                                    <p class="text-muted" id="modal-account-emmail">Hiện</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between mt-2">
+                                                                    <p>Số điện thoại</p>
+                                                                    <p class="text-muted" id="modal-account-phone">19/10/2024 14:23:12</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <p>Loại tài khoản</p>
+                                                                    <p class="text-muted" id="modal-account-Role">20/10/2024 18:32:04</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <p>Khởi tạo</p>
+                                                                    <p class="text-muted" id="modal-account-createDate">20/10/2024 18:32:04</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <p>Cập nhật</p>
+                                                                    <p class="text-muted" id="modal-account-updateDate">20/10/2024 18:32:04</p>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger btm-sm" data-bs-dismiss="modal">Đóng</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -221,38 +283,103 @@
                     zeroRecords: 'Không tìm thấy kết quả phù hợp',
                     emptyTable: 'Không có dữ liệu'
                 },
-                initComplete: function () {
-                    this.api()
-                    .columns()
-                    .every(function (index) {
-                        if(index !== 5){
-                            var column = this;
-                            var select = $(
-                            '<select class="form-select"><option value=""></option></select>'
-                            )
-                            .appendTo($(column.footer()).empty())
-                            .on("change", function () {
-                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
 
-                                column
-                                .search(val ? "^" + val + "$" : "", true, false)
-                                .draw();
-                            });
-
-                            column
-                            .data()
-                            .unique()
-                            .sort()
-                            .each(function (d, j) {
-                                select.append(
-                                '<option value="' + d + '">' + d + "</option>"
-                                );
-                            });
-                        }
-                    });
-                },
             })
         })
+
+        const detailAccountModal = document.getElementById('detailAccountModal')
+        detailAccountModal.addEventListener('show.bs.modal', event => {
+            const button = event.relatedTarget;
+            const accounName = button.getAttribute('data-account-name')
+            const accountEmail = button.getAttribute('data-account-email')
+            const accountPhone = button.getAttribute('data-account-phone')
+            const accountRole = button.getAttribute('data-account-role')
+            const accountCreate = button.getAttribute('data-account-create')
+            const accountUpdate = button.getAttribute('data-account-update')
+
+
+
+
+            detailAccountModal.querySelector('#modal-account-name').textContent = accounName;
+
+            detailAccountModal.querySelector('#modal-account-emmail').textContent = accountEmail;
+            detailAccountModal.querySelector('#modal-account-phone').textContent = accountPhone;
+            detailAccountModal.querySelector('#modal-account-Role').textContent = accountRole;
+            const options = {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            };
+            const createAt = new Date(accountCreate)
+            const updateAt = new Date(accountUpdate)
+            detailAccountModal.querySelector('#modal-account-createDate').textContent = new Intl.DateTimeFormat('vi-VN',options).format(createAt)
+            detailAccountModal.querySelector('#modal-account-updateDate').textContent = new Intl.DateTimeFormat('vi-VN',options).format(updateAt)
+        })
+        function deleteAccount(userId) {
+            swal({
+                title: 'Bạn có chắc muốn xóa?',
+                text: "Bạn sẽ không thể hoàn tác sau khi thực hiện việc này!",
+                icon: 'warning',
+                buttons:{
+                    confirm: {
+                        text : 'Có, xóa!',
+                        className : 'btn btn-success'
+                    },
+                    cancel: {
+                        visible: true,
+                        text : 'Không',
+                        className: 'btn btn-danger'
+                    },
+                }
+            }).then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        url: 'accounts/'+userId+'/delete',
+                        method: 'GET',
+                        success: function(response) {
+                            result = JSON.parse(response)
+                            //console.log('delete', result)
+                            if(result.delete){
+                                swal("Danh mục đã bị xóa!", {
+                                    icon: "success",
+                                    buttons : {
+                                        confirm : {
+                                            className: 'btn btn-success'
+                                        }
+                                    }
+                                }).then((ok) => {
+                                    if(ok){
+                                        window.location.href = 'accounts'
+                                    }
+                                    window.location.href = 'accounts'
+                                })
+                            } else {
+                                swal("Danh mục đã có món ăn, không thể xóa", {
+                                    icon: "error",
+                                    buttons : {
+                                        confirm : {
+                                            className: 'btn btn-danger'
+                                        }
+                                    }
+                                });
+                            }
+                        },
+                        error: function(error) {
+                            alert('Đã có lỗi xảy ra!')
+                            console.log('delete accounts',error)
+                        }
+                    })
+                } else {
+                    //do nothing when cancel
+                    swal.close()
+                }
+            });
+        }
+
+
     </script>
 </body>
 </html>

@@ -153,7 +153,7 @@
                                             <div class="card-body">
                                                 <div class="form-group">
                                                     <label for="productName">Họ và tên</label>
-                                                    <input type="email" class="form-control" id="productName" th:field="*{fullname}" required>
+                                                    <input type="text" class="form-control" id="productName" th:field="*{fullname}" required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="productName">Email</label>
@@ -184,8 +184,8 @@
                                                     <div>Vai trò</div>
                                                     <div class="d-flex" >
                                                         <div class="form-check" th:each="role : ${roles}">
-                                                            <label th:for="'role-'+${role}" class="form-check-label" th:text="${role}">role</label>
-                                                            <input type="checkbox" class="form-check-input" th:id="'role-'+${role}">
+                                                            <label th:for="'role-'+${role.name()}" class="form-check-label" th:text="${role.name()}">Role</label>
+                                                            <input type="checkbox" class="form-check-input" th:id="'role-'+${role.name()}" th:name="roles" th:value="${role.name()}">
                                                         </div>
                                                     </div>
                                                 </div>

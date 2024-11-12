@@ -1,8 +1,9 @@
 package com.graduate.hou.controller;
 
 import com.graduate.hou.dto.request.*;
-import com.graduate.hou.entity.Order;
+import com.graduate.hou.entity.*;
 import com.graduate.hou.mapper.OrderMapper;
+import com.graduate.hou.mapper.UserMapper;
 import com.graduate.hou.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -17,9 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.graduate.hou.entity.Category;
-import com.graduate.hou.entity.Product;
-import com.graduate.hou.entity.ProductImage;
 import com.graduate.hou.enums.RoleUsers;
 import com.graduate.hou.mapper.CategoryMapper;
 import com.graduate.hou.mapper.ProductMapper;
@@ -37,6 +35,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/restaurant")
 @Slf4j
 public class RestaurantController {
+    @Autowired
+    private AuthenticationService authenticationService;
+
     @Autowired
     private AddressService addressService;
     @Autowired
@@ -171,10 +172,7 @@ public class RestaurantController {
         return "products";
     }
 
-    @GetMapping("/accounts")
-    public String goAccountsManagement() {
-        return "accounts";
-    }
+
 
     @GetMapping("/products/new")
     public String goAddNewProduct(Model model) {
@@ -276,6 +274,13 @@ public class RestaurantController {
         return "{ \"delete\":"+ productService.deleteProduct(id) +"}";
     }
 
+    @GetMapping("/accounts")
+    public String goAccountsManagement(Model model) {
+        List<User> users = this.userService.getAllUser();
+        model.addAttribute("accounts" , users);
+
+        return "accounts";
+    }
 
     @GetMapping("/accounts/new")
     public String goAddNewUser(Model model) {
@@ -284,5 +289,39 @@ public class RestaurantController {
         log.info("sdf",RoleUsers.values().toString());
         return "accounts/add";
     }
-    
+
+    @PostMapping("/accounts/new")
+    public String saveAccount(@ModelAttribute("account") UserRegisterDTO usersDTO) {
+        User user = authenticationService.register(usersDTO); // save to database
+        if (user == null) {
+            return "accounts/add";
+        }
+        return "redirect:/restaurant/accounts";
+    }
+
+    @GetMapping("/accounts/{id}/edit")
+    public String goEditAccount(@PathVariable("id") Long id, Model model) {
+        User  user = userService.findByUserId(id);
+        model.addAttribute("roles", RoleUsers.values());
+        model.addAttribute("accounts", UserMapper.toDTO(user));
+        return "accounts/edit";
+    }
+
+    @PostMapping("/accounts/{id}/edit")
+    public String updateAccount(@PathVariable("id") Long id, @ModelAttribute UsersDTO usersDTO) {
+        if(userService.updateUser(id, usersDTO)){
+            return "redirect:/restaurant/accounts";
+        }
+        return "accounts/edit";
+    }
+
+    @GetMapping("/accounts/{id}/delete")
+    @ResponseBody
+    public String deleteAccount(@PathVariable("id") Long id) {
+        return "{ \"delete\":"+ userService.deleteUser(id) +"}";
+    }
+
+
+
+
 }
