@@ -1,9 +1,8 @@
 package com.graduate.hou.service.impl;
 
 import com.graduate.hou.dto.request.OrderDTO;
-import com.graduate.hou.entity.Order;
-import com.graduate.hou.entity.Payment;
-import com.graduate.hou.entity.User;
+import com.graduate.hou.entity.*;
+import com.graduate.hou.repository.AddressRepository;
 import com.graduate.hou.repository.OrderRepository;
 import com.graduate.hou.repository.PaymentRepository;
 import com.graduate.hou.repository.UsersRepository;
@@ -31,6 +30,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Order findOrderById(Long id) {
+         return orderRepository.findById(id).get();
+    }
+
+    @Override
     public Order createOrder(OrderDTO orderDTO) {
         User user = usersRepository.findById(orderDTO.getUserId())
                 .orElseThrow(()-> new RuntimeException("Chưa đăng nhập"));
@@ -53,7 +57,7 @@ public class OrderServiceImpl implements OrderService {
 
     @SuppressWarnings("static-access")
     @Override
-    public Order updateOrder(Long id, OrderDTO orderDTO) {
+    public boolean updateOrder(Long id, OrderDTO orderDTO) {
         Optional<Order> optionalOrder = orderRepository.findById(id);
 
         User user = usersRepository.findById(orderDTO.getUserId())
@@ -76,7 +80,16 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public void deleteOrder(Long id) {
-        orderRepository.deleteById(id);
+    public boolean deleteOrder(Long id) {
+        Order order = orderRepository.findById(id).get();
+        if(order != null){
+            try {
+                orderRepository.deleteById(id);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return true;
     }
 }

@@ -1,6 +1,7 @@
 package com.graduate.hou.service.impl;
 
 import com.graduate.hou.dto.request.UsersDTO;
+import com.graduate.hou.entity.Product;
 import com.graduate.hou.entity.User;
 import com.graduate.hou.repository.UsersRepository;
 import com.graduate.hou.service.UserService;
@@ -37,7 +38,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(Long id, UsersDTO usersDTO) {
+    public boolean updateUser(Long id, UsersDTO usersDTO) {
         Optional<User> optionalUser = usersRepository.findById(id);
         User user = optionalUser.get();
 
@@ -49,12 +50,31 @@ public class UserServiceImpl implements UserService {
         user.setRoles(usersDTO.getRoles());
         user.setUserPoint(usersDTO.getPoint());
 
-        return usersRepository.save(user);
+        try {
+            usersRepository.save(user);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
-    public void deleteUser(Long id) {
-        usersRepository.deleteById(id);
+    public boolean deleteUser(Long id) {
+        User user = usersRepository.findById(id).get();
+        if(user != null){
+            /**
+             * TODO: kiểm tra xem món ăn có trong chu kỳ tính doanh thu không nếu có thì không cho xóa
+             */
+            try {
+                usersRepository.deleteById(id);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
@@ -65,6 +85,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findByPhone(String phone) {
         return usersRepository.findByPhone(phone);
+    }
+
+    @Override
+    public User findByUserId(Long id) {
+        return usersRepository.findById(id).get();
     }
 
 }

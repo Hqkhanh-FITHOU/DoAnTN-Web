@@ -24,10 +24,6 @@ public class OrderDTO {
 
     private OrderStatus status;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
     private Long paymentId;
 
     private String address;
