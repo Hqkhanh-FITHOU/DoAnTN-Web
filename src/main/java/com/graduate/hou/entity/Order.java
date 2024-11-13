@@ -30,9 +30,18 @@ public class Order {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal totalAmount;
 
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal totalDiscount;
+
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal totalPayment;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OrderStatus status;
+
+    @Column(nullable = true)
+    private String address;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -42,12 +51,12 @@ public class Order {
 
     @OneToOne
     @JoinColumn(name = "payment_id", nullable = false)
+    @JsonIgnore
     private Payment payment;
 
     @OneToMany(mappedBy = "order")
+    @JsonIgnore
     private List<OrderItem> orderItems;
 
-    @OneToOne
-    @JoinColumn(name = "address_id", nullable = false)
-    private Address address;
+
 }

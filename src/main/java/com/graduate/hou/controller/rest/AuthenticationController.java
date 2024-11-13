@@ -30,7 +30,12 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<?> login( @RequestBody UserLoginDTO loginDTO, HttpServletResponse response) throws Exception {
         log.info( "{username: "+loginDTO.getUsername()+", password: "+loginDTO.getPassword()+"}");
-        TokenResponse tokenResponse = authenticationService.login(loginDTO);
+        TokenResponse tokenResponse = null;
+        try {
+            tokenResponse = authenticationService.login(loginDTO);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
         if (tokenResponse != null) {
             Cookie cookie = new Cookie("jwtToken", tokenResponse.getAccessToken());
             cookie.setHttpOnly(true);

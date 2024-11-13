@@ -1,18 +1,15 @@
 package com.graduate.hou.service.impl;
 
 import com.graduate.hou.dto.request.OrderDTO;
-import com.graduate.hou.entity.Address;
 import com.graduate.hou.entity.Order;
 import com.graduate.hou.entity.Payment;
 import com.graduate.hou.entity.User;
-import com.graduate.hou.repository.AddressRepository;
 import com.graduate.hou.repository.OrderRepository;
 import com.graduate.hou.repository.PaymentRepository;
 import com.graduate.hou.repository.UsersRepository;
 import com.graduate.hou.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -27,8 +24,6 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private PaymentRepository paymentRepository;
 
-    @Autowired
-    private AddressRepository addressRepository;
 
     @Override
     public List<Order> getAllOrder() {
@@ -43,17 +38,15 @@ public class OrderServiceImpl implements OrderService {
         Payment payment = paymentRepository.findById(orderDTO.getPaymentId())
                 .orElseThrow(()-> new RuntimeException("Chưa thanh toán"));
 
-        Address address = addressRepository.findById(orderDTO.getAddressId())
-                .orElseThrow(()-> new RuntimeException("Chưa chọn địa chỉ"));
 
         Order order = Order.builder()
                 .user(user)
+                .totalDiscount(orderDTO.getTotalDiscount())
+                .totalPayment(orderDTO.getTotalPayment())
                 .totalAmount(orderDTO.getTotalAmount())
                 .status(orderDTO.getStatus())
-                // .createdAt(orderDTO.getCreatedAt())
-                // .updatedAt(orderDTO.getUpdatedAt())
+                .address(orderDTO.getAddress())
                 .payment(payment)
-                .address(address)
                 .build();
         return orderRepository.save(order);
     }
@@ -69,17 +62,14 @@ public class OrderServiceImpl implements OrderService {
         Payment payment = paymentRepository.findById(orderDTO.getPaymentId())
                 .orElseThrow(()-> new RuntimeException("Chưa thanh toán"));
 
-        Address address = addressRepository.findById(orderDTO.getAddressId())
-                .orElseThrow(()-> new RuntimeException("Chưa chọn địa chỉ"));
-
         Order order = optionalOrder.get().builder()
                 .user(user)
+                .totalDiscount(orderDTO.getTotalDiscount())
+                .totalPayment(orderDTO.getTotalPayment())
                 .totalAmount(orderDTO.getTotalAmount())
                 .status(orderDTO.getStatus())
-                // .createdAt(orderDTO.getCreatedAt())
-                // .updatedAt(orderDTO.getUpdatedAt())
+                .address(orderDTO.getAddress())
                 .payment(payment)
-                .address(address)
                 .build();
         return orderRepository.save(order);
     }

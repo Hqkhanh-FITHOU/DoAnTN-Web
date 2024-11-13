@@ -18,26 +18,12 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long addressId;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = true)
-    private User user;
 
-    @Column(nullable = false, length = 100)
-    private String number; //số nhà 
+    @Column(nullable = false)
+    private String detail; 
 
-    @Column(nullable = false, length = 100)
-    private String street; //đường
-
-    @Column(nullable = false, length = 100)
-    private String city; //thành phố/tỉnh
-
-    @Column(nullable = false, length = 100)
-    private String district; // quận
-
-    @Column(nullable = false, length = 100)
-    private String ward; //phường
 
     @Column(nullable = false, length = 100)
     @Enumerated(EnumType.STRING)
-    private AddressType addressType; //phường
+    private AddressType addressType; //loại địa chỉ
 }

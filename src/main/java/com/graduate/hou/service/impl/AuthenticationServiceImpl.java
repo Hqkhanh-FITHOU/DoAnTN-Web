@@ -12,7 +12,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +36,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public TokenResponse login(UserLoginDTO loginDTO) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword()));
-        }catch (Exception e){
-            System.out.println("Authentication failed" + e.getMessage());
+        } catch (UsernameNotFoundException ex) {
+            System.out.println("Authentication failed = User not found! >" + ex.getMessage());
+            throw new UsernameNotFoundException("User not found!");
+        } catch (BadCredentialsException e){
+            System.out.println("Authentication failed = Wrong username or password! >" + e.getMessage());
+            throw new BadCredentialsException("Wrong username or password!");
+        } catch (Exception e){
+            System.out.println("Authentication failed " + e.getMessage());
         }
         CustomUserDetails userDetails = (CustomUserDetails) userDetailsService.loadUserByUsername(loginDTO.getUsername());
         String accessToken = jwtService.generateToken(userDetails);
