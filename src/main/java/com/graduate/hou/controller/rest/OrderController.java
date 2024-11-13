@@ -25,10 +25,10 @@ public class OrderController {
         return orderService.getAllOrder();
     }
 
-    @PutMapping("update/{id}")
-    Order updateOrder (@PathVariable Long id, @RequestBody OrderDTO orderDTO){
-        return orderService.updateOrder(id, orderDTO);
-    }
+    // @PutMapping("update/{id}")
+    // Order updateOrder (@PathVariable Long id, @RequestBody OrderDTO orderDTO){
+    //     return orderService.updateOrder(id, orderDTO);
+    // }
 
     @DeleteMapping("delete/{id}")
     String deleteOrder(@PathVariable Long id){

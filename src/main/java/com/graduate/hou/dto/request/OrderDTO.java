@@ -27,4 +27,8 @@ public class OrderDTO {
     private Long paymentId;
 
     private String address;
+
+    private LocalDateTime createdDate;
+
+    private LocalDateTime updatedDate;
 }

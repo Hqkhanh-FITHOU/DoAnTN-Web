@@ -2,7 +2,6 @@ package com.graduate.hou.service.impl;
 
 import com.graduate.hou.dto.request.OrderDTO;
 import com.graduate.hou.entity.*;
-import com.graduate.hou.repository.AddressRepository;
 import com.graduate.hou.repository.OrderRepository;
 import com.graduate.hou.repository.PaymentRepository;
 import com.graduate.hou.repository.UsersRepository;
@@ -75,7 +74,7 @@ public class OrderServiceImpl implements OrderService {
                 .address(orderDTO.getAddress())
                 .payment(payment)
                 .build();
-        return orderRepository.save(order);
+        return orderRepository.save(order) != null;
     }
 
 

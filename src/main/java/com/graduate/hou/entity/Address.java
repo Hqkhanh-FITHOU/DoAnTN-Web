@@ -1,6 +1,5 @@
 package com.graduate.hou.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.graduate.hou.enums.AddressType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

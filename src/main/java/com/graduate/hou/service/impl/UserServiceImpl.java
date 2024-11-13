@@ -1,7 +1,6 @@
 package com.graduate.hou.service.impl;
 
 import com.graduate.hou.dto.request.UsersDTO;
-import com.graduate.hou.entity.Product;
 import com.graduate.hou.entity.User;
 import com.graduate.hou.repository.UsersRepository;
 import com.graduate.hou.service.UserService;
