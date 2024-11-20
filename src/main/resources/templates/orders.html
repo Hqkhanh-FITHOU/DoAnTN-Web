@@ -143,69 +143,56 @@
 										<div class="card-title">Đơn chờ xác nhận</div>
 										<div class="card-tools">
 											<a href="#" class="btn btn-label-primary btn-round btn-sm me-2">
-												<span class="btn-label">
-													6
+												<span class="btn-label" th:text="${pendingOrders.size()}">
+													2
 												</span> Đơn
 											</a>
 										</div>
 									</div>
 								</div>
 								<div class="card-body">
-									<div class="d-flex align-items-center">
+									<div class="d-flex align-items-center" th:each="order : ${pendingOrders}" th:id="${order.orderId}+'pending'">
 										<div class="flex-1">
 											<h6 class="fw-bold mb-1">
 												Nguyễn Ngọc Ngạn
-												<span class="ps-3 fw-normal">8:40 PM</span>
+												<span class="ps-3 fw-normal" th:text="${#temporals.format(order.createdAt, 'HH:mm dd/MM/yyyy')}">8:40 PM</span>
 											</h6>
 											<div>
-												<span class="text-muted">0983746573</span>
-												<span> - </span>
-												<span class="text-muted">84/2 Đàm Quang Trung, Long Biên, Long Biên, Hà Nội</span>
+												<!-- <span class="text-muted">0983746573</span>
+												<span> - </span> -->
+												<span class="text-muted" th:text="${order.address}">84/2 Đàm Quang Trung, Long Biên, Long Biên, Hà Nội</span>
 											</div>
-											<div class="text-dark">
+											<div class="text-dark" th:text="${order.totalPayment}">
 												189,000đ
 											</div>
 											<div >
-												<span class="text-muted">Thanh toán bằng tài khoản ngân hàng</span>
+												<span th:text="${order.payment.paymentMethod.name() == 'CREDIT_CARD' ? 'Thẻ tín dụng' : 'Khi nhận hàng'}" class="text-secondary text-center">Thanh toán bằng tài khoản ngân hàng</span>
 												<span> - </span>
-												<span class="text-success">Đã thanh toán</span>
+												<span th:classappend="${order.payment.paymentStatus.name() == 'PENDING' ? 'text-danger text-center' : (order.payment.paymentStatus.name() == 'COMPLETED' ? 'text-success text-center' : 'text-warning text-center')}"
+                                                th:text="${order.payment.paymentStatus.name() == 'PENDING' ? 'Chưa thanh toán' : (order.payment.paymentStatus.name() == 'COMPLETED' ? 'Đã thanh toán' : 'Thanh toán thất bại')}">Đã thanh toán</span>
 											</div>
 											<div>
-												<button class="nav-link text-primary" data-bs-toggle="modal" data-bs-target="#detailOrderModal">Xem chi tiết</button>
+												<button class="nav-link text-primary" data-bs-toggle="modal" data-bs-target="#detailOrderModal" th:data-order-user-name="${order.user.username}"
+                                                th:data-order-user-fullname="${order.user.fullname}"
+                                                th:data-order-user-phone="${order.user.phone}"
+                                                th:data-order-create="${order.createdAt}"
+                                                th:data-order-address="${order.address}"
+                                                th:data-order-totalAmount="${order.totalAmount}"
+                                                th:data-order-totalPayment="${order.totalPayment}"
+                                                th:data-order-totalDiscount="${order.totalDiscount}"
+                                                th:data-order-paymentDate="${order.payment.paymentDate}"
+                                                th:data-order-payment-method="${order.payment.paymentMethod.name() == 'CREDIT_CARD' ? 'Thẻ tín dụng' : 'Khi nhận hàng'}"
+                                                th:data-order-payment-status="${order.payment.paymentStatus.name() == 'PENDING' ? 'Chưa thanh toán' : (order.payment.paymentStatus.name() == 'COMPLETED' ? 'Đã thanh toán' : 'Thanh toán thất bại')}"
+                                                th:data-order-status="${order.status.name() == 'PENDING' ? 'Chờ xác nhận' : (order.status.name() == 'COMPLETED' ? 'Hoàn thành' : (order.status.name() == 'ON_PROGRESS' ? 'Đang xử lý' : 'Đã hủy'))}"
+                                                th:data-order-update="${order.updatedAt}">Xem chi tiết</button>
 											</div>
+                                            <div class="separator-dashed"></div>
 										</div>
 										<div class="float-end pt-1">
-											<button class="btn btn-round btn-primary">Xác nhận</button>
+											<button class="btn btn-round btn-primary" th:onclick="'onComfirmOrder('+${order.orderId}+')'">Xác nhận</button>
 										</div>
 									</div>
-									<div class="separator-dashed"></div>
-									<div class="d-flex align-items-center" id="item-2">
-										<div class="flex-1">
-											<h6 class="fw-bold mb-1">
-												Nguyễn Ngọc Ngạn
-												<span class="ps-3 fw-normal">8:40 PM</span>
-											</h6>
-											<div>
-												<span class="text-muted">0983746573</span>
-												<span> - </span>
-												<span class="text-muted">84/2 Đàm Quang Trung, Long Biên, Long Biên, Hà Nội</span>
-											</div>
-											<div class="text-dark">
-												189,000đ
-											</div>
-											<div >
-												<span class="text-muted">Thanh toán khi nhận hàng</span>
-												<span> - </span>
-												<span class="text-warning">Chưa thanh toán</span>
-											</div>
-											<div>
-												<button class="nav-link text-primary" data-bs-toggle="modal" data-bs-target="#detailOrderModal">Xem chi tiết</button>
-											</div>
-										</div>
-										<div class="float-end pt-1">
-											<button class="btn btn-round btn-primary" onclick="onComfirmOrder()">Xác nhận</button>
-										</div>
-									</div>
+									
 								</div>
 							</div>
 						</div>
@@ -236,13 +223,13 @@
                                             <thead>
                                                 <tr role="row">
                                                     <th>
-                                                        Khách hàng
+                                                        Người đặt
                                                     </th>
                                                     <th>
                                                         Thời gian đặt
                                                     </th>
                                                     <th>
-                                                        Tổng tiền
+                                                        Tổng thanh toán
                                                     </th>
                                                     <th>
                                                         Phương thức thanh toán
@@ -260,9 +247,9 @@
                                             </thead>
                                             <tfoot>
                                                 <tr>
-                                                    <th>Khách hàng</th>
+                                                    <th>Người đặt</th>
                                                     <th>Thời gian đặt</th>
-                                                    <th>Tổng tiền</th>
+                                                    <th>Tổng thanh toán</th>
                                                     <th>Phương thức thanh toán</th>
                                                     <th>Trạng thái thanh toán</th>
                                                     <th>Trạng thái đơn hàng</th>
@@ -275,21 +262,22 @@
                                                 <td th:text="${order.user.fullname}"></td>
 
                                                 <!-- Hiển thị ngày tạo đơn hàng -->
-                                                <td th:text="${order.createdAt}"></td>
+                                                <td th:text="${#temporals.format(order.createdAt, 'HH:mm dd/MM/yyyy')}" class="text-center"></td>
+                                                <!-- <td th:text="${order.createdAt}" class="text-center"></td> -->
 
                                                 <!-- Hiển thị tổng tiền đơn hàng -->
-                                                <td th:text="${order.totalAmount + ' đồng'}"></td>
+                                                <td th:text="${#numbers.formatDecimal(order.totalPayment, 0, 'POINT', 0, 'COMMA') + ' đ'}" class="text-center"></td>
 
                                                 <!-- Hiển thị phương thức thanh toán -->
-                                                <td th:text="${order.payment.paymentMethod.name() == 'CREDIT_CARD' ? 'Thẻ tín dụng' : 'Khi giao hàng'}" class="text-secondary"></td>
+                                                <td th:text="${order.payment.paymentMethod.name() == 'CREDIT_CARD' ? 'Thẻ tín dụng' : 'Khi nhận hàng'}" class="text-secondary text-center"></td>
 
                                                 <!-- Hiển thị trạng thái thanh toán -->
-                                                <td th:classappend="${order.payment.paymentStatus.name() == 'PENDING' ? 'text-danger' : (order.payment.paymentStatus.name() == 'COMPLETED' ? 'text-success' : 'text-warning')}"
+                                                <td th:classappend="${order.payment.paymentStatus.name() == 'PENDING' ? 'text-danger text-center' : (order.payment.paymentStatus.name() == 'COMPLETED' ? 'text-success text-center' : 'text-warning text-center')}"
                                                     th:text="${order.payment.paymentStatus.name() == 'PENDING' ? 'Chưa thanh toán' : (order.payment.paymentStatus.name() == 'COMPLETED' ? 'Đã thanh toán' : 'Thanh toán thất bại')}"></td>
 
                                                 <!-- Hiển thị trạng thái đơn hàng -->
-                                                <td th:classappend="${order.status.name() == 'PENDING' ? 'text-warning' : (order.status.name() == 'COMPLETED' ? 'text-success' : 'text-danger')}"
-                                                    th:text="${order.status.name() == 'PENDING' ? 'Chưa giao hàng' : (order.status.name() == 'COMPLETED' ? 'Giao hàng thành công' : 'Đã hủy đơn')}"></td>
+                                                <td th:classappend="${order.status.name() == 'PENDING' ? 'text-warning text-center' : (order.status.name() == 'COMPLETED' ? 'text-success text-center' : (order.status.name() == 'ON_PROGRESS' ? 'text-primary text-center' : 'text-danger text-center'))}"
+                                                    th:text="${order.status.name() == 'PENDING' ? 'Chờ xác nhận' : (order.status.name() == 'COMPLETED' ? 'Hoàn thành' : (order.status.name() == 'ON_PROGRESS' ? 'Đang xử lý' : 'Đã hủy'))}"></td>
 
                                                 <!-- Các hành động trên đơn hàng -->
                                                 <td>
@@ -297,13 +285,18 @@
                                                         <!-- Nút xem chi tiết đơn hàng -->
                                                         <button type="button" title="Xem chi tiết" class="btn btn-outline-dark me-1 btn-sm" data-bs-toggle="modal" data-bs-target="#detailOrderModal"
                                                                 th:data-order-user-name="${order.user.username}"
+                                                                th:data-order-user-fullname="${order.user.fullname}"
+                                                                th:data-order-user-phone="${order.user.phone}"
                                                                 th:data-order-create="${order.createdAt}"
+                                                                th:data-order-address="${order.address}"
                                                                 th:data-order-totalAmount="${order.totalAmount}"
-                                                                th:data-order-payment-method="${order.payment.paymentMethod.name() == 'CREDIT_CARD' ? 'Thẻ tín dụng' : 'Khi giao hàng'}"
+                                                                th:data-order-totalPayment="${order.totalPayment}"
+                                                                th:data-order-totalDiscount="${order.totalDiscount}"
+                                                                th:data-order-paymentDate="${order.payment.paymentDate}"
+                                                                th:data-order-payment-method="${order.payment.paymentMethod.name() == 'CREDIT_CARD' ? 'Thẻ tín dụng' : 'Khi nhận hàng'}"
                                                                 th:data-order-payment-status="${order.payment.paymentStatus.name() == 'PENDING' ? 'Chưa thanh toán' : (order.payment.paymentStatus.name() == 'COMPLETED' ? 'Đã thanh toán' : 'Thanh toán thất bại')}"
-                                                                th:data-order-status="${order.status.name() == 'PENDING' ? 'Chưa giao hàng' : (order.status.name() == 'COMPLETED' ? 'Giao hàng thành công' : 'Đã hủy đơn')}"
-                                                                th:data-order-update="${order.updatedAt}"
-                                                                th:onclick="'loadorderImageToModal(' + ${order.orderId} + ')'">
+                                                                th:data-order-status="${order.status.name() == 'PENDING' ? 'Chờ xác nhận' : (order.status.name() == 'COMPLETED' ? 'Hoàn thành' : (order.status.name() == 'ON_PROGRESS' ? 'Đang xử lý' : 'Đã hủy'))}"
+                                                                th:data-order-update="${order.updatedAt}">
                                                             <i class="fas fa-eye"></i>
                                                         </button>
 
@@ -313,9 +306,9 @@
                                                         </a>
 
                                                         <!-- Nút xóa đơn hàng -->
-                                                        <button type="button" data-bs-toggle="tooltip" th:onclick="'deleteOrder(' + ${order.orderId} + ')'" title="Xóa đơn hàng" class="btn btn-outline-danger btn-sm">
+                                                        <!-- <button type="button" data-bs-toggle="tooltip" th:onclick="'deleteOrder(' + ${order.orderId} + ')'" title="Xóa đơn hàng" class="btn btn-outline-danger btn-sm">
                                                             <i class="fas fa-trash-alt"></i>
-                                                        </button>
+                                                        </button> -->
                                                     </div>
                                                 </td>
                                             </tr>
@@ -323,7 +316,7 @@
                                         </table>
                                     </div>
 
-                                    <div class="modal fade modal-lg modal-dialog-scrollable" id="detailOrderModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal fade modal-xl modal-dialog-scrollable" id="detailOrderModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -331,43 +324,66 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <div class="col-md-8">
+                                                <div class="row">
+                                                    <div class="col-ms-6 col-md-6">
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <div class="card-title">Thông tin đơn hàng</div>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="d-flex justify-content-between">
+                                                                    <h5  id="modal-order-price">
+                                                                        Người đặt
+                                                                    </h5>
+                                                                    <p><b class="text-muted" id="modal-order-fullname">fullname</b></p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <p>Điện thoại</p>
+                                                                    <p class="text-muted" id="modal-order-phone">0494846534</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <p>Trạng thái đơn hàng</p>
+                                                                    <p class="text-muted" id="modal-order-status"></p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <p>Thông tin nhận hàng</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <p class="text-muted ms-3" id="modal-order-address">address</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-ms-6 col-md-6">
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <div class="card-title">Thông tin thanh toán</div>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="d-flex justify-content-between">
+                                                                    <p>Phương thức thanh toán</p>
+                                                                    <p class="text-muted" id="modal-order-payment-method">Phương thức thanh toán</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <p>Trạng thái thanh toán</p>
+                                                                    <p class="text-muted" id="modal-order-payment-status">Trạng thái thanh toán</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between mt-2">
+                                                                    <p>Thời gian thanh toán</p>
+                                                                    <p class="text-muted" id="modal-order-payment-date"></p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
                                                     <div class="card">
                                                         <div class="card-header">
-                                                            <div class="card-title">Thông tin đơn hàng</div>
+                                                            <div class="card-title">Chi tiết</div>
                                                         </div>
                                                         <div class="card-body">
-                                                            <div class="d-flex justify-content-between">
-                                                                <div>
-                                                                    <h5 class="text-muted" id="modal-order-price">
-                                                                        Khách hàng:
-                                                                    </h5>
-                                                                    <h5><b id="modal-order-username">Cơm xào me</b></h5>
-                                                                </div>
-
-                                                                <h5 class="text-secondary fw-bold" id="modal-order-totalamount">
-                                                                    189,000đ
-                                                                </h5>
-                                                            </div>
-                                                            <div class="d-flex justify-content-between">
-                                                                <p>Phương thức thanh toán</p>
-                                                                <p class="text-muted" id="modal-order-payment-method">Đang phục vụ</p>
-                                                            </div>
-                                                            <div class="d-flex justify-content-between">
-                                                                <p>Trạng thái thanh toán</p>
-                                                                <p class="text-muted" id="modal-order-payment-status">Hiện</p>
-                                                            </div>
-                                                            <div class="d-flex justify-content-between mt-2">
-                                                                <p>Trạng thái đơn hàng</p>
-                                                                <p class="text-muted" id="modal-order-status">19/10/2024 14:23:12</p>
-                                                            </div>
-                                                            <div class="d-flex justify-content-between">
-                                                                <p>Khởi tạo</p>
-                                                                <p class="text-muted" id="modal-order-createDate">20/10/2024 18:32:04</p>
-                                                            </div>
-                                                            <div class="d-flex justify-content-between">
-                                                                <p>Cập nhật</p>
-                                                                <p class="text-muted" id="modal-order-updateDate">20/10/2024 18:32:04</p>
+                                                            <div class="row">
+                                                                
                                                             </div>
                                                         </div>
                                                     </div>
@@ -455,7 +471,13 @@
         detailOrderModal.addEventListener('show.bs.modal', event => {
             const button = event.relatedTarget;
             const orderUsername = button.getAttribute('data-order-user-name')
+            const orderFullname = button.getAttribute('data-order-user-fullname')
+            const orderPhone = button.getAttribute('data-order-user-phone')
+            const orderAddress = button.getAttribute('data-order-address')
             const orderTotalAmount = button.getAttribute('data-order-totalAmount')
+            const totalDiscount = button.getAttribute('data-order-totalDiscount')
+            const totalPayment = button.getAttribute('data-order-totalPayment')
+            const paymentDate = button.getAttribute('data-order-paymentDate')
             const orderPaymentMethod = button.getAttribute('data-order-payment-method')
             const orderPaymentStatus = button.getAttribute('data-order-payment-status')
             const orderStatus = button.getAttribute('data-order-status')
@@ -463,13 +485,14 @@
             const orderUpdate = button.getAttribute('data-order-update')
 
 
-
-
-            detailOrderModal.querySelector('#modal-order-username').textContent = orderUsername;
-            detailOrderModal.querySelector('#modal-order-totalamount').textContent = orderTotalAmount;
+            detailOrderModal.querySelector('#modal-order-fullname').textContent = orderFullname;
+            detailOrderModal.querySelector('#modal-order-phone').textContent = orderPhone;
+            detailOrderModal.querySelector('#modal-order-address').textContent = orderAddress;
+            // detailOrderModal.querySelector('#modal-order-totalpayment').textContent = totalPayment;
             detailOrderModal.querySelector('#modal-order-payment-method').textContent = orderPaymentMethod;
             detailOrderModal.querySelector('#modal-order-payment-status').textContent = orderPaymentStatus;
             detailOrderModal.querySelector('#modal-order-status').textContent = orderStatus;
+
             const options = {
                 day: '2-digit',
                 month: '2-digit',
@@ -480,9 +503,35 @@
             };
             const createAt = new Date(orderCreate)
             const updateAt = new Date(orderUpdate)
+            const paymentAt = new Date(paymentDate)
+            if(orderPaymentStatus == 'Đã thanh toán'){
+                detailOrderModal.querySelector('#modal-order-payment-date').textContent = new Intl.DateTimeFormat('vi-VN',options).format(paymentAt)
+            }
+
             detailOrderModal.querySelector('#modal-order-createDate').textContent = new Intl.DateTimeFormat('vi-VN',options).format(createAt)
             detailOrderModal.querySelector('#modal-order-updateDate').textContent = new Intl.DateTimeFormat('vi-VN',options).format(updateAt)
         })
+
+        function onComfirmOrder(id){
+            const row = document.getElementById(id+'pending')
+
+            $.ajax({
+                url: '/L1/restaurant/orders/'+id+'/confirm',
+                method: 'GET',
+                success: function(response){
+                    result = JSON.parse(response)
+                    if(result.confirm){
+                        setTimeout(function() {
+                            row.remove()
+                        }, 500)
+                        window.location.reload(true);
+                    }
+                },
+                error: function(e) {
+                    console.log(e.error)
+                }
+            })
+        }
 
         function deleteOrder(orderId) {
             swal({

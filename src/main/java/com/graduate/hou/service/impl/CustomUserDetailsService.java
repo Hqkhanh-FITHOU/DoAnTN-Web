@@ -2,6 +2,7 @@ package com.graduate.hou.service.impl;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,18 +28,17 @@ public class CustomUserDetailsService implements UserDetailsService{
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userService.findByUserName(username).get();
-        if(user == null){
-            throw new UsernameNotFoundException("User not found");
-        }
-        log.info(username);
+        Optional<User> user = Optional.ofNullable(userService.findByUserName(username)
+                                .orElseGet(() -> userService.findByPhone(username)
+                                .orElseThrow(() -> new UsernameNotFoundException("User not found with username or phone: " + username))));
+        log.info(user.get().toString());
         Collection<GrantedAuthority> authorities = new HashSet<>();
-        Set<RoleUsers> roles = user.getRoles();
+        Set<RoleUsers> roles = user.get().getRoles();
         for(RoleUsers role : roles){
             authorities.add(new SimpleGrantedAuthority(role.name()));
         }
         log.info(roles.toString());
-        return new CustomUserDetails(user, authorities);
+        return new CustomUserDetails(user.get(), authorities);
     }
 
 }

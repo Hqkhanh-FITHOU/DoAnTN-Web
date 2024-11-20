@@ -54,8 +54,6 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "user")
-    List<Address> addresses;
 
     @OneToMany(mappedBy = "user")
     List<Notification> notifications;
@@ -68,5 +66,6 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     List<Response> respone;
+
 
 }
