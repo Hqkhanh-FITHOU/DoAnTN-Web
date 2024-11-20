@@ -43,6 +43,12 @@ public class Order {
     @Column(nullable = true)
     private String address;
 
+    @Column(nullable = true)
+    private String note;
+
+    @Column(nullable = true)
+    private String cancelReason;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 

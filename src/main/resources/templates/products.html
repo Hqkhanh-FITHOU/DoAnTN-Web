@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security6">
-<head th:replace="~{fragments/head :: head}"></head>
+<head th:replace="~{fragments/head :: head}">
+    <meta http-equiv="refresh" content="1; url=/reloadPage">
+</head>
 <body>
     <div class="wrapper">
         <!-- Sidebar -->
@@ -188,7 +190,7 @@
                                                         <!-- <img th:src="@{'/uploads/'+${product.productImages[0].pathString}}" alt="image" class="img-fluid rounded" width="40px"> -->
                                                         <span th:text="${product.name}" class="fw-bold ms-1"></span>
                                                     </td>
-                                                    <td th:text="${product.price}"></td>
+                                                    <td th:text="${#numbers.formatDecimal(product.price, 0, 'POINT', 0, 'COMMA') + ' đ'}" class="text-center"></td>
                                                     <td th:text="${product.category.name}"></td>
                                                     <td th:if="${product.isServing}" th:text="'Đang phục vụ'" class="text-success"></td>
                                                     <td th:if="${!product.isServing}" th:text="'Tạm ngưng phục vụ'" class="text-warning"></td>

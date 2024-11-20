@@ -141,49 +141,151 @@
                         <form role="form" th:action="@{/restaurant/orders/new}" th:object="${order}" method="post" enctype="multipart/form-data">
                         <div class="card">
                             <div class="card-header">
-                                <div class="card-title">Thông tin</div>
+                                <div class="card-title">Đơn hàng</div>
                             </div>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6 col-lg-6">
-<!--                                        người đặt hàng-->
-                                        <div class="form-group">
-                                            <label for="user">Số điện thoại người đặt hàng<span class="text-danger">*</span></label>
-                                            <select class="form-select" id="user" th:field="*{userId}">
-                                                <option th:each="user : ${user}" th:value="${user.userId}" th:text="${user.phone}"></option>
-                                            </select>
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="card-title">Thông tin nhận hàng</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label for="fullname">Họ và tên<span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" id="fullname" placeholder="Họ và tên người nhận" th:field="*{totalAmount}" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="phone">Số điện thoại<span class="text-danger">*</span></label>
+                                                    <input type="tel" class="form-control" id="phone" placeholder="Điện thoại" th:field="*{totalAmount}" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="address">Địa chỉ nhận hàng<span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" id="address" placeholder="Địa chỉ" th:field="*{totalAmount}" required>
+                                                </div>
+                                            </div>
                                         </div>
-<!--                                         giá tiền-->
-                                        <div class="form-group">
-                                            <label for="totalAmount">Tổng tiền<span class="text-danger">*</span></label>
-                                            <input type="number" class="form-control" id="totalAmount" placeholder="Nhập giá tiền" th:field="*{totalAmount}" required>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="card-title">Thông tin thanh toán</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label for="paymentMethod">Hình thức thanh toán<span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" id="paymentMethod" placeholder="Hình thức thanh toán" th:field="*{totalAmount}" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="paymentStatus">Trạng thái thanh toán<span class="text-danger">*</span></label>
+                                                    <input type="tel" class="form-control" id="paymentStatus" placeholder="Trạng thái thanh toán" th:field="*{totalAmount}" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="orderDate">Thời gian đặt hàng<span class="text-danger">*</span></label>
+                                                    <input type="datetime-local" class="form-control" id="orderDate" placeholder="Địa chỉ" th:field="*{totalAmount}" disabled required>
+                                                </div>
+                                            </div>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-12">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="card-title">Ghi chú</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <textarea type="text" class="form-control" id="paymentMethod" rows="2" placeholder="Ghi chú" th:field="*{totalAmount}"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 col-lg-4">
+                                        <div class="card" id="product-list">
+                                            <div class="card-header">
+                                                <h5 class="card-title">Món ăn</h5>
+                                            </div>
+                                            <div class="card-body" style="max-height: 500px; overflow-y: auto;">
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th></th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr th:each="product : ${products}">
+                                                                <td style="width: 50px;">
+                                                                    <input class="form-check-input m-0 p-0 product-list-item" type="checkbox" th:value="${product.productId}" th:id="${'chk'+product.productId}" aria-label="..." th:data-price="${product.price}">
+                                                                </td>
+                                                                <td th:if="${product.productImages != null && !product.productImages.isEmpty()}" class="d-flex flex-row align-items-start">
+                                                                    <img th:src="@{'/uploads/product/'+${product.productImages[0].pathString}}" alt="image" class="img-fluid rounded align-self-center me-1 p-0" width="50px" height="40px" th:id="${'img'+product.productId}">
+                                                                    <div class="d-flex flex-column align-items-start ms-2 align-self-center p-0">
+                                                                        <span th:text="${product.name}" class="fw-bold" th:id="${'name'+product.productId}"></span>
+                                                                        <span th:text="${#numbers.formatDecimal(product.price, 0, 'POINT', 0, 'COMMA') + ' đ'}" th:id="${'price'+product.productId}"></span>
+                                                                    </div>
+                                                                </td>
+                                                                <td th:if="${product.productImages == null || product.productImages.isEmpty()}" class="d-flex flex-row align-items-center p-0">
+                                                                    <!-- <img th:src="@{'/uploads/'+${product.productImages[0].pathString}}" alt="image" class="img-fluid rounded" width="40px"> -->
+                                                                    <div class="d-flex flex-column align-items-start ms-2 align-self-center p-0">
+                                                                        <span th:text="${product.name}" class="fw-bold"></span>
+                                                                        <span th:text="${#numbers.formatDecimal(product.price, 0, 'POINT', 0, 'COMMA') + ' đ'}" ></span>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 col-lg-8">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="card-title">Chi tiết đơn</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Món ăn</th>
+                                                                <th class="text-end">Số lượng</th>
+                                                                <th class="text-end">Đơn giá</th>
+                                                                <th class="text-end">Tổng</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <!-- <tr id="data">
+                                                                <td>
 
-<!--                                        trạng thái đơn hàng-->
-                                        <div class="form-group">
-                                            <label for="status">Trạng thái đơn hàng<span class="text-danger">*</span></label>
-                                            <select class="form-control" id="status" th:field="*{status}" required>
-                                                <option th:each="status : ${T(com.graduate.hou.enums.OrderStatus).values()}"
-                                                        th:value="${status}" th:text="${status}">Status</option>
-                                            </select>
+                                                                </td>
+                                                                <td class="text-end"></td>
+                                                                <td class="text-end"></td>
+                                                                <td class="text-end"></td>
+                                                            </tr> -->
+                                                            <tr id="totalRow">
+                                                                <td colspan="3" class="text-end">Tổng tiền hàng</td>
+                                                                <td class="text-end" id="totalAmount">0đ</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3" class="text-end">Tổng khuyến mãi</td>
+                                                                <td class="text-end">0đ</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3" class="text-end">Tổng thanh toán</td>
+                                                                <td class="text-end">0đ</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
                                         </div>
-
-<!--                                        địa chỉ-->
-                                        <div class="form-group">
-                                            <label for="address">Địa chỉ<span class="text-danger">*</span></label>
-                                            <select class="form-select" id="address" th:field="*{addressId}">
-                                                <option th:each="address : ${address}" th:value="${address.addressId}" th:text="${address.city}"></option>
-                                            </select>
-                                        </div>
-<!--                                        thanh toán-->
-                                        <div class="form-group">
-                                            <label for="payment">Thanh toán<span class="text-danger">*</span></label>
-                                            <select class="form-select" id="payment" th:field="*{paymentId}">
-                                                <option th:each="payment : ${payment}" th:value="${payment.paymentId}" th:text="${payment.paymentId}"></option>
-                                            </select>
-                                        </div>
-
-
                                     </div>
                                 </div>
                             </div>
@@ -210,6 +312,130 @@
     
 	<div th:replace="~{fragments/script :: script}">
 	</div>
-    
+    <script>
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0'); // Tháng từ 0 đến 11 nên cộng thêm 1
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        const currentTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+
+        document.getElementById('orderDate').setAttribute('max', currentTime);
+        document.getElementById('orderDate').setAttribute('value', currentTime);
+
+        const totalRow = document.getElementById('totalRow');
+        const checkboxes = document.querySelectorAll('.product-list-item')
+        const numberFotmater = new Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                // Kiểm tra xem checkbox có được tick hay không
+                if (checkbox.checked) {
+                    // Nếu được tick, thêm món vào danh sách gọi món
+                    addToOrder(checkbox.value, checkbox.dataset.price);
+                } else {
+                    // Nếu bỏ tick, xóa món khỏi danh sách gọi món
+                    removeFromOrder(checkbox.value, checkbox.dataset.price);
+                }
+            });
+        });
+
+        var totalPrice = 0.0
+
+        function addToOrder(productId, unitPrice) {
+            totalPrice += parseFloat(unitPrice)
+            console.log(totalPrice);
+            updateTotolPrice(totalPrice)
+            const newRow = document.createElement('tr');
+            const img = document.getElementById('img'+productId).cloneNode(true)
+            const name = document.getElementById('name'+productId).cloneNode(true)
+            img.id = 'selected-img'+productId
+            name.id = 'selected-name'+productId
+            newRow.setAttribute('id', 'selected-product-'+productId)
+            // Thêm các <td> vào <tr> mới
+            const dish = document.createElement('td');
+            dish.appendChild(img)
+            dish.appendChild(name)
+            newRow.appendChild(dish);
+
+            const quantity = document.createElement('td');
+            quantity.id = 'quantity' + productId
+            quantity.className = 'text-end';
+            quantity.style.whiteSpace = 'nowrap'
+            const quantityInput = document.createElement('input');
+            quantityInput.type = 'number';
+            quantityInput.id = 'quantityInput' + productId
+            quantityInput.style.width = '30px'
+            quantityInput.style.height = '32px'
+            quantityInput.className = 'text-center';
+            quantityInput.value = '1'; // Initial quantity
+            quantityInput.min = '1';  // Minimum value
+
+            // Create the decrease button (-)
+            const decreaseButton = document.createElement('button');
+            decreaseButton.textContent = '-';
+            decreaseButton.className = 'btn btn-primary btn-sm quantity-btn'+productId;
+            decreaseButton.type = 'button'
+
+            // Create the increase button (+)
+            const increaseButton = document.createElement('button');
+            increaseButton.textContent = '+';
+            increaseButton.type = 'button'
+            increaseButton.className = 'btn btn-primary btn-sm quantity-btn'+productId;
+
+            decreaseButton.addEventListener('click', () => {
+                let currentValue = parseInt(quantityInput.value);
+                if (currentValue > 1) { // Prevent negative or zero quantities
+                    quantityInput.value = currentValue - 1;
+                    totalPrice -= parseFloat(unitPrice)
+                    updateTotolPrice(totalPrice)
+                    total.textContent = numberFotmater.format(quantityInput.value * unitPrice) + 'đ'
+                }
+            });
+
+            increaseButton.addEventListener('click', () => {
+                let quantityValue = parseInt(quantityInput.value);
+                quantityInput.value = quantityValue + 1;
+                totalPrice += parseFloat(unitPrice)
+                updateTotolPrice(totalPrice)
+                total.textContent = numberFotmater.format(quantityInput.value * unitPrice) + 'đ'
+            });
+
+            quantity.appendChild(decreaseButton);
+            quantity.appendChild(quantityInput);
+            quantity.appendChild(increaseButton);
+            newRow.appendChild(quantity);
+
+            const price = document.createElement('td');
+            price.className = 'text-end';
+            price.textContent = numberFotmater.format(unitPrice) +  'đ'
+            newRow.appendChild(price);
+
+            const total = document.createElement('td');
+            total.className = 'text-end';
+            total.textContent = numberFotmater.format(quantityInput.value * unitPrice) + 'đ'
+            newRow.appendChild(total);
+
+            // Chèn <tr> mới vào trước <tr id="total">
+            totalRow.insertAdjacentElement('beforebegin', newRow);
+
+            // Add event listeners for the buttons
+            
+        }
+
+        function removeFromOrder(productId, unitPrice) {
+            const selected = document.getElementById('selected-product-'+productId)
+            const quantityInput = document.getElementById('quantityInput'+productId)
+            totalPrice -= parseInt(quantityInput.value) * parseFloat(unitPrice)
+            updateTotolPrice(totalPrice)
+            selected.remove()
+        }
+
+        function updateTotolPrice(value){
+            const totalAmount = document.getElementById('totalAmount')
+            totalAmount.textContent = numberFotmater.format(value) + 'đ'
+        }
+    </script>
 </body>
 </html>

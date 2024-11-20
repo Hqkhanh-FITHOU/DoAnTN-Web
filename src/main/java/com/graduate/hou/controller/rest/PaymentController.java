@@ -15,12 +15,12 @@ public class PaymentController {
     @Autowired
     private PaymentServiceImpl paymentService;
 
-    @PostMapping
+    @PostMapping("/add")
     Payment createPayment(@RequestBody PaymentDTO paymentDTO){
         return paymentService.createPayment(paymentDTO);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     List<Payment> getAllPayment(){
         return paymentService.getAllPayment();
     }

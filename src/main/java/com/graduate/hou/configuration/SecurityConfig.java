@@ -85,9 +85,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(WHILELIST).permitAll()
                         .requestMatchers(
-                            "/restaurant/**",
-                            "/user/**",
-                            "/order/**"
+                            "/restaurant/**"
                             ).hasAuthority("ADMIN")
                         .requestMatchers("/restaurant/login/**").permitAll()
                         .requestMatchers(
@@ -95,7 +93,8 @@ public class SecurityConfig {
                             "/product/**",
                             "/category/**",
                             "/productimage/**",
-                            "/uploads/**"
+                            "/uploads/**",
+                            "/orderItem/**"
                             ).permitAll()
                         .anyRequest().authenticated())
                 .formLogin(login -> login

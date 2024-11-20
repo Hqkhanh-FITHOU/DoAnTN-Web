@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 
+
 @Controller
 @RequestMapping("/restaurant")
 @Slf4j
@@ -62,8 +63,9 @@ public class RestaurantController {
         return "index";
     }
 
+
     @GetMapping("/login")
-    public String goLogin(Authentication authentication) {
+    public String goLogin(Authentication authentication, Model model) {
         if (authentication != null && authentication.isAuthenticated()) {
             return "redirect:/restaurant/dashboard";
         }
@@ -73,17 +75,16 @@ public class RestaurantController {
     @GetMapping("/orders")
     public String goOrdersManagement(Model model) {
         List<Order> orders = this.orderService.getAllOrder();
+        List<Order> pendingOrders = this.orderService.getPendingOrder();
         model.addAttribute("orders", orders);
+        model.addAttribute("pendingOrders", pendingOrders);
         return "orders";
     }
 
     @GetMapping("/orders/new")
     public String goAddNewOrder(Model model) {
-        model.addAttribute("order", new OrderDTO());
-        model.addAttribute("user", userService.getAllUser());
-        model.addAttribute("payment", paymentService.getAllPayment());
-        model.addAttribute("address", addressService.getAllAddress());
-
+        model.addAttribute("order", new OrderDTO2());
+        model.addAttribute("products", productService.getAllProducts());
         return "orders/add";
     }
 
@@ -95,6 +96,13 @@ public class RestaurantController {
         }
         return "redirect:/restaurant/orders";
     }
+
+    @GetMapping("/orders/{id}/confirm")
+    @ResponseBody
+    public String confirmOrder(@PathVariable("id") Long id) {
+        return "{ \"confirm\":"+ orderService.confirmOrder(id) +"}";
+    }
+    
 
     @GetMapping("/orders/{id}/edit")
     public String goEditOrder(@PathVariable("id") Long id, Model model) {
@@ -182,9 +190,16 @@ public class RestaurantController {
     }
 
     @PostMapping("/products/new")
-    public String saveProduct(@ModelAttribute("product") ProductDTO productDTO) {
+    public String saveProduct(@ModelAttribute("product") ProductDTO productDTO, Model model) {
+        if(productService.isExistProductWithName(productDTO.getName(), 0L)) {
+            model.addAttribute("errorName", "Đã tồn tại món ăn có tên này");
+            model.addAttribute("categories", categoryService.getAllCategory());
+            model.addAttribute("product", productDTO);
+            return "products/add";
+        }
         Product newProduct = productService.createProduct(productDTO); // save to database
         if (newProduct == null) {
+            model.addAttribute("product", productDTO);
             return "products/add";
         }
         int count = 0;
@@ -223,13 +238,21 @@ public class RestaurantController {
     public String updateProduct(@PathVariable("id") Long id, Model model) {
         model.addAttribute("categories", categoryService.getAllCategory());
         model.addAttribute("product", ProductMapper.toDTO(productService.findProductById(id)));
+        model.addAttribute("productId", id);
         return "products/edit";
     }
 
 
     @PostMapping("/products/{id}/edit")
-    public String postMethodName(@PathVariable("id") Long id, @ModelAttribute("product") ProductDTO productDTO) {
+    public String postMethodName(@PathVariable("id") Long id, @ModelAttribute("product") ProductDTO productDTO, Model model) {
+        if(productService.isExistProductWithName(productDTO.getName(), productDTO.getProductId())) {
+            model.addAttribute("errorName", "Đã tồn tại món ăn có tên này");
+            model.addAttribute("categories", categoryService.getAllCategory());
+            model.addAttribute("product", productDTO);
+            return "products/edit";
+        }
         if (!productService.updateProduct(id,productDTO)) {
+            model.addAttribute("product", productDTO);
             return "products/edit";
         }
         int count = 0;
@@ -267,18 +290,22 @@ public class RestaurantController {
     @ResponseBody
     public String deleteProduct(@PathVariable("id") Long id) {
         Product product = productService.findProductById(id);
-        for(ProductImage img : product.getProductImages()){
-            storageService.removeProductImage(img.getPathString());
-            productImageService.deleteProductImage(img.getImageId());
+        boolean deletable = !productService.existInAnyOrder(id);
+        if(deletable){
+            for(ProductImage img : product.getProductImages()){
+                storageService.removeProductImage(img.getPathString());
+                productImageService.deleteProductImage(img.getImageId());
+            }
         }
         return "{ \"delete\":"+ productService.deleteProduct(id) +"}";
     }
 
     @GetMapping("/accounts")
-    public String goAccountsManagement(Model model) {
+    public String goAccountsManagement(Model model, Authentication authentication) {
         List<User> users = this.userService.getAllUser();
+        User user = userService.findByUserName(authentication.getName()).get();
         model.addAttribute("accounts" , users);
-
+        model.addAttribute("currentAccountId", user.getUserId());
         return "accounts";
     }
 

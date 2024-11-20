@@ -14,8 +14,6 @@ import java.time.LocalDateTime;
 public class PaymentDTO {
     private Long paymentId;
 
-    private Long orderId;
-
     private PaymentMethod paymentMethod;
 
     private PaymentStatus paymentStatus;

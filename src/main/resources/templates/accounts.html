@@ -171,7 +171,10 @@
 
                                                 <td th:text="${account.userPoint}"></td>
                                                 <td>
-                                                    <div class="form-button-action">
+                                                    <div th:if="${currentAccountId == account.userId}">
+                                                        <span class="text-success">Đang đăng nhập</span>
+                                                    </div>
+                                                    <div th:unless="${currentAccountId == account.userId}" class="form-button-action">
                                                         <button th:each="role : ${account.roles}" type="button" title="See" class="btn btn-outline-dark me-1 btn-sm" data-bs-toggle="modal" data-bs-target="#detailAccountModal"
                                                                 th:data-account-name="${account.fullname}"
                                                                 th:data-account-email="${account.email}"
@@ -298,8 +301,6 @@
             const accountUpdate = button.getAttribute('data-account-update')
 
 
-
-
             detailAccountModal.querySelector('#modal-account-name').textContent = accounName;
 
             detailAccountModal.querySelector('#modal-account-emmail').textContent = accountEmail;
@@ -357,7 +358,7 @@
                                     window.location.href = 'accounts'
                                 })
                             } else {
-                                swal("Danh mục đã có món ăn, không thể xóa", {
+                                swal("Tài khoản vẫn đang được sử dụng, không thể xóa", {
                                     icon: "error",
                                     buttons : {
                                         confirm : {

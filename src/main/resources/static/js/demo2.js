@@ -4,30 +4,24 @@ var myLegendContainer = document.getElementById("myChartLegend");
 // var dailySalesChart = document.getElementById('dailySalesChart').getContext('2d');
 const btnSignUp = document.getElementById('btn-login')
 //Notify
-$.notify({
-	icon: 'icon-user',
-	title: 'Xin chào',
-	message: 'Đây là đồ án tốt nghiệp của Khánh',
-},{
-	type: 'secondary',
-	placement: {
-		from: "bottom",
-		align: "right"
-	},
-	time: 1000,
-});
+// $.notify({
+// 	icon: 'icon-user',
+// 	title: 'Xin chào',
+// 	message: 'Đây là đồ án tốt nghiệp của Khánh',
+// },{
+// 	type: 'secondary',
+// 	placement: {
+// 		from: "bottom",
+// 		align: "right"
+// 	},
+// 	time: 1000,
+// });
 
 function onClickSignUp(){
 	$('.container-signup').attr('style','display: none')
 	$('.container-login').attr('style','display: block')
 }
 
-function onComfirmOrder(){
-	const row = document.getElementById('item-2')
-	setTimeout(function() {
-		row.remove()
-	}, 1000)
-}
 // Cicle Chart
 // Circles.create({
 // 	id:           'task-complete',
