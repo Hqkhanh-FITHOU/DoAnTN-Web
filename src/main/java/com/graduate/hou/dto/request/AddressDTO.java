@@ -14,15 +14,7 @@ public class AddressDTO {
 
     private Long userId;
 
-    private String number; //số nhà
-
-    private String street; //đường
-
-    private String city; //thành phố/tỉnh
-
-    private String district; // quận
-
-    private String ward; //phường
+    private String detail; //số nhà
 
     private AddressType addressType; //phường
 }

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.graduate.hou.dto.request.ProductDTO;
 import com.graduate.hou.entity.Category;
 import com.graduate.hou.entity.Product;
@@ -67,9 +66,6 @@ public class ProductServiceImpl implements ProductService{
     public boolean deleteProduct(Long id) {
         Product product = productRepository.findById(id).get();
         if(product != null){
-            /**
-             * TODO: kiểm tra xem món ăn có trong chu kỳ tính doanh thu không nếu có thì không cho xóa 
-             */
             try {
                 productRepository.deleteById(id);
                 return true;
@@ -81,10 +77,24 @@ public class ProductServiceImpl implements ProductService{
         return true;
     }
 
+    
+
     @Override
     public Product findProductById(Long id) {
         Optional<Product> product = productRepository.findById(id);
         return product.get();
     }
+
+    @Override
+    public boolean isExistProductWithName(String name, Long id) {
+        return productRepository.existsByNameAndProductIdNot(name, id);
+    }
+
+    @Override
+    public boolean existInAnyOrder(Long id) {
+        return productRepository.existsByOrderItems_ProductProductId(id);
+    }
+
+
 
 }

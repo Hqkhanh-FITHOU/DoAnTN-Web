@@ -15,6 +15,7 @@ public interface UserService {
     boolean deleteUser(Long id);
 
     Optional<User> findByUserName(String username);
+    Optional<User> findByPhone(String phone);
 
     User findByUserId(Long id);
 }

@@ -10,9 +10,13 @@ public interface ProductService {
 
     Product findProductById(Long id);
 
+    boolean isExistProductWithName(String name, Long id);
+
     Product createProduct(ProductDTO productDTO);
 
     boolean updateProduct(Long id, ProductDTO productDTO);
 
     boolean deleteProduct(Long id);
+
+    boolean existInAnyOrder(Long id);
 }

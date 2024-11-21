@@ -1,7 +1,6 @@
 package com.graduate.hou.service.impl;
 
 import com.graduate.hou.dto.request.UsersDTO;
-import com.graduate.hou.entity.Product;
 import com.graduate.hou.entity.User;
 import com.graduate.hou.repository.UsersRepository;
 import com.graduate.hou.service.UserService;
@@ -129,6 +128,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findByUserName(String username) {
         return usersRepository.findByUsername(username);
+    }
+
+    @Override
+    public Optional<User> findByPhone(String phone) {
+        return usersRepository.findByPhone(phone);
     }
 
     @Override

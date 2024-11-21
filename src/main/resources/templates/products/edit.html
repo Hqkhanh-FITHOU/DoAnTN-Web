@@ -149,6 +149,7 @@
                                         <div class="form-group">
                                             <label for="productName">Tên món<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" id="productName" placeholder="Nhập tên món ăn" th:field="*{name}" required>
+                                            <span class="text-danger" th:text="${errorName}"></span>
                                         </div>
                                         <div class="form-group">
                                             <label for="category">Loại<span class="text-danger">*</span></label>

@@ -178,7 +178,10 @@
                                                     <img th:src="@{'/'+ ${account.avatar}}" alt="User Avatar" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
                                                 </td>
                                                 <td>
-                                                    <div class="form-button-action">
+                                                    <div th:if="${currentAccountId == account.userId}">
+                                                        <span class="text-success">Đang đăng nhập</span>
+                                                    </div>
+                                                    <div th:unless="${currentAccountId == account.userId}" class="form-button-action">
                                                         <button th:each="role : ${account.roles}" type="button" title="See" class="btn btn-outline-dark me-1 btn-sm" data-bs-toggle="modal" data-bs-target="#detailAccountModal"
                                                                 th:data-account-avatar="@{/} + ${account.avatar != null ? account.avatar : 'uploads/avatars/default-avatar.jpg'}"
                                                                 th:data-account-name="${account.fullname}"
@@ -386,7 +389,7 @@
                                     window.location.href = 'accounts'
                                 })
                             } else {
-                                swal("Danh mục đã có món ăn, không thể xóa", {
+                                swal("Tài khoản vẫn đang được sử dụng, không thể xóa", {
                                     icon: "error",
                                     buttons : {
                                         confirm : {

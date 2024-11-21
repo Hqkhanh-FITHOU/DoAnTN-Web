@@ -28,5 +28,4 @@ public class WebConfig implements WebMvcConfigurer{
         objectMapper.registerModule(new JavaTimeModule()); // Đăng ký module
         return objectMapper;
     }
-
 }

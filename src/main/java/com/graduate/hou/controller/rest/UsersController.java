@@ -26,6 +26,18 @@ public class UsersController {
         return ResponseEntity.ok(savedUser);
     }
 
+    @GetMapping("/{phone}")
+    public ResponseEntity<User> getUserByPhone(@PathVariable String phone){
+        User user = userService.findByPhone(phone).get();
+        return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/username/{username}")
+    public ResponseEntity<Long> getUserUserName(@PathVariable String username){
+        User user = userService.findByUserName(username).get();
+        return ResponseEntity.ok(user.getUserId());
+    }
+
     @GetMapping("/")
     List<User> getAllUser(){
         return userService.getAllUser();

@@ -16,12 +16,12 @@ public class OrderItemController {
     @Autowired
     private OrderItemServiceImpl orderItemService;
 
-    @PostMapping
+    @PostMapping("/add")
     OrderItem createOrderItem(@RequestBody OrderItemDTO orderItemDTO){
         return orderItemService.createOrderItem(orderItemDTO);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     List<OrderItem> getAllOrderItem(){
         return orderItemService.getAllOrderItem();
     }

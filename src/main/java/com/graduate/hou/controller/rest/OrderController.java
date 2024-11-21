@@ -2,7 +2,7 @@ package com.graduate.hou.controller.rest;
 
 import com.graduate.hou.dto.request.OrderDTO;
 import com.graduate.hou.entity.Order;
-import com.graduate.hou.service.impl.OrderServiceImpl;
+import com.graduate.hou.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -13,24 +13,24 @@ import java.util.List;
 @RequestMapping("/order")
 public class OrderController {
     @Autowired
-    private OrderServiceImpl orderService;
+    private OrderService orderService;
 
-    @PostMapping
+    @PostMapping("/add")
     Order createOrder(@RequestBody OrderDTO orderDTO){
         return orderService.createOrder(orderDTO);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     List<Order> getAllOrder(){
         return orderService.getAllOrder();
     }
 
-    @PutMapping("/{id}")
-    boolean updateOrder (@PathVariable Long id, @RequestBody OrderDTO orderDTO){
-        return orderService.updateOrder(id, orderDTO);
-    }
+    // @PutMapping("update/{id}")
+    // Order updateOrder (@PathVariable Long id, @RequestBody OrderDTO orderDTO){
+    //     return orderService.updateOrder(id, orderDTO);
+    // }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("delete/{id}")
     String deleteOrder(@PathVariable Long id){
         orderService.deleteOrder(id);
         return "Xóa thành công";
