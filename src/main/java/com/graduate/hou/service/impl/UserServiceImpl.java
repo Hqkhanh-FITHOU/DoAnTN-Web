@@ -9,12 +9,20 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+
+    private static final String UPLOAD_DIR = "uploads/";
     @Autowired
     private UsersRepository usersRepository;
 
@@ -25,7 +33,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(UsersDTO usersDTO) {
+    public User createUser(UsersDTO usersDTO,  MultipartFile avatarFile) throws IOException {
         User user = new User();
         user.setUsername(usersDTO.getUsername());
         user.setPassword(usersDTO.getPassword());
@@ -33,11 +41,31 @@ public class UserServiceImpl implements UserService {
         user.setEmail(usersDTO.getEmail());
         user.setPhone(usersDTO.getPhone());
         user.setRoles(usersDTO.getRoles());
+        if (avatarFile != null && !avatarFile.isEmpty()) {
+            // Tạo thư mục nếu chưa tồn tại
+            Path uploadPath = Paths.get(UPLOAD_DIR);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            // Tạo tên file duy nhất
+            String filename = System.currentTimeMillis() + "_" + avatarFile.getOriginalFilename();
+            Path filePath = uploadPath.resolve(filename);
+
+            try {
+                // Ghi file vào hệ thống
+                Files.write(filePath, avatarFile.getBytes());
+                user.setAvatar(filename); // Lưu tên file vào đối tượng user
+            } catch (IOException e) {
+                // Xử lý lỗi ghi file
+                throw new IOException("Could not save avatar file: " + e.getMessage(), e);
+            }
+        }
         return usersRepository.save(user);
     }
 
     @Override
-    public boolean updateUser(Long id, UsersDTO usersDTO) {
+    public boolean updateUser(Long id, UsersDTO usersDTO, MultipartFile avatarFile) throws IOException{
         Optional<User> optionalUser = usersRepository.findById(id);
         User user = optionalUser.get();
 
@@ -47,6 +75,27 @@ public class UserServiceImpl implements UserService {
         user.setEmail(usersDTO.getEmail());
         user.setPhone(usersDTO.getPhone());
         user.setRoles(usersDTO.getRoles());
+
+        if (avatarFile != null && !avatarFile.isEmpty()) {
+            // Tạo thư mục nếu chưa tồn tại
+            Path uploadPath = Paths.get(UPLOAD_DIR);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            // Tạo tên file duy nhất
+            String filename = System.currentTimeMillis() + "_" + avatarFile.getOriginalFilename();
+            Path filePath = uploadPath.resolve(filename);
+
+            try {
+                // Ghi file vào hệ thống
+                Files.write(filePath, avatarFile.getBytes());
+                user.setAvatar(filename); // Lưu tên file vào đối tượng user
+            } catch (IOException e) {
+                // Xử lý lỗi ghi file
+                throw new IOException("Could not save avatar file: " + e.getMessage(), e);
+            }
+        }
         user.setUserPoint(usersDTO.getPoint());
 
         try {

@@ -2,6 +2,7 @@ package com.graduate.hou.service.impl;
 
 import com.graduate.hou.dto.request.UserLoginDTO;
 import com.graduate.hou.dto.request.UserRegisterDTO;
+import com.graduate.hou.dto.request.UserRegisterDTO1;
 import com.graduate.hou.dto.response.TokenResponse;
 import com.graduate.hou.entity.CustomUserDetails;
 import com.graduate.hou.entity.User;
@@ -17,10 +18,21 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Base64;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
+
+    private static final String UPLOAD_DIR = "uploads/";
     private final UsersRepository usersRepository;
     
     private final CustomUserDetailsService userDetailsService;
@@ -67,6 +79,39 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
     @Override
+    public User register1(UserRegisterDTO1 registerDTO, MultipartFile avatar) throws Exception {
+
+
+        User user = new User();
+        user.setFullname(registerDTO.getFullname());
+        user.setUsername(registerDTO.getUsername());
+        user.setEmail(registerDTO.getEmail());
+        user.setPhone(registerDTO.getPhone());
+        user.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
+        user.setRoles(registerDTO.getRoles());
+        user.setUserPoint(0L);
+        if (avatar != null && !avatar.isEmpty()) {
+            String uploadDir = "uploads/avatars/";
+            String fileName = System.currentTimeMillis() + "_" + avatar.getOriginalFilename();
+            Path uploadPath = Paths.get(uploadDir);
+
+            // Tạo thư mục nếu chưa tồn tại
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            // Lưu file vào thư mục
+            File avatarFile = new File(uploadDir + fileName);
+            avatar.transferTo(avatarFile);
+
+            // Lưu đường dẫn ảnh vào database
+            user.setAvatar(uploadDir + fileName);
+        }
+
+        return usersRepository.save(user);
+    }
+
+    @Override
     public User register(UserRegisterDTO registerDTO) {
         User user = new User();
         user.setFullname(registerDTO.getFullname());
@@ -78,4 +123,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setUserPoint(0L);
         return usersRepository.save(user);
     }
+
+
 }

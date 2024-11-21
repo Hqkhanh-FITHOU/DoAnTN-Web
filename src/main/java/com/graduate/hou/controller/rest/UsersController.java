@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
 
 @Validated
@@ -18,8 +21,8 @@ public class UsersController {
 
 
     @PostMapping("/new")
-    public ResponseEntity<User> createNewUser(@RequestBody UsersDTO usersDTO){
-        User savedUser = userService.createUser(usersDTO);
+    public ResponseEntity<User> createNewUser(@RequestBody UsersDTO usersDTO, MultipartFile avatarFile) throws IOException {
+        User savedUser = userService.createUser(usersDTO, avatarFile);
         return ResponseEntity.ok(savedUser);
     }
 
@@ -41,8 +44,8 @@ public class UsersController {
     }
 
     @PutMapping("/update/{id}")
-    boolean updateUser (@PathVariable Long id, @RequestBody UsersDTO usersDTO){
-        return userService.updateUser(id, usersDTO);
+    boolean updateUser (@PathVariable Long id, @RequestBody UsersDTO usersDTO, MultipartFile avatarFile)throws IOException{
+        return userService.updateUser(id, usersDTO, avatarFile);
     }
 
     @DeleteMapping("/delete/{id}")

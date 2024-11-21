@@ -26,13 +26,13 @@
                             <p>Quản lý đơn hàng</p>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a th:href="@{/restaurant/products}" class="py-3">
                             <i class="fas fa-utensils"></i>
                             <p>Quản lý món ăn</p>
                         </a>
                     </li>
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a th:href="@{/restaurant/categories}" class="py-3">
                             <i class="fas fa-grip-horizontal"></i>
                             <p>Quản lý danh mục món ăn</p>
@@ -99,7 +99,7 @@
                             </div>
                             <input type="text" placeholder="Search ..." class="form-control" />
                         </div> -->
-                        <h3 class="fw-bold mb-0">Quản lý danh mục tài khoản</h3>
+                        <h3 class="fw-bold mb-0">Quản lý khuyến mãi</h3>
                     </nav>
                     <ul th:replace="~{fragments/head :: user_box}"></ul>
                 </div>
@@ -125,90 +125,61 @@
                             <i class="icon-arrow-right"></i>
                         </li>
                         <li class="nav-item">
-                            <a href="#">Quản lý danh mục tài khoản</a>
+                            <a href="#">Quản lý khuyến mãi</a>
                         </li>
                         <li class="separator">
                             <i class="icon-arrow-right"></i>
                         </li>
                         <li class="nav-item">
-                            <a href="#">Chỉnh sửa danh mục</a>
+                            <a href="#">Thêm mới khuyến mãi</a>
                         </li>
                     </ul>
                 </div>
 
                 <!--TODO: code main view here  -->
                 <div class="row">
-                    <form role="form" th:action="@{'/restaurant/accounts/'+${accounts.userId}+'/edit'}" th:object="${accounts}" method="post" enctype="multipart/form-data">
+                    <form role="form" th:action="@{/restaurant/coupons/new}" th:object="${coupons}" method="post" enctype="multipart/form-data">
                         <div class="card">
                             <div class="card-header">
-                                <div class="card-title">Thông tin tài khoản</div>
+                                <div class="card-title">Thông tin danh mục</div>
                             </div>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6 col-lg-6">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h5 class="card-title">Thông tin chung</h5>
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="form-group">
-                                                    <label for="productName">Họ và tên</label>
-                                                    <input type="text" class="form-control" id="productName" th:field="*{fullname}" required>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="productName">Email</label>
-                                                    <input type="email" class="form-control" id="productName" th:field="*{email}" required>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="productName">Điện thoại</label>
-                                                    <input type="tel" class="form-control" id="productName" th:field="*{phone}" required>
-                                                </div>
-                                            </div>
+                                        <div class="form-group">
+                                            <label for="code">Mã giảm giá</label>
+                                            <input type="text" class="form-control" id="code" th:field="*{code}" placeholder="Nhập mã giảm giá">
                                         </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-6">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h5 class="card-title">Thông tin đăng nhập</h5>
-                                            </div>
-                                            <div class="card-body">
 
-                                                <div class="card-body">
-                                                    <div class="form-group">
-                                                        <label for="avatarFile">Tải lên ảnh đại diện</label>
-                                                        <input type="file" class="form-control-file" id="avatarFile" th:field="*{avatar}" onchange="previewAvatar(event)" required>
-                                                    </div>
-
-                                                    <!-- Hiển thị avatar đã chọn -->
-                                                    <div class="form-group">
-                                                        <label for="avatarPreview">Avatar</label>
-                                                        <img id="avatarPreview" src="#" alt="Avatar Preview" style="display: none; max-width: 200px;">
-                                                    </div>
-                                                <div class="form-group">
-                                                    <label for="productName">Tên tài khoản</label>
-                                                    <input type="text" class="form-control" id="productName" th:field="*{username}" readonly>
-                                                </div>
-                                                <div class="form-check">
-                                                    <label for="productName">Mật khẩu</label>
-                                                    <input type="text" class="form-control" id="productName" th:field="*{password}" readonly >
-                                                </div>
-                                                <div class="form-group">
-                                                    <div>Vai trò</div>
-                                                    <div class="d-flex" >
-                                                        <div class="form-check" th:each="role : ${roles}">
-                                                            <label th:for="'role-'+${role.name()}" class="form-check-label" th:text="${role.name()}">Role</label>
-                                                            <input type="checkbox" class="form-check-input" th:id="'role-'+${role.name()}" th:name="roles" th:value="${role.name()}">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        <div class="form-group">
+                                            <label for="discountType">Loại giảm giá</label>
+                                            <select class="form-control" id="discountType" th:field="*{discountType}">
+                                                <option value="PERCENTAGE">Phần trăm</option>
+                                                <option value="FIXED">Cố định</option>
+                                            </select>
                                         </div>
+
+                                        <div class="form-group">
+                                            <label for="discountValue">Giá trị giảm</label>
+                                            <input type="number" class="form-control" id="discountValue" th:field="*{discountValue}" placeholder="Nhập giá trị giảm" step="0.01">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="expirationDate">Ngày hết hạn</label>
+                                            <input type="datetime-local" class="form-control" id="expirationDate" th:field="*{expirationDate}">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="minPurchase">Giá trị tối thiểu để áp dụng</label>
+                                            <input type="number" class="form-control" id="minPurchase" th:field="*{minPurchase}" placeholder="Nhập giá trị tối thiểu" step="0.01">
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
                             <div class="card-action">
                                 <button type="submit" class="btn btn-success">Lưu</button>
-                                <a th:href="@{/restaurant/accounts}" class="btn btn-danger">Hủy</a>
+                                <a th:href="@{/restaurant/coupons}" class="btn btn-danger">Hủy</a>
                             </div>
                         </div>
                     </form>
@@ -243,17 +214,6 @@
         })
         $('#preview-images')
     })
-
-    function previewAvatar(event) {
-        const file = event.target.files[0];
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const avatarPreview = document.getElementById('avatarPreview');
-            avatarPreview.src = e.target.result;
-            avatarPreview.style.display = 'block'; // Hiển thị ảnh khi đã tải lên
-        }
-        reader.readAsDataURL(file);
-    }
 </script>
 </body>
 </html>

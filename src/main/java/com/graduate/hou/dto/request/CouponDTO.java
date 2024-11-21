@@ -22,5 +22,4 @@ public class CouponDTO {
     private LocalDateTime expirationDate;
 
     private BigDecimal minPurchase;
-
 }
