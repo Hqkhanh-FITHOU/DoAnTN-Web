@@ -58,9 +58,6 @@ public class User {
     private String avatar;
 
     @OneToMany(mappedBy = "user")
-    List<Address> addresses;
-
-    @OneToMany(mappedBy = "user")
     List<Notification> notifications;
 
     @OneToMany(mappedBy = "user")
