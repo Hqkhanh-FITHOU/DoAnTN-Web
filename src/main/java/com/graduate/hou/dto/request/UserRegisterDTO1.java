@@ -2,7 +2,6 @@ package com.graduate.hou.dto.request;
 
 import com.graduate.hou.enums.RoleUsers;
 import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Set;
 
@@ -12,8 +11,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserRegisterDTO {
-
+public class UserRegisterDTO1 {
     private String username;
 
     private String password;
@@ -25,4 +23,6 @@ public class UserRegisterDTO {
     private Set<RoleUsers> roles;
 
     private String fullname;
+
+    private String avatar;
 }

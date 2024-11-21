@@ -2,6 +2,7 @@ package com.graduate.hou.controller.rest;
 
 
 import com.graduate.hou.dto.request.CouponDTO;
+import com.graduate.hou.entity.Base;
 import com.graduate.hou.entity.Coupon;
 import com.graduate.hou.service.impl.CouponServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class CouponController {
     @Autowired
     private CouponServiceImpl couponService;
 
-    @PostMapping
+    @PostMapping("/new")
     Coupon createCoupon(@RequestBody CouponDTO couponDTO){
         return couponService.createCoupon(couponDTO);
     }
@@ -27,7 +28,7 @@ public class CouponController {
     }
 
     @PutMapping("/{id}")
-    Coupon updateCoupon (@PathVariable Long id, @RequestBody CouponDTO couponDTO){
+    Boolean updateCoupon (@PathVariable Long id, @RequestBody CouponDTO couponDTO){
         return couponService.updateCoupon(id, couponDTO);
     }
 

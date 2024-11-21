@@ -54,6 +54,9 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    @Column(name = "avatar")
+    private String avatar;
+
     @OneToMany(mappedBy = "user")
     List<Address> addresses;
 
@@ -68,5 +71,6 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     List<Response> respone;
+
 
 }

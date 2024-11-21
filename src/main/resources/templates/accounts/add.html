@@ -155,6 +155,8 @@
                                                     <label for="productName">Họ và tên</label>
                                                     <input type="text" class="form-control" id="productName" th:field="*{fullname}" required>
                                                 </div>
+
+
                                                 <div class="form-group">
                                                     <label for="productName">Email</label>
                                                     <input type="email" class="form-control" id="productName" th:field="*{email}" required>
@@ -173,6 +175,16 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="form-group">
+                                                    <label for="avatar">Ảnh đại diện</label>
+                                                    <input type="file" class="form-control-file" id="avatar" name="avatar" accept="image/*" onchange="previewAvatar(event)">
+                                                </div>
+
+                                                <!-- Hiển thị ảnh đại diện khi chọn -->
+                                                <div class="form-group">
+                                                    <img id="avatarPreview" src="/L1/uploads/avatars/default-avatar.jpg" alt="Avatar Preview" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;">
+                                                </div>
+
+                                                <div class="form-group">
                                                     <label for="productName">Tên tài khoản</label>
                                                     <input type="text" class="form-control" id="productName" th:field="*{username}" required>
                                                 </div>
@@ -189,6 +201,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
+
                                             </div>
                                         </div>
                                     </div>
@@ -196,7 +210,7 @@
                             </div>
                             <div class="card-action">
                                 <button type="submit" class="btn btn-success">Lưu</button>
-                                <a th:href="@{categories}" class="btn btn-danger">Hủy</a>
+                                <a th:href="@{/restaurant/accounts}" class="btn btn-danger">Hủy</a>
                             </div>
                         </div>
                         </form>
@@ -217,6 +231,26 @@
     
 	<div th:replace="~{fragments/script :: script}">
 	</div>
+
+    <script>
+        function previewAvatar(event) {
+            const input = event.target; // Input file
+            const preview = document.getElementById('avatarPreview'); // Image preview
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader(); // Tạo đối tượng FileReader để đọc file
+
+                reader.onload = function (e) {
+                    preview.src = e.target.result; // Gán kết quả đọc file vào thuộc tính src
+                };
+
+                reader.readAsDataURL(input.files[0]); // Đọc file dưới dạng Data URL
+            } else {
+                // Nếu không có file, gán lại ảnh mặc định
+                preview.src = '/uploads/avatars/default-avatar.jpg';
+            }
+        }
+    </script>
     
 </body>
 </html>

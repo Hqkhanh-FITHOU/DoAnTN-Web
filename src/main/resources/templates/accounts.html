@@ -149,6 +149,7 @@
                                                     <th>Điện thoại</th>
                                                     <th>Vai trò</th>
                                                     <th>Điểm</th>
+                                                    <th>Avatar</th>
                                                     <th>Thao tác</th>
                                                 </tr>
                                             </thead>
@@ -158,6 +159,7 @@
                                                 <th>Điện thoại</th>
                                                 <th>Vai trò</th>
                                                 <th>Điểm</th>
+                                                <th>Avatar</th>
                                                 <th>Thao tác</th>
                                             </tfoot>
                                             <tbody>
@@ -170,15 +172,22 @@
                                                 </td>
 
                                                 <td th:text="${account.userPoint}"></td>
+
+                                                <td>
+                                                    <!-- Hiển thị ảnh đại diện -->
+                                                    <img th:src="@{'/'+ ${account.avatar}}" alt="User Avatar" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+                                                </td>
                                                 <td>
                                                     <div class="form-button-action">
                                                         <button th:each="role : ${account.roles}" type="button" title="See" class="btn btn-outline-dark me-1 btn-sm" data-bs-toggle="modal" data-bs-target="#detailAccountModal"
+                                                                th:data-account-avatar="@{/} + ${account.avatar != null ? account.avatar : 'uploads/avatars/default-avatar.jpg'}"
                                                                 th:data-account-name="${account.fullname}"
                                                                 th:data-account-email="${account.email}"
                                                                 th:data-account-phone="${account.phone}"
                                                                 th:data-account-role="${role.name()}"
                                                                 th:data-account-create="${account.createdAt}"
                                                                 th:data-account-update="${account.updatedAt}"
+
                                                                 th:onclick="'loadAccountImageToModal(' + ${account.userId} + ')'">
                                                             <i class="fas fa-eye"></i>
                                                         </button>
@@ -205,9 +214,16 @@
                                                     <div class="col-md-8">
                                                         <div class="card">
                                                             <div class="card-header">
-                                                                <div class="card-title">Thông tin đơn hàng</div>
+                                                                <div class="card-title">Thông tin tài khoản</div>
                                                             </div>
                                                             <div class="card-body">
+                                                                <div class="d-flex justify-content-between">
+                                                                    <p>Ảnh đại diện</p>
+                                                                    <img id="modal-account-avatar"
+                                                                         src="/uploads/avatars/default-avatar.jpg"
+                                                                         alt="User Avatar"
+                                                                         style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+                                                                </div>
 
                                                                 <div class="d-flex justify-content-between">
                                                                     <p>Tên tài khoản</p>
@@ -215,15 +231,15 @@
                                                                 </div>
                                                                 <div class="d-flex justify-content-between">
                                                                     <p>Email</p>
-                                                                    <p class="text-muted" id="modal-account-emmail">Hiện</p>
+                                                                    <p class="text-muted" id="modal-account-email">Hiện</p>
                                                                 </div>
-                                                                <div class="d-flex justify-content-between mt-2">
+                                                                <div class="d-flex justify-content-between">
                                                                     <p>Số điện thoại</p>
                                                                     <p class="text-muted" id="modal-account-phone">19/10/2024 14:23:12</p>
                                                                 </div>
                                                                 <div class="d-flex justify-content-between">
                                                                     <p>Loại tài khoản</p>
-                                                                    <p class="text-muted" id="modal-account-Role">20/10/2024 18:32:04</p>
+                                                                    <p class="text-muted" id="modal-account-role">20/10/2024 18:32:04</p>
                                                                 </div>
                                                                 <div class="d-flex justify-content-between">
                                                                     <p>Khởi tạo</p>
@@ -287,24 +303,27 @@
             })
         })
 
-        const detailAccountModal = document.getElementById('detailAccountModal')
+        const detailAccountModal = document.getElementById('detailAccountModal');
         detailAccountModal.addEventListener('show.bs.modal', event => {
             const button = event.relatedTarget;
-            const accounName = button.getAttribute('data-account-name')
-            const accountEmail = button.getAttribute('data-account-email')
-            const accountPhone = button.getAttribute('data-account-phone')
-            const accountRole = button.getAttribute('data-account-role')
-            const accountCreate = button.getAttribute('data-account-create')
-            const accountUpdate = button.getAttribute('data-account-update')
 
+            const basePath = "/";
+            // Lấy các dữ liệu từ button
+            const accountName = button.getAttribute('data-account-name');
+            const accountEmail = button.getAttribute('data-account-email');
+            const accountPhone = button.getAttribute('data-account-phone');
+            const accountRole = button.getAttribute('data-account-role');
+            const accountCreate = button.getAttribute('data-account-create');
+            const accountUpdate = button.getAttribute('data-account-update');
+            const accountAvatar = button.getAttribute('data-account-avatar');
 
-
-
-            detailAccountModal.querySelector('#modal-account-name').textContent = accounName;
-
-            detailAccountModal.querySelector('#modal-account-emmail').textContent = accountEmail;
+            // Cập nhật thông tin trong modal
+            detailAccountModal.querySelector('#modal-account-name').textContent = accountName;
+            detailAccountModal.querySelector('#modal-account-email').textContent = accountEmail;
             detailAccountModal.querySelector('#modal-account-phone').textContent = accountPhone;
-            detailAccountModal.querySelector('#modal-account-Role').textContent = accountRole;
+            detailAccountModal.querySelector('#modal-account-role').textContent = accountRole;
+
+            // Định dạng ngày tháng
             const options = {
                 day: '2-digit',
                 month: '2-digit',
@@ -313,11 +332,21 @@
                 minute: '2-digit',
                 hour12: false
             };
-            const createAt = new Date(accountCreate)
-            const updateAt = new Date(accountUpdate)
-            detailAccountModal.querySelector('#modal-account-createDate').textContent = new Intl.DateTimeFormat('vi-VN',options).format(createAt)
-            detailAccountModal.querySelector('#modal-account-updateDate').textContent = new Intl.DateTimeFormat('vi-VN',options).format(updateAt)
-        })
+            const createAt = new Date(accountCreate);
+            const updateAt = new Date(accountUpdate);
+            detailAccountModal.querySelector('#modal-account-createDate').textContent = new Intl.DateTimeFormat('vi-VN', options).format(createAt);
+            detailAccountModal.querySelector('#modal-account-updateDate').textContent = new Intl.DateTimeFormat('vi-VN', options).format(updateAt);
+            const avatarImage = detailAccountModal.querySelector('#modal-account-avatar');
+            if( accountAvatar != null){
+                avatarImage.src = accountAvatar;
+            }else {
+                avatarImage.src = '/L1/uploads/avatars/default-avatar.jpg';
+            }
+        });
+
+
+
+
         function deleteAccount(userId) {
             swal({
                 title: 'Bạn có chắc muốn xóa?',
