@@ -2,7 +2,6 @@ package com.graduate.hou.service;
 
 
 import com.graduate.hou.dto.request.CouponDTO;
-import com.graduate.hou.entity.Category;
 import com.graduate.hou.entity.Coupon;
 
 import java.util.List;

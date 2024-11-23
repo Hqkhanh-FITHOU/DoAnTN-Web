@@ -4,13 +4,10 @@ import com.graduate.hou.dto.request.UsersDTO;
 import com.graduate.hou.entity.User;
 import com.graduate.hou.repository.UsersRepository;
 import com.graduate.hou.service.UserService;
-
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

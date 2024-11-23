@@ -12,15 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.extern.slf4j.Slf4j;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.graduate.hou.enums.RoleUsers;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.util.*;
 
 
@@ -48,6 +45,10 @@ public class RestaurantController {
     private ProductService productService;
     @Autowired
     private ProductImageService productImageService;
+
+    @Autowired
+    private OrderItemService orderItemService;
+
     @Autowired
     private StorageService storageService;
     @Autowired
@@ -314,7 +315,7 @@ public class RestaurantController {
 
     @PostMapping("/accounts/new")
     public String saveAccount(@ModelAttribute("user") UserRegisterDTO1 usersDTO,
-                              @RequestParam("avatar") MultipartFile avatarFile) throws Exception {
+            @RequestParam("avatar") MultipartFile avatarFile) throws Exception {
         User user = authenticationService.register1(usersDTO, avatarFile);
         if (user == null) {
             return "accounts/add";
@@ -348,14 +349,28 @@ public class RestaurantController {
         return "{ \"delete\":"+ userService.deleteUser(id) +"}";
     }
 
+
+    @GetMapping("/orderitems/{orderId}")
+    @ResponseBody
+    public String getOrderItemsByOrderId(@PathVariable("orderId") Long orderId) {
+        List<OrderItem> orderItems = orderItemService.getOrderItemsByOrderId(orderId);
+        log.info(orderItems.get(0).getOrderItemId()+"");
+        try {
+            return objectMapper.writeValueAsString(orderItems);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "{\"error\": \"Could not serialize products\"}";
+        }
+    }
+    
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestParam("avatar") MultipartFile avatar,
-                                         @RequestParam("fullname") String fullname,
-                                         @RequestParam("username") String username,
-                                         @RequestParam("email") String email,
-                                         @RequestParam("phone") String phone,
-                                         @RequestParam("password") String password,
-                                         @RequestParam("roles") Set<RoleUsers> roles) {
+            @RequestParam("fullname") String fullname,
+            @RequestParam("username") String username,
+            @RequestParam("email") String email,
+            @RequestParam("phone") String phone,
+            @RequestParam("password") String password,
+            @RequestParam("roles") Set<RoleUsers> roles) {
         try {
             // Tạo DTO từ các tham số
             UserRegisterDTO1 registerDTO = new UserRegisterDTO1();

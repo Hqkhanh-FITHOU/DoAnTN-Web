@@ -9,8 +9,6 @@ import com.graduate.hou.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-
 public interface AuthenticationService {
     TokenResponse login(UserLoginDTO loginDTO);
 
