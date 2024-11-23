@@ -6,6 +6,8 @@ import com.graduate.hou.repository.CouponRepository;
 import com.graduate.hou.service.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.swing.plaf.InsetsUIResource;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,13 +21,18 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
+    public Coupon getCouponById(Long id) {
+        return couponRepository.findById(id).get();
+    }
+
+    @Override
     public Coupon createCoupon(CouponDTO couponDTO) {
         Coupon coupon = new Coupon();
 
         coupon.setCode(couponDTO.getCode());
         coupon.setDiscountType(couponDTO.getDiscountType());
         coupon.setDiscountValue(couponDTO.getDiscountValue());
-        // coupon.setExpirationDate(couponDTO.getExpirationDate());
+        coupon.setExpirationDate(couponDTO.getExpirationDate());
         coupon.setMinPurchase(couponDTO.getMinPurchase());
         // coupon.setCreatedAt(couponDTO.getCreatedAt());
         // coupon.setUpdatedAt(couponDTO.getUpdatedAt());
@@ -34,23 +41,39 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public Coupon updateCoupon(Long id, CouponDTO couponDTO) {
+    public boolean updateCoupon(Long id, CouponDTO couponDTO) {
         Optional<Coupon> optionalCoupon = couponRepository.findById(id);
         Coupon coupon = optionalCoupon.get();
 
-        coupon.setCode(couponDTO.getCode());
-        coupon.setDiscountType(couponDTO.getDiscountType());
-        coupon.setDiscountValue(couponDTO.getDiscountValue());
-        // coupon.setExpirationDate(couponDTO.getExpirationDate());
-        coupon.setMinPurchase(couponDTO.getMinPurchase());
-        // coupon.setCreatedAt(couponDTO.getCreatedAt());
-        // coupon.setUpdatedAt(couponDTO.getUpdatedAt());
+        if (coupon != null){
+            coupon.setCode(couponDTO.getCode());
+            coupon.setDiscountType(couponDTO.getDiscountType());
+            coupon.setDiscountValue(couponDTO.getDiscountValue());
+            coupon.setExpirationDate(couponDTO.getExpirationDate());
+            coupon.setMinPurchase(couponDTO.getMinPurchase());
+            try {
+                couponRepository.save(coupon);
+                return true;
+            }catch (Exception e){
+                e.printStackTrace();
+            }
 
-        return couponRepository.save(coupon);
+        }
+        return false;
+
     }
 
     @Override
-    public void deleteCoupon(Long id) {
-        couponRepository.deleteById(id);
+    public boolean deleteCoupon(Long id) {
+        Coupon coupon = couponRepository.findById(id).get();
+        if(coupon != null){
+            try {
+                couponRepository.deleteById(id);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return true;
     }
 }

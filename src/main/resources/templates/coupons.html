@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security6">
+<head th:replace="~{fragments/head :: head}"></head>
+<body>
+<div class="wrapper">
+    <!-- Sidebar -->
+    <div class="sidebar" data-background-color="dark">
+        <div class="sidebar-logo">
+            <!-- Logo Header -->
+            <div th:replace="~{fragments/head :: logo_header}">
+            </div>
+            <!-- End Logo Header -->
+        </div>
+        <div class="sidebar-wrapper scrollbar scrollbar-inner">
+            <div class="sidebar-content">
+                <ul class="nav nav-secondary">
+                    <li class="nav-item">
+                        <a th:href="@{/restaurant/dashboard}" class="py-3">
+                            <i class="fas fa-home"></i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/restaurant/orders}" class="py-3">
+                            <i class="fas fa-clipboard"></i>
+                            <p>Quản lý đơn hàng</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/restaurant/products}" class="py-3">
+                            <i class="fas fa-utensils"></i>
+                            <p>Quản lý món ăn</p>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a th:href="@{/restaurant/categories}" class="py-3">
+                            <i class="fas fa-grip-horizontal"></i>
+                            <p>Quản lý danh mục món ăn</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/restaurant/coupons}" class="py-3">
+                            <i class="fas fa-percentage"></i>
+                            <p>Quản lý khuyến mãi</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/restaurant/accounts}" class="py-3">
+                            <i class="fas fa-users"></i>
+                            <p>Quản lý tài khoản</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#report" class="collapsed py-3" aria-expanded="false">
+                            <i class="fas fa-chart-pie"></i>
+                            <p>Quản lý thống kê</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="report">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a th:href="@{/restaurant/revenue}" class="py-2">
+                                        <span class="sub-item">Doanh số</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a th:href="@{/restaurant/reviews}" class="py-2">
+                                        <span class="sub-item">Đánh giá</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- End Sidebar -->
+
+    <div class="main-panel">
+        <!-- Header -->
+        <div class="main-header">
+            <div class="main-header-logo">
+                <!-- Logo Header -->
+                <div th:replace="~{fragments/head :: logo_header}">
+                </div>
+                <!-- End Logo Header -->
+            </div>
+            <!-- Navbar Header -->
+            <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+                <div class="container-fluid">
+                    <nav
+                            class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
+                        <!-- <div class="input-group">
+                            <div class="input-group-prepend">
+                                <button type="submit" class="btn btn-search pe-1">
+                                    <i class="fa fa-search search-icon"></i>
+                                </button>
+                            </div>
+                            <input type="text" placeholder="Search ..." class="form-control" />
+                        </div> -->
+                        <h3 class="fw-bold mb-0">Quản lý khuyến mãi</h3>
+                    </nav>
+                    <ul th:replace="~{fragments/head :: user_box}"></ul>
+                </div>
+            </nav>
+            <!-- End Navbar -->
+        </div>
+        <!-- End header -->
+
+
+
+        <!-- Main content -->
+        <div class="container">
+            <div class="page-inner">
+                <!-- Breadcrum -->
+                <div class="page-header">
+                    <ul class="breadcrumbs mb-3">
+                        <li class="nav-home">
+                            <a th:href="@{/restaurant/dashboard}">
+                                <i class="icon-home"></i>
+                            </a>
+                        </li>
+                        <li class="separator">
+                            <i class="icon-arrow-right"></i>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#">Quản lý danh mục món ăn</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!--TODO: code main view here  -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="d-flex align-items-center">
+                                    <h4 class="card-title">Danh mục khuyến mãi</h4>
+                                    <a class="btn btn-primary btn-round ms-auto" th:href="@{coupons/new}">
+                                        <i class="fa fa-plus"></i>
+                                        Thêm khuyến mãi
+                                    </a>
+                                    <div class="card-tools">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="multi-filter-select" class="display table table-hover">
+                                        <thead>
+                                        <tr role="row">
+                                            <th>
+                                                Tên khuyến mãi
+                                            </th>
+                                            <th>
+                                                Loại khuyến mãi
+                                            </th>
+                                            <th>
+                                                Giá trị khuyến mãi
+                                            </th>
+                                            <th>
+                                                Hạn sử dụng
+                                            </th>
+
+                                            <th>
+                                                Giá trị tối thiểu
+                                            </th>
+                                            <th style="width: 10%;">
+                                                Thao tác
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tfoot>
+                                        <tr>
+                                            <th>Tên danh mục</th>
+                                            <th>Loại khuyến mãi</th>
+                                            <th>Giá trị khuyến mãi</th>
+                                            <th>Hạn sử dụng</th>
+                                            <th>Giá trị tối thiểu</th>
+
+                                            <th>Thao tác</th>
+                                        </tr>
+                                        </tfoot>
+                                        <tbody>
+                                        <tr th:each="coupon: ${coupons}" class="old" role="row">
+                                            <td th:text="${coupon.code}"></td>
+                                            <td th:text="${coupon.discountType}"></td>
+                                            <td th:text="${coupon.discountValue}"></td>
+                                            <td th:text="${coupon.expirationDate}"></td>
+                                            <td th:text="${coupon.minPurchase}"></td>
+                                            <td>
+                                                <div class="form-button-action">
+                                                    <a th:href="@{/restaurant/coupons/{id}/edit(id=${coupon.couponId})}" data-bs-toggle="tooltip" title="" class="btn btn-outline-primary me-1 btn-sm">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                    <button type="button" th:onclick="'deleteCoupon('+${coupon.couponId}+')'" data-bs-toggle="tooltip" title="" class="btn btn-outline-danger btn-sm" data-original-title="Delete" data-bs-placement="top" data-bs-title="Xóa">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End main content -->
+
+
+
+
+        <!-- Footer -->
+        <footer th:replace="~{fragments/footer :: footer}">
+        </footer>
+        <!-- End footer -->
+    </div>
+</div>
+
+<div th:replace="~{fragments/script :: script}">
+</div>
+<script>
+    $(document).ready(function(){
+        $("#multi-filter-select").DataTable({
+            pageLength: 10,
+            stateSave: true,
+            language: {
+                paginate: {
+                    next: '&rsaquo;',
+                    previous: '&lsaquo;',
+                },
+                info: '_START_ đến _END_ / _TOTAL_ bản ghi',
+                infoFiltered: '(Lọc từ _MAX_ bản ghi)',
+                search: 'Tìm kiếm',
+                searchPlaceholer: 'Nhận từ khóa...',
+                lengthMenu: 'Hiện _MENU_',
+                zeroRecords: 'Không tìm thấy kết quả phù hợp',
+                emptyTable: 'Không có dữ liệu'
+            }
+        });
+    })
+
+    function deleteCoupon(couponId) {
+        swal({
+            title: 'Bạn có chắc muốn xóa?',
+            text: "Bạn sẽ không thể hoàn tác sau khi thực hiện việc này!",
+            icon: 'warning',
+            buttons:{
+                confirm: {
+                    text : 'Có, xóa!',
+                    className : 'btn btn-success'
+                },
+                cancel: {
+                    visible: true,
+                    text : 'Không',
+                    className: 'btn btn-danger'
+                },
+            }
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    url: 'coupons/'+couponId+'/delete',
+                    method: 'GET',
+                    success: function(response) {
+                        result = JSON.parse(response)
+                        //console.log('delete', result)
+                        if(result.delete){
+                            swal("Danh mục đã bị xóa!", {
+                                icon: "success",
+                                buttons : {
+                                    confirm : {
+                                        className: 'btn btn-success'
+                                    }
+                                }
+                            }).then((ok) => {
+                                if(ok){
+                                    window.location.href = 'coupons'
+                                }
+                                window.location.href = 'coupons'
+                            })
+                        } else {
+                            swal("Danh mục đã có món ăn, không thể xóa", {
+                                icon: "error",
+                                buttons : {
+                                    confirm : {
+                                        className: 'btn btn-danger'
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    error: function(error) {
+                        alert('Đã có lỗi xảy ra!')
+                        console.log('delete coupon',error)
+                    }
+                })
+            } else {
+                //do nothing when cancel
+                swal.close()
+            }
+        });
+    }
+</script>
+</body>
+</html>

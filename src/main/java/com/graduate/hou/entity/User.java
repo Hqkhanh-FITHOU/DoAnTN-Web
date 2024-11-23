@@ -54,6 +54,8 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    @Column(name = "avatar")
+    private String avatar;
 
     @OneToMany(mappedBy = "user")
     List<Notification> notifications;

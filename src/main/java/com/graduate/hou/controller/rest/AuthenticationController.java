@@ -2,6 +2,7 @@ package com.graduate.hou.controller.rest;
 
 import com.graduate.hou.dto.request.UserLoginDTO;
 import com.graduate.hou.dto.request.UserRegisterDTO;
+import com.graduate.hou.dto.request.UserRegisterDTO1;
 import com.graduate.hou.dto.response.TokenResponse;
 import com.graduate.hou.entity.User;
 import com.graduate.hou.service.AuthenticationService;
@@ -12,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 
 @Validated
@@ -56,10 +60,18 @@ public class AuthenticationController {
         return "Success";
     }
 
+    @PostMapping("/register1")
+    public ResponseEntity<?> register(@RequestBody UserRegisterDTO1 registerDTO, MultipartFile avatarFile) throws Exception {
+        User userRegister = authenticationService.register1(registerDTO, avatarFile);
+        return ResponseEntity.ok(userRegister);
+    }
+
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody UserRegisterDTO registerDTO) {
         User userRegister = authenticationService.register(registerDTO);
         return ResponseEntity.ok(userRegister);
     }
+
+
     
 }

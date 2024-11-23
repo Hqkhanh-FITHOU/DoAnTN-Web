@@ -2,41 +2,35 @@ package com.graduate.hou.controller;
 
 import com.graduate.hou.dto.request.*;
 import com.graduate.hou.entity.*;
-import com.graduate.hou.mapper.OrderMapper;
-import com.graduate.hou.mapper.UserMapper;
+import com.graduate.hou.mapper.*;
 import com.graduate.hou.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.graduate.hou.enums.RoleUsers;
-import com.graduate.hou.mapper.CategoryMapper;
-import com.graduate.hou.mapper.ProductMapper;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.*;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RequestBody;
-
-
-
-
-
 
 
 @Controller
 @RequestMapping("/restaurant")
 @Slf4j
 public class RestaurantController {
+    @Autowired
+    private CouponService couponService;
+
     @Autowired
     private AuthenticationService authenticationService;
 
@@ -107,7 +101,7 @@ public class RestaurantController {
     public String confirmOrder(@PathVariable("id") Long id) {
         return "{ \"confirm\":"+ orderService.confirmOrder(id) +"}";
     }
-    
+
 
     @GetMapping("/orders/{id}/edit")
     public String goEditOrder(@PathVariable("id") Long id, Model model) {
@@ -323,8 +317,9 @@ public class RestaurantController {
     }
 
     @PostMapping("/accounts/new")
-    public String saveAccount(@ModelAttribute("account") UserRegisterDTO usersDTO) {
-        User user = authenticationService.register(usersDTO); // save to database
+    public String saveAccount(@ModelAttribute("user") UserRegisterDTO1 usersDTO,
+                              @RequestParam("avatar") MultipartFile avatarFile) throws Exception {
+        User user = authenticationService.register1(usersDTO, avatarFile);
         if (user == null) {
             return "accounts/add";
         }
@@ -332,16 +327,20 @@ public class RestaurantController {
     }
 
     @GetMapping("/accounts/{id}/edit")
-    public String goEditAccount(@PathVariable("id") Long id, Model model) {
+    public String goEditAccount(@PathVariable("id") Long id, Model model) throws IOException {
         User  user = userService.findByUserId(id);
+
         model.addAttribute("roles", RoleUsers.values());
         model.addAttribute("accounts", UserMapper.toDTO(user));
         return "accounts/edit";
     }
 
     @PostMapping("/accounts/{id}/edit")
-    public String updateAccount(@PathVariable("id") Long id, @ModelAttribute UsersDTO usersDTO) {
-        if(userService.updateUser(id, usersDTO)){
+    public String updateAccount(@PathVariable Long id,
+                                @ModelAttribute UsersDTO usersDTO,
+                                @RequestParam("avatarFile") MultipartFile avatarFile,
+                                Model model) throws IOException{
+        if(userService.updateUser(id, usersDTO, avatarFile)){
             return "redirect:/restaurant/accounts";
         }
         return "accounts/edit";
@@ -367,5 +366,74 @@ public class RestaurantController {
         }
     }
     
+    @PostMapping("/register")
+    public ResponseEntity<User> register(@RequestParam("avatar") MultipartFile avatar,
+                                         @RequestParam("fullname") String fullname,
+                                         @RequestParam("username") String username,
+                                         @RequestParam("email") String email,
+                                         @RequestParam("phone") String phone,
+                                         @RequestParam("password") String password,
+                                         @RequestParam("roles") Set<RoleUsers> roles) {
+        try {
+            // Tạo DTO từ các tham số
+            UserRegisterDTO1 registerDTO = new UserRegisterDTO1();
+            registerDTO.setFullname(fullname);
+            registerDTO.setUsername(username);
+            registerDTO.setEmail(email);
+            registerDTO.setPhone(phone);
+            registerDTO.setPassword(password);
+            registerDTO.setRoles(roles);
+
+            // Gọi service để lưu người dùng
+            User user = authenticationService.register1(registerDTO, avatar);
+            return ResponseEntity.ok(user);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/coupons")
+    public String goCouponsManagement(Model model) {
+        List<Coupon> coupons = this.couponService.getAllCoupon();
+        model.addAttribute("coupons", coupons);
+        return "coupons";
+    }
+
+    @GetMapping("/coupons/new")
+    public String goAddNewCoupon(Model model) {
+        model.addAttribute("coupons", new CouponDTO());
+
+        return "coupons/add";
+    }
+
+    @PostMapping("/coupons/new")
+    public String saveCoupon(@ModelAttribute CouponDTO couponDTO) {
+        Coupon coupon = couponService.createCoupon(couponDTO);
+        if(coupon == null){
+            return "coupons/add";
+        }
+        return "redirect:/restaurant/coupons";
+    }
+
+    @GetMapping("/coupons/{id}/edit")
+    public String goEditCoupon(@PathVariable("id") Long id, Model model) {
+        Coupon coupon = couponService.getCouponById(id);
+        model.addAttribute("coupons", CouponMapper.toDTO(coupon));
+        return "coupons/edit";
+    }
+
+    @PostMapping("/coupons/{id}/edit")
+    public String updateCOrder(@PathVariable("id") Long id, @ModelAttribute CouponDTO couponDTO) {
+        if(couponService.updateCoupon(id, couponDTO)){
+            return "redirect:/restaurant/coupons";
+        }
+        return "coupons/edit";
+    }
+
+    @GetMapping("/coupons/{id}/delete")
+    @ResponseBody
+    public String deleteCoupon(@PathVariable("id") Long id) {
+        return "{ \"delete\":"+ couponService.deleteCoupon(id) +"}";
+    }
 
 }
