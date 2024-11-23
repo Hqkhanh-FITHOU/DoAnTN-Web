@@ -188,8 +188,8 @@
                                                         <a th:href="@{/restaurant/accounts/{id}/edit(id=${account.userId})}" data-bs-toggle="tooltip" title="Edit Task" class="btn btn-outline-primary me-1 btn-sm">
                                                             <i class="fa fa-edit"></i>
                                                         </a>
-                                                        <button type="button" data-bs-toggle="tooltip" th:onclick="'deleteAccount(' + ${account.userId} + ')'" title="Delete" class="btn btn-outline-danger btn-sm" data-bs-placement="top" data-bs-title="Xóa">
-                                                            <i class="fas fa-trash-alt"></i>
+                                                        <button type="button" data-bs-toggle="tooltip" th:onclick="'deleteAccount(' + ${account.userId} + ')'" title="Delete" class="btn btn-outline-danger btn-sm" data-bs-placement="top" data-bs-title="Vô hiệu hóa">
+                                                            <i class="fas fa-times"></i>
                                                         </button>
                                                     </div>
                                                 </td>

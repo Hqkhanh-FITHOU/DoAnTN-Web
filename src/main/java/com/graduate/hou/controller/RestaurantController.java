@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 
+
 @Controller
 @RequestMapping("/restaurant")
 @Slf4j
@@ -53,6 +54,10 @@ public class RestaurantController {
     private ProductService productService;
     @Autowired
     private ProductImageService productImageService;
+
+    @Autowired
+    private OrderItemService orderItemService;
+
     @Autowired
     private StorageService storageService;
     @Autowired
@@ -349,6 +354,18 @@ public class RestaurantController {
     }
 
 
-
+    @GetMapping("/orderitems/{orderId}")
+    @ResponseBody
+    public String getOrderItemsByOrderId(@PathVariable("orderId") Long orderId) {
+        List<OrderItem> orderItems = orderItemService.getOrderItemsByOrderId(orderId);
+        log.info(orderItems.get(0).getOrderItemId()+"");
+        try {
+            return objectMapper.writeValueAsString(orderItems);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "{\"error\": \"Could not serialize products\"}";
+        }
+    }
+    
 
 }
