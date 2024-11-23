@@ -12,15 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.extern.slf4j.Slf4j;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.graduate.hou.enums.RoleUsers;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.util.*;
 
 
@@ -318,7 +315,7 @@ public class RestaurantController {
 
     @PostMapping("/accounts/new")
     public String saveAccount(@ModelAttribute("user") UserRegisterDTO1 usersDTO,
-                              @RequestParam("avatar") MultipartFile avatarFile) throws Exception {
+            @RequestParam("avatar") MultipartFile avatarFile) throws Exception {
         User user = authenticationService.register1(usersDTO, avatarFile);
         if (user == null) {
             return "accounts/add";
@@ -368,12 +365,12 @@ public class RestaurantController {
     
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestParam("avatar") MultipartFile avatar,
-                                         @RequestParam("fullname") String fullname,
-                                         @RequestParam("username") String username,
-                                         @RequestParam("email") String email,
-                                         @RequestParam("phone") String phone,
-                                         @RequestParam("password") String password,
-                                         @RequestParam("roles") Set<RoleUsers> roles) {
+            @RequestParam("fullname") String fullname,
+            @RequestParam("username") String username,
+            @RequestParam("email") String email,
+            @RequestParam("phone") String phone,
+            @RequestParam("password") String password,
+            @RequestParam("roles") Set<RoleUsers> roles) {
         try {
             // Tạo DTO từ các tham số
             UserRegisterDTO1 registerDTO = new UserRegisterDTO1();

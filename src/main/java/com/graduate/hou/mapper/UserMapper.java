@@ -2,9 +2,6 @@ package com.graduate.hou.mapper;
 
 import com.graduate.hou.dto.request.UsersDTO;
 import com.graduate.hou.entity.User;
-import org.apache.tomcat.util.codec.binary.Base64;
-
-import java.io.IOException;
 
 public class UserMapper {
 
