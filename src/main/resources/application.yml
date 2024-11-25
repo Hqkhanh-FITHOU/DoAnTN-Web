@@ -6,7 +6,7 @@ server:
 
 spring:
     datasource:
-        url: "jdbc:mysql://localhost:3306/DoAnKhanh"
+        url: "jdbc:mysql://localhost:3306/dbWebDoAn"
         username: root
         password: root
     main:

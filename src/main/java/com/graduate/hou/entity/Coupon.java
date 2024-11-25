@@ -43,4 +43,6 @@ public class Coupon {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    private boolean enabled = true;
 }

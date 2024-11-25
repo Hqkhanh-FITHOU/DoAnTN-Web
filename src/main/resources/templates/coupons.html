@@ -32,13 +32,13 @@
                             <p>Quản lý món ăn</p>
                         </a>
                     </li>
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a th:href="@{/restaurant/categories}" class="py-3">
                             <i class="fas fa-grip-horizontal"></i>
                             <p>Quản lý danh mục món ăn</p>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a th:href="@{/restaurant/coupons}" class="py-3">
                             <i class="fas fa-percentage"></i>
                             <p>Quản lý khuyến mãi</p>
@@ -125,10 +125,23 @@
                             <i class="icon-arrow-right"></i>
                         </li>
                         <li class="nav-item">
-                            <a href="#">Quản lý danh mục món ăn</a>
+                            <a href="#">Quản lý danh khuyến mãi</a>
                         </li>
                     </ul>
+
                 </div>
+<!--                nút thông báo-->
+                <div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <span th:text="${message}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <span th:text="${error}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+
 
                 <!--TODO: code main view here  -->
                 <div class="row">
@@ -198,6 +211,19 @@
                                                     <button type="button" th:onclick="'deleteCoupon('+${coupon.couponId}+')'" data-bs-toggle="tooltip" title="" class="btn btn-outline-danger btn-sm" data-original-title="Delete" data-bs-placement="top" data-bs-title="Xóa">
                                                         <i class="fas fa-trash-alt"></i>
                                                     </button>
+                                                    <form th:if="${coupon.enabled}" th:action="@{/restaurant/coupons/{id}/disable(id=${coupon.couponId})}" method="post">
+                                                        <button type="submit" class="btn btn-outline-warning btn-sm" title="Vô hiệu hóa">
+                                                            <i class="fas fa-ban"></i> <!-- Icon biểu thị Vô hiệu hóa -->
+                                                        </button>
+                                                    </form>
+
+                                                    <!-- Nút Kích hoạt lại -->
+                                                    <form th:if="${!coupon.enabled}" th:action="@{/restaurant/coupons/{id}/enable(id=${coupon.couponId})}" method="post">
+                                                        <button type="submit" class="btn btn-outline-success btn-sm" title="Kích hoạt lại">
+                                                            <i class="fas fa-check"></i> <!-- Icon biểu thị Kích hoạt -->
+                                                        </button>
+                                                    </form>
+
                                                 </div>
                                             </td>
                                         </tr>
@@ -305,6 +331,7 @@
             }
         });
     }
+
 </script>
 </body>
 </html>

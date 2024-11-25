@@ -76,4 +76,22 @@ public class CouponServiceImpl implements CouponService {
         }
         return true;
     }
+
+    public void save(Coupon coupon) {
+        couponRepository.save(coupon);
+    }
+
+    @Override
+    public void disableCoupon(Long id) {
+        Coupon coupon = getCouponById(id);
+        coupon.setEnabled(false);
+        save(coupon);
+    }
+
+    @Override
+    public void enableCoupon(Long id) {
+        Coupon coupon = getCouponById(id);
+        coupon.setEnabled(true);
+        save(coupon);
+    }
 }

@@ -418,4 +418,28 @@ public class RestaurantController {
         return "{ \"delete\":"+ couponService.deleteCoupon(id) +"}";
     }
 
+    @PostMapping("/coupons/{id}/disable")
+    public String disableCoupon(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+        try {
+            couponService.disableCoupon(id);
+            redirectAttributes.addFlashAttribute("message", "Coupon đã được vô hiệu hóa thành công.");
+            return "redirect:/restaurant/coupons"; // Quay lại danh sách coupon
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Đã xảy ra lỗi khi vô hiệu hóa coupon.");
+            return "redirect:/restaurant/coupons"; // Quay lại danh sách coupon
+        }
+    }
+
+    @PostMapping("/coupons/{id}/enable")
+    public String enableCoupon(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+        try {
+            couponService.enableCoupon(id);
+            redirectAttributes.addFlashAttribute("message", "Coupon đã được kích hoạt lại thành công.");
+            return "redirect:/restaurant/coupons"; // Quay lại danh sách coupon
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Đã xảy ra lỗi khi kích hoạt lại coupon.");
+            return "redirect:/restaurant/coupons"; // Quay lại danh sách coupon
+        }
+    }
+
 }

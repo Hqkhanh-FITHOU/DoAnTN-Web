@@ -214,6 +214,26 @@
         })
         $('#preview-images')
     })
+    document.addEventListener('DOMContentLoaded', function () {
+        const discountTypeElement = document.getElementById('discountType');
+        const discountValueElement = document.getElementById('discountValue');
+
+        function validateDiscountValue() {
+            const discountType = discountTypeElement.value;
+            const discountValue = parseFloat(discountValueElement.value);
+
+            if (discountType === 'PERCENTAGE' && discountValue > 100) {
+                alert("Giá trị giảm không được vượt quá 100 khi loại giảm giá là phần trăm.");
+                discountValueElement.value = 100; // Giới hạn lại giá trị
+            }
+        }
+
+        // Lắng nghe sự thay đổi trên trường discountType
+        discountTypeElement.addEventListener('change', validateDiscountValue);
+
+        // Lắng nghe sự thay đổi trên trường discountValue
+        discountValueElement.addEventListener('input', validateDiscountValue);
+    });
 </script>
 </body>
 </html>
