@@ -2,6 +2,8 @@ server:
     port: 8085
     servlet:
         context-path: /L1
+        session:
+            timeout: 24h
 
 
 spring:

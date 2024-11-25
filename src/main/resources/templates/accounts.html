@@ -197,8 +197,8 @@
                                                         <a th:href="@{/restaurant/accounts/{id}/edit(id=${account.userId})}" data-bs-toggle="tooltip" title="Edit Task" class="btn btn-outline-primary me-1 btn-sm">
                                                             <i class="fa fa-edit"></i>
                                                         </a>
-                                                        <button type="button" data-bs-toggle="tooltip" th:onclick="'deleteAccount(' + ${account.userId} + ')'" title="Delete" class="btn btn-outline-danger btn-sm" data-bs-placement="top" data-bs-title="Xóa">
-                                                            <i class="fas fa-trash-alt"></i>
+                                                        <button type="button" data-bs-toggle="tooltip" th:onclick="'deleteAccount(' + ${account.userId} + ')'" title="Delete" class="btn btn-outline-danger btn-sm" data-bs-placement="top" data-bs-title="Vô hiệu hóa">
+                                                            <i class="fas fa-times"></i>
                                                         </button>
                                                     </div>
                                                 </td>
@@ -222,11 +222,9 @@
                                                             <div class="card-body">
                                                                 <div class="d-flex justify-content-between">
                                                                     <p>Ảnh đại diện</p>
-                                                                    <img id="modal-account-avatar"
-                                                                         src="/uploads/avatars/default-avatar.jpg"
-                                                                         alt="User Avatar"
-                                                                         style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
-                                                                </div>
+                                                                    <img id="modal-account-avatar" src="/uploads/avatars/default-avatar.jpg" alt="User Avatar"
+                                                                        style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+                                                                    </div>
 
                                                                 <div class="d-flex justify-content-between">
                                                                     <p>Tên tài khoản</p>

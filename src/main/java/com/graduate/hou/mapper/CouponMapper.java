@@ -1,9 +1,7 @@
 package com.graduate.hou.mapper;
 
 import com.graduate.hou.dto.request.CouponDTO;
-import com.graduate.hou.dto.request.UsersDTO;
 import com.graduate.hou.entity.Coupon;
-import com.graduate.hou.entity.User;
 
 public class CouponMapper {
     public static CouponDTO toDTO(Coupon coupon) {

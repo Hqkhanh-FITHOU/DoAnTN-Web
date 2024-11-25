@@ -153,7 +153,8 @@
 								<div class="card-body">
 									<div class="d-flex align-items-center" th:each="order : ${pendingOrders}" th:id="${order.orderId}+'pending'">
 										<div class="flex-1">
-											<h6 class="fw-bold mb-1">
+                                            <h5 class="fw-bold mb-1" th:text="'#'+${order.user.orderId}"></h5>
+											<h6 class="fw-bold mb-1" th:text="${order.user.fullname}">
 												Nguyễn Ngọc Ngạn
 												<span class="ps-3 fw-normal" th:text="${#temporals.format(order.createdAt, 'HH:mm dd/MM/yyyy')}">8:40 PM</span>
 											</h6>
@@ -162,7 +163,7 @@
 												<span> - </span> -->
 												<span class="text-muted" th:text="${order.address}">84/2 Đàm Quang Trung, Long Biên, Long Biên, Hà Nội</span>
 											</div>
-											<div class="text-dark" th:text="${order.totalPayment}">
+											<div class="text-dark" th:text="${#numbers.formatDecimal(order.totalPayment, 0, 'POINT', 0, 'COMMA') + ' đ'}">
 												189,000đ
 											</div>
 											<div >
@@ -171,7 +172,7 @@
 												<span th:classappend="${order.payment.paymentStatus.name() == 'PENDING' ? 'text-danger text-center' : (order.payment.paymentStatus.name() == 'COMPLETED' ? 'text-success text-center' : 'text-warning text-center')}"
                                                 th:text="${order.payment.paymentStatus.name() == 'PENDING' ? 'Chưa thanh toán' : (order.payment.paymentStatus.name() == 'COMPLETED' ? 'Đã thanh toán' : 'Thanh toán thất bại')}">Đã thanh toán</span>
 											</div>
-											<div>
+											<!-- <div>
 												<button class="nav-link text-primary" data-bs-toggle="modal" data-bs-target="#detailOrderModal" th:data-order-user-name="${order.user.username}"
                                                 th:data-order-user-fullname="${order.user.fullname}"
                                                 th:data-order-user-phone="${order.user.phone}"
@@ -185,7 +186,7 @@
                                                 th:data-order-payment-status="${order.payment.paymentStatus.name() == 'PENDING' ? 'Chưa thanh toán' : (order.payment.paymentStatus.name() == 'COMPLETED' ? 'Đã thanh toán' : 'Thanh toán thất bại')}"
                                                 th:data-order-status="${order.status.name() == 'PENDING' ? 'Chờ xác nhận' : (order.status.name() == 'COMPLETED' ? 'Hoàn thành' : (order.status.name() == 'ON_PROGRESS' ? 'Đang xử lý' : 'Đã hủy'))}"
                                                 th:data-order-update="${order.updatedAt}">Xem chi tiết</button>
-											</div>
+											</div> -->
                                             <div class="separator-dashed"></div>
 										</div>
 										<div class="float-end pt-1">
@@ -223,6 +224,9 @@
                                             <thead>
                                                 <tr role="row">
                                                     <th>
+                                                        Mã
+                                                    </th>
+                                                    <th>
                                                         Người đặt
                                                     </th>
                                                     <th>
@@ -231,9 +235,9 @@
                                                     <th>
                                                         Tổng thanh toán
                                                     </th>
-                                                    <th>
+                                                    <!-- <th>
                                                         Phương thức thanh toán
-                                                    </th>
+                                                    </th> -->
                                                     <th>
                                                         Trạng thái thanh toán
                                                     </th>
@@ -247,10 +251,11 @@
                                             </thead>
                                             <tfoot>
                                                 <tr>
+                                                    <th>Mã</th>
                                                     <th>Người đặt</th>
                                                     <th>Thời gian đặt</th>
                                                     <th>Tổng thanh toán</th>
-                                                    <th>Phương thức thanh toán</th>
+                                                    <!-- <th>Phương thức thanh toán</th> -->
                                                     <th>Trạng thái thanh toán</th>
                                                     <th>Trạng thái đơn hàng</th>
                                                     <th>Thao tác</th>
@@ -258,6 +263,7 @@
                                             </tfoot>
                                             <tbody>
                                             <tr th:each="order : ${orders}" class="old" role="row">
+                                                <td th:text="'#'+${order.orderId}"></td>
                                                 <!-- Hiển thị số điện thoại người dùng -->
                                                 <td th:text="${order.user.fullname}"></td>
 
@@ -269,7 +275,7 @@
                                                 <td th:text="${#numbers.formatDecimal(order.totalPayment, 0, 'POINT', 0, 'COMMA') + ' đ'}" class="text-center"></td>
 
                                                 <!-- Hiển thị phương thức thanh toán -->
-                                                <td th:text="${order.payment.paymentMethod.name() == 'CREDIT_CARD' ? 'Thẻ tín dụng' : 'Khi nhận hàng'}" class="text-secondary text-center"></td>
+                                                <!-- <td th:text="${order.payment.paymentMethod.name() == 'CREDIT_CARD' ? 'Thẻ tín dụng' : 'Khi nhận hàng'}" class="text-secondary text-center"></td> -->
 
                                                 <!-- Hiển thị trạng thái thanh toán -->
                                                 <td th:classappend="${order.payment.paymentStatus.name() == 'PENDING' ? 'text-danger text-center' : (order.payment.paymentStatus.name() == 'COMPLETED' ? 'text-success text-center' : 'text-warning text-center')}"
@@ -284,6 +290,7 @@
                                                     <div class="form-button-action">
                                                         <!-- Nút xem chi tiết đơn hàng -->
                                                         <button type="button" title="Xem chi tiết" class="btn btn-outline-dark me-1 btn-sm" data-bs-toggle="modal" data-bs-target="#detailOrderModal"
+                                                                th:data-order-id="${order.orderId}"
                                                                 th:data-order-user-name="${order.user.username}"
                                                                 th:data-order-user-fullname="${order.user.fullname}"
                                                                 th:data-order-user-phone="${order.user.phone}"
@@ -296,7 +303,8 @@
                                                                 th:data-order-payment-method="${order.payment.paymentMethod.name() == 'CREDIT_CARD' ? 'Thẻ tín dụng' : 'Khi nhận hàng'}"
                                                                 th:data-order-payment-status="${order.payment.paymentStatus.name() == 'PENDING' ? 'Chưa thanh toán' : (order.payment.paymentStatus.name() == 'COMPLETED' ? 'Đã thanh toán' : 'Thanh toán thất bại')}"
                                                                 th:data-order-status="${order.status.name() == 'PENDING' ? 'Chờ xác nhận' : (order.status.name() == 'COMPLETED' ? 'Hoàn thành' : (order.status.name() == 'ON_PROGRESS' ? 'Đang xử lý' : 'Đã hủy'))}"
-                                                                th:data-order-update="${order.updatedAt}">
+                                                                th:data-order-update="${order.updatedAt}"
+                                                                th:onclick="'loadOrderItemToModal('+${order.orderId}+')'">
                                                             <i class="fas fa-eye"></i>
                                                         </button>
 
@@ -331,22 +339,21 @@
                                                                 <div class="card-title">Thông tin đơn hàng</div>
                                                             </div>
                                                             <div class="card-body">
-                                                                <div class="d-flex justify-content-between">
-                                                                    <h5  id="modal-order-price">
+                                                                <div class="d-flex justify-content-between align-items-center">
+                                                                    <p class="fw-bold" id="modal-order-price">
                                                                         Người đặt
-                                                                    </h5>
-                                                                    <p><b class="text-muted" id="modal-order-fullname">fullname</b></p>
+                                                                    </p>
+                                                                    <p class="text-end">
+                                                                        <span class="text-muted" id="modal-order-fullname">fullname</span><br>
+                                                                        <span class="text-muted" id="modal-order-phone">0494846534</span>
+                                                                    </p>
                                                                 </div>
                                                                 <div class="d-flex justify-content-between">
-                                                                    <p>Điện thoại</p>
-                                                                    <p class="text-muted" id="modal-order-phone">0494846534</p>
-                                                                </div>
-                                                                <div class="d-flex justify-content-between">
-                                                                    <p>Trạng thái đơn hàng</p>
+                                                                    <p class="fw-bold">Trạng thái đơn hàng</p>
                                                                     <p class="text-muted" id="modal-order-status"></p>
                                                                 </div>
                                                                 <div class="d-flex justify-content-between">
-                                                                    <p>Thông tin nhận hàng</p>
+                                                                    <p class="fw-bold">Thông tin nhận hàng</p>
                                                                 </div>
                                                                 <div class="d-flex justify-content-between">
                                                                     <p class="text-muted ms-3" id="modal-order-address">address</p>
@@ -361,15 +368,15 @@
                                                             </div>
                                                             <div class="card-body">
                                                                 <div class="d-flex justify-content-between">
-                                                                    <p>Phương thức thanh toán</p>
+                                                                    <p class="fw-bold">Phương thức thanh toán</p>
                                                                     <p class="text-muted" id="modal-order-payment-method">Phương thức thanh toán</p>
                                                                 </div>
                                                                 <div class="d-flex justify-content-between">
-                                                                    <p>Trạng thái thanh toán</p>
+                                                                    <p class="fw-bold">Trạng thái thanh toán</p>
                                                                     <p class="text-muted" id="modal-order-payment-status">Trạng thái thanh toán</p>
                                                                 </div>
                                                                 <div class="d-flex justify-content-between mt-2">
-                                                                    <p>Thời gian thanh toán</p>
+                                                                    <p class="fw-bold">Thời gian thanh toán</p>
                                                                     <p class="text-muted" id="modal-order-payment-date"></p>
                                                                 </div>
                                                             </div>
@@ -377,20 +384,53 @@
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="card">
-                                                        <div class="card-header">
-                                                            <div class="card-title">Chi tiết</div>
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <div class="row">
-                                                                
+                                                    <div class="col-md-12">
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <div class="card-title">Chi tiết</div>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="table-responsive">
+                                                                    <table class="table">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Món ăn</th>
+                                                                                <th class="text-end">Số lượng</th>
+                                                                                <th class="text-end">Đơn giá</th>
+                                                                                <th class="text-end">Tổng</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <!-- <tr>
+                                                                                <td><img src="/L1/uploads/product/13_1_20241118_224534648_suon_bi_cha.jpg" alt="image"
+                                                                                        class="img-fluid rounded align-self-center me-1 p-0" width="50px" height="40px"
+                                                                                        id="selected-img13"><span class="fw-bold" >Cơm sườn bì chả</span></td>
+                                                                                <td id="quantity" class="text-end" style="white-space: nowrap;">1</td>
+                                                                                <td class="text-end">45,000đ</td>
+                                                                                <td class="text-end">45,000đ</td>
+                                                                            </tr> -->
+                                                                            <tr id="totalRow">
+                                                                                <td colspan="3" class="text-end">Tổng tiền hàng</td>
+                                                                                <td class="text-end" id="modal-order-totalamount">85,000đ</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td colspan="3" class="text-end">Tổng khuyến mãi</td>
+                                                                                <td class="text-end" id="modal-order-totaldiscount">0đ</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td colspan="3" class="text-end fw-bold fs-5">Tổng thanh toán</td>
+                                                                                <td class="text-end text-primary fw-bold fs-5" id="modal-order-totalpayment">0đ</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-danger btm-sm" data-bs-dismiss="modal">Đóng</button>
+                                                <button type="button" class="btn btn-danger btm-sm" data-bs-dismiss="modal" onclick="onCloseModal()">Đóng</button>
                                             </div>
                                         </div>
                                         </div>
@@ -417,6 +457,8 @@
     <div th:replace="~{fragments/script :: script}">
 	</div>
     <script>
+        const numberFotmater = new Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })        
+        
         $(document).ready(function(){
             $("#multi-filter-select").DataTable({
                 pageLength: 10,
@@ -438,7 +480,7 @@
                     this.api()
                     .columns()
                     .every(function (index) {
-                        if(index !== 6){
+                        if(index !== 6 && index !== 0){
                             var column = this;
                             var select = $(
                             '<select class="form-select"><option value=""></option></select>'
@@ -468,8 +510,10 @@
         })
 
         const detailOrderModal = document.getElementById('detailOrderModal')
+        const totalRow = document.getElementById('totalRow')
         detailOrderModal.addEventListener('show.bs.modal', event => {
             const button = event.relatedTarget;
+            const orderId = button.getAttribute('data-order-id')
             const orderUsername = button.getAttribute('data-order-user-name')
             const orderFullname = button.getAttribute('data-order-user-fullname')
             const orderPhone = button.getAttribute('data-order-user-phone')
@@ -487,12 +531,19 @@
 
             detailOrderModal.querySelector('#modal-order-fullname').textContent = orderFullname;
             detailOrderModal.querySelector('#modal-order-phone').textContent = orderPhone;
-            detailOrderModal.querySelector('#modal-order-address').textContent = orderAddress;
-            // detailOrderModal.querySelector('#modal-order-totalpayment').textContent = totalPayment;
+            if(orderAddress == null){
+                detailOrderModal.querySelector('#modal-order-address').textContent = 'Không có thông tin nhận hàng';
+            } else {
+                detailOrderModal.querySelector('#modal-order-address').textContent = orderAddress;
+            }
+            
+            detailOrderModal.querySelector('#exampleModalLabel').textContent = '#' + orderId
             detailOrderModal.querySelector('#modal-order-payment-method').textContent = orderPaymentMethod;
             detailOrderModal.querySelector('#modal-order-payment-status').textContent = orderPaymentStatus;
             detailOrderModal.querySelector('#modal-order-status').textContent = orderStatus;
-
+            detailOrderModal.querySelector('#modal-order-totalpayment').textContent =  numberFotmater.format(parseFloat(totalPayment)) + 'đ'
+            detailOrderModal.querySelector('#modal-order-totaldiscount').textContent = numberFotmater.format(parseFloat(totalDiscount)) + 'đ'
+            detailOrderModal.querySelector('#modal-order-totalamount').textContent = numberFotmater.format(parseFloat(totalPayment)) + 'đ' // numberFotmater.format(parseFloat(orderTotalAmount)) + 'đ'
             const options = {
                 day: '2-digit',
                 month: '2-digit',
@@ -510,6 +561,7 @@
 
             detailOrderModal.querySelector('#modal-order-createDate').textContent = new Intl.DateTimeFormat('vi-VN',options).format(createAt)
             detailOrderModal.querySelector('#modal-order-updateDate').textContent = new Intl.DateTimeFormat('vi-VN',options).format(updateAt)
+            
         })
 
         function onComfirmOrder(id){
@@ -594,6 +646,64 @@
             });
         }
 
+
+        function loadOrderItemToModal(orderId) {
+            $.ajax({
+                url: 'orderitems/'+orderId,
+                method: 'GET',
+                success: function(response){
+                    data = JSON.parse(response)
+                    //console.log(data)
+                    data.forEach((orderitem, index) => {
+                        const newRow = document.createElement('tr');
+                        newRow.setAttribute('id', 'product-'+orderitem.product.productId)
+                        // Thêm các <td> vào <tr> mới
+                        const dish = document.createElement('td');
+                        const proImg = document.createElement('img');
+                        const proName = document.createElement('span');
+                        //dish.appendChild(img)
+                        proImg.style.width = '50px'
+                        proImg.style.height = '40px'
+                        proImg.className = 'img-fluid rounded align-self-center me-2 p-0'
+                        proImg.src = '/L1/uploads/product/'+ orderitem.product.productImages[0].pathString
+                        //console.log(orderitem.product.productImages[0].pathString)
+                        proName.textContent = orderitem.product.name
+                        dish.appendChild(proImg)
+                        dish.appendChild(proName)
+                        newRow.appendChild(dish);
+
+                        const quantity = document.createElement('td');
+                        quantity.id = 'quantity' + orderitem.product.productId
+                        quantity.className = 'text-end';
+                        quantity.style.whiteSpace = 'nowrap'
+                        quantity.textContent = orderitem.quantity
+                        newRow.appendChild(quantity);
+
+                        const price = document.createElement('td');
+                        price.className = 'text-end';
+                        price.textContent = numberFotmater.format(parseFloat(orderitem.priceAtOrderTime)) +  'đ'
+                        newRow.appendChild(price);
+
+                        const total = document.createElement('td');
+                        total.className = 'text-end';
+                        total.textContent = numberFotmater.format(orderitem.quantity * parseFloat(orderitem.priceAtOrderTime)) + 'đ'
+                        newRow.appendChild(total);
+                        newRow.className = 'order-item'
+                        totalRow.insertAdjacentElement('beforebegin', newRow);
+                    });
+                },
+                error: function(e) {
+                    console.log(e.error)
+                }
+            })
+        }
+
+        function onCloseModal(){
+            const orderItems = document.querySelectorAll('.order-item')
+            orderItems.forEach((item, index) => {
+                item.remove();
+            });
+        }
     </script>
 </body>
 </html>

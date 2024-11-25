@@ -3,10 +3,8 @@ package com.graduate.hou.dto.request;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import com.graduate.hou.enums.OrderStatus;
 import com.graduate.hou.enums.PaymentMethod;
 import com.graduate.hou.enums.PaymentStatus;
-
 import lombok.*;
 
 
@@ -18,14 +16,6 @@ import lombok.*;
 public class OrderDTO2 {
 
     private Long userId;
-
-    private BigDecimal totalAmount;
-
-    private BigDecimal totalDiscount;
-
-    private BigDecimal totalPayment;
-
-    private OrderStatus status;
 
     private String fullname;
 
@@ -39,5 +29,11 @@ public class OrderDTO2 {
 
     private PaymentStatus paymentStatus;
 
-    private LocalDateTime paymentDate;
+    private LocalDateTime orderDateTime;
+
+    private BigDecimal totalAmount;
+
+    private BigDecimal totalDiscount;
+
+    private BigDecimal totalPayment;
 }

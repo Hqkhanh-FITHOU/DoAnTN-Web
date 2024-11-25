@@ -12,16 +12,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.extern.slf4j.Slf4j;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.graduate.hou.enums.PaymentMethod;
+import com.graduate.hou.enums.PaymentStatus;
 import com.graduate.hou.enums.RoleUsers;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.util.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 @Controller
@@ -48,6 +50,10 @@ public class RestaurantController {
     private ProductService productService;
     @Autowired
     private ProductImageService productImageService;
+
+    @Autowired
+    private OrderItemService orderItemService;
+
     @Autowired
     private StorageService storageService;
     @Autowired
@@ -78,19 +84,49 @@ public class RestaurantController {
 
     @GetMapping("/orders/new")
     public String goAddNewOrder(Model model) {
-        model.addAttribute("order", new OrderDTO2());
+        OrderDTO2 orderData = new OrderDTO2();
+        orderData.setPaymentMethod(PaymentMethod.CASH_ON_DELIVERY);
+        orderData.setPaymentStatus(PaymentStatus.PENDING);
+        model.addAttribute("order", orderData);
         model.addAttribute("products", productService.getAllProducts());
+        model.addAttribute("paymentMethods", PaymentMethod.values());
+        model.addAttribute("paymentStatuses", PaymentStatus.values());
         return "orders/add";
     }
 
     @PostMapping("/orders/new")
-    public String saveOrder(@ModelAttribute OrderDTO orderDTO) {
-        Order order = orderService.createOrder(orderDTO);
+    @ResponseBody
+    public String saveOrder(@RequestBody OrderDTO2 orderDTO, Model model, Authentication authentication) {
+        User user = userService.findByUserName(authentication.getName()).get();
+        orderDTO.setUserId(user.getUserId());
+        log.info("userId - "+user.getUserId());
+        Order order = orderService.createOrder2(orderDTO);
         if(order == null){
+            model.addAttribute("order", orderDTO);
+            model.addAttribute("products", productService.getAllProducts());
+            model.addAttribute("paymentMethods", PaymentMethod.values());
+            model.addAttribute("paymentStatuses", PaymentStatus.values());
             return "orders/add";
         }
-        return "redirect:/restaurant/orders";
+        return "{\"orderId\": "+order.getOrderId()+"}";
     }
+
+    @PostMapping("/orderitem/save")
+    @ResponseBody
+    public String saveOrderItems(@RequestBody List<OrderItemDTO> orderItems) {
+        boolean ok = true;
+        if(orderItems.isEmpty()){
+            ok = false;
+        } else {
+            for(OrderItemDTO dto : orderItems){
+                if(orderItemService.createOrderItem(dto) == null){
+                    ok = false;
+                }
+            }
+        }
+        return "{\"ok\": "+ok+"}";
+    }
+
 
     @GetMapping("/orders/{id}/confirm")
     @ResponseBody
@@ -314,7 +350,7 @@ public class RestaurantController {
 
     @PostMapping("/accounts/new")
     public String saveAccount(@ModelAttribute("user") UserRegisterDTO1 usersDTO,
-                              @RequestParam("avatar") MultipartFile avatarFile) throws Exception {
+            @RequestParam("avatar") MultipartFile avatarFile) throws Exception {
         User user = authenticationService.register1(usersDTO, avatarFile);
         if (user == null) {
             return "accounts/add";
@@ -348,14 +384,28 @@ public class RestaurantController {
         return "{ \"delete\":"+ userService.deleteUser(id) +"}";
     }
 
+
+    @GetMapping("/orderitems/{orderId}")
+    @ResponseBody
+    public String getOrderItemsByOrderId(@PathVariable("orderId") Long orderId) {
+        List<OrderItem> orderItems = orderItemService.getOrderItemsByOrderId(orderId);
+        log.info(orderItems.get(0).getOrderItemId()+"");
+        try {
+            return objectMapper.writeValueAsString(orderItems);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "{\"error\": \"Could not serialize products\"}";
+        }
+    }
+
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestParam("avatar") MultipartFile avatar,
-                                         @RequestParam("fullname") String fullname,
-                                         @RequestParam("username") String username,
-                                         @RequestParam("email") String email,
-                                         @RequestParam("phone") String phone,
-                                         @RequestParam("password") String password,
-                                         @RequestParam("roles") Set<RoleUsers> roles) {
+            @RequestParam("fullname") String fullname,
+            @RequestParam("username") String username,
+            @RequestParam("email") String email,
+            @RequestParam("phone") String phone,
+            @RequestParam("password") String password,
+            @RequestParam("roles") Set<RoleUsers> roles) {
         try {
             // Tạo DTO từ các tham số
             UserRegisterDTO1 registerDTO = new UserRegisterDTO1();
@@ -441,5 +491,6 @@ public class RestaurantController {
             return "redirect:/restaurant/coupons"; // Quay lại danh sách coupon
         }
     }
+
 
 }
