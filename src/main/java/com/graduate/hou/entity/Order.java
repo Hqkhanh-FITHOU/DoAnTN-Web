@@ -27,13 +27,18 @@ public class Order {
     @JsonIgnore
     private User user;
 
-    @Column(nullable = false, precision = 10, scale = 2)
+    @ManyToOne
+    @JoinColumn(name = "user_delivery_id", nullable = true)
+    @JsonIgnore
+    private User delivery;
+
+    @Column(nullable = true, precision = 10, scale = 2)
     private BigDecimal totalAmount;
 
-    @Column(nullable = false, precision = 10, scale = 2)
+    @Column(nullable = true, precision = 10, scale = 2)
     private BigDecimal totalDiscount;
 
-    @Column(nullable = false, precision = 10, scale = 2)
+    @Column(nullable = true, precision = 10, scale = 2)
     private BigDecimal totalPayment;
 
     @Enumerated(EnumType.STRING)

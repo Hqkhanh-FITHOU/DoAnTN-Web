@@ -138,7 +138,7 @@
 
                     <!--TODO: code main view here  -->
                     <div class="row">
-                        <form role="form" th:action="@{/restaurant/orders/new}" th:object="${order}" method="post" enctype="multipart/form-data">
+                        <form role="form" th:object="${order}" onsubmit="saveOrder(event)">
                         <div class="card">
                             <div class="card-header">
                                 <div class="card-title">Đơn hàng</div>
@@ -153,15 +153,15 @@
                                             <div class="card-body">
                                                 <div class="form-group">
                                                     <label for="fullname">Họ và tên<span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" id="fullname" placeholder="Họ và tên người nhận" th:field="*{totalAmount}" required>
+                                                    <input type="text" class="form-control" id="fullname" placeholder="Họ và tên người nhận" th:field="*{fullname}" required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="phone">Số điện thoại<span class="text-danger">*</span></label>
-                                                    <input type="tel" class="form-control" id="phone" placeholder="Điện thoại" th:field="*{totalAmount}" required>
+                                                    <input type="tel" class="form-control" id="phone" placeholder="Điện thoại" th:field="*{phone}" required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="address">Địa chỉ nhận hàng<span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" id="address" placeholder="Địa chỉ" th:field="*{totalAmount}" required>
+                                                    <input type="text" class="form-control" id="address" placeholder="Địa chỉ" th:field="*{address}" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -174,15 +174,23 @@
                                             <div class="card-body">
                                                 <div class="form-group">
                                                     <label for="paymentMethod">Hình thức thanh toán<span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" id="paymentMethod" placeholder="Hình thức thanh toán" th:field="*{totalAmount}" required>
+                                                    <select class="form-select" id="paymentMethod" th:field="*{paymentMethod}">
+                                                        <option th:each="paymentMethod : ${paymentMethods}" th:value="${paymentMethod}"
+                                                        th:text="${paymentMethod.name() == 'CREDIT_CARD' ? 'Thẻ tín dụng' : (paymentMethod.name() == 'CASH_ON_DELIVERY' ? 'Khi nhận hàng' : 'VnPay')}">
+                                                        </option>
+                                                    </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="paymentStatus">Trạng thái thanh toán<span class="text-danger">*</span></label>
-                                                    <input type="tel" class="form-control" id="paymentStatus" placeholder="Trạng thái thanh toán" th:field="*{totalAmount}" required>
+                                                    <select class="form-select" id="paymentStatus" th:field="*{paymentStatus}">
+                                                        <option th:each="paymentStatus : ${paymentStatuses}" th:value="${paymentStatus}"
+                                                        th:text="${paymentStatus.name() == 'PENDING' ? 'Chưa thanh toán' : (paymentStatus.name() == 'COMPLETED' ? 'Đã thanh toán' : 'Thanh toán thất bại')}">
+                                                        </option>
+                                                    </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="orderDate">Thời gian đặt hàng<span class="text-danger">*</span></label>
-                                                    <input type="datetime-local" class="form-control" id="orderDate" placeholder="Địa chỉ" th:field="*{totalAmount}" disabled required>
+                                                    <input type="datetime-local" class="form-control" id="orderDate" th:field="*{orderDateTime}" readonly required>
                                                 </div>
                                             </div>
                                         </div>
@@ -196,7 +204,7 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="form-group">
-                                                    <textarea type="text" class="form-control" id="paymentMethod" rows="2" placeholder="Ghi chú" th:field="*{totalAmount}"></textarea>
+                                                    <textarea type="text" class="form-control" id="note" rows="2" placeholder="Ghi chú" th:field="*{note}"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -275,11 +283,11 @@
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="3" class="text-end">Tổng khuyến mãi</td>
-                                                                <td class="text-end">0đ</td>
+                                                                <td class="text-end" id="totalDiscount">0đ</td>
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="3" class="text-end">Tổng thanh toán</td>
-                                                                <td class="text-end">0đ</td>
+                                                                <td colspan="3" class="text-end fw-bold">Tổng thanh toán</td>
+                                                                <td class="text-end fw-bold" id="totalPayment">0đ</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -313,6 +321,10 @@
 	<div th:replace="~{fragments/script :: script}">
 	</div>
     <script>
+        $(document).ready(function(){
+            updateSelectedList()
+        })
+
         const now = new Date();
         const year = now.getFullYear();
         const month = String(now.getMonth() + 1).padStart(2, '0'); // Tháng từ 0 đến 11 nên cộng thêm 1
@@ -326,8 +338,9 @@
         document.getElementById('orderDate').setAttribute('value', currentTime);
 
         const totalRow = document.getElementById('totalRow');
-        const checkboxes = document.querySelectorAll('.product-list-item')
         const numberFotmater = new Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })
+        const orderItems = []
+        const checkboxes = document.querySelectorAll('.product-list-item')
         checkboxes.forEach(checkbox => {
             checkbox.addEventListener('change', function() {
                 // Kiểm tra xem checkbox có được tick hay không
@@ -337,17 +350,23 @@
                 } else {
                     // Nếu bỏ tick, xóa món khỏi danh sách gọi món
                     removeFromOrder(checkbox.value, checkbox.dataset.price);
+                    removeFoodFromArray(checkbox.value)
                 }
             });
         });
 
         var totalPrice = 0.0
+        var totalDiscount = 0.0
+        var totalPayment = 0.0
 
         function addToOrder(productId, unitPrice) {
             totalPrice += parseFloat(unitPrice)
-            console.log(totalPrice);
-            updateTotolPrice(totalPrice)
+            //console.log(totalPrice);
+            updateTotolPrice()
+            updateTotalDiscount()
+            updateTotalPayment()
             const newRow = document.createElement('tr');
+            newRow.className = 'selected-product'
             const img = document.getElementById('img'+productId).cloneNode(true)
             const name = document.getElementById('name'+productId).cloneNode(true)
             img.id = 'selected-img'+productId
@@ -389,7 +408,10 @@
                 if (currentValue > 1) { // Prevent negative or zero quantities
                     quantityInput.value = currentValue - 1;
                     totalPrice -= parseFloat(unitPrice)
-                    updateTotolPrice(totalPrice)
+                    updateTotolPrice()
+                    updateTotalDiscount()
+                    updateTotalPayment()
+                    updateFoodInArray(productId, quantityInput.value, parseFloat(unitPrice))
                     total.textContent = numberFotmater.format(quantityInput.value * unitPrice) + 'đ'
                 }
             });
@@ -398,7 +420,10 @@
                 let quantityValue = parseInt(quantityInput.value);
                 quantityInput.value = quantityValue + 1;
                 totalPrice += parseFloat(unitPrice)
-                updateTotolPrice(totalPrice)
+                updateTotolPrice()
+                updateTotalDiscount()
+                updateTotalPayment()
+                updateFoodInArray(productId, quantityInput.value, parseFloat(unitPrice))
                 total.textContent = numberFotmater.format(quantityInput.value * unitPrice) + 'đ'
             });
 
@@ -419,7 +444,8 @@
 
             // Chèn <tr> mới vào trước <tr id="total">
             totalRow.insertAdjacentElement('beforebegin', newRow);
-
+            updateSelectedList()
+            addFoodToArray(productId, 1, parseFloat(unitPrice))
             // Add event listeners for the buttons
             
         }
@@ -428,13 +454,162 @@
             const selected = document.getElementById('selected-product-'+productId)
             const quantityInput = document.getElementById('quantityInput'+productId)
             totalPrice -= parseInt(quantityInput.value) * parseFloat(unitPrice)
-            updateTotolPrice(totalPrice)
+            updateTotolPrice()
             selected.remove()
+            updateSelectedList()
+            updateTotalDiscount()
+            updateTotalPayment()
         }
 
-        function updateTotolPrice(value){
-            const totalAmount = document.getElementById('totalAmount')
-            totalAmount.textContent = numberFotmater.format(value) + 'đ'
+        function updateTotolPrice(){
+            const totalAmountEl = document.getElementById('totalAmount')
+            totalAmountEl.textContent = numberFotmater.format(totalPrice) + 'đ'
+        }
+
+        function updateTotalDiscount(){
+            const totalDiscountEl = document.getElementById('totalDiscount')
+            totalDiscountEl.textContent = numberFotmater.format(totalDiscount) + 'đ'
+        }
+
+        function updateTotalPayment(){
+            totalPayment = totalPrice - totalDiscount
+            const totalPaymentEl = document.getElementById('totalPayment')
+            totalPaymentEl.textContent = numberFotmater.format(totalPrice - totalDiscount) + 'đ'
+        }
+
+        function updateSelectedList(){
+            const selectedPros = document.querySelector('.selected-product')
+            if(selectedPros == null){
+                const emptyRow = document.createElement('tr')
+                const emptyTd = document.createElement('td');
+                emptyRow.id = 'emptyRow'
+                emptyTd.setAttribute('colspan', '4')
+                emptyTd.className = 'text-center py-4'
+                emptyTd.textContent = 'Chưa có món nào'
+                emptyRow.appendChild(emptyTd)
+                totalRow.insertAdjacentElement('beforebegin', emptyRow);
+            } else {
+                const emptyRow = document.getElementById('emptyRow')
+                if(emptyRow != null){
+                    emptyRow.remove()
+                }
+            }
+        }
+
+        function addFoodToArray(productId, quantity, price) {
+            let food = {
+                orderId: 0,
+                productId: productId,
+                quantity: quantity, 
+                priceAtOrderTime: price
+            }
+            orderItems.push(food)
+        }
+
+        function updateFoodInArray(productId, quantity, price){
+            const food = orderItems.find(food => food.productId === productId)
+            if (food) {
+                food.quantity = quantity
+                console.log(orderItems);
+            } else {
+                console.log('updateFoodInArray error',orderItems);
+            }
+        }
+
+        function removeFoodFromArray(productId) {
+            const index = orderItems.findIndex(food => food.productId === productId);
+            if(index !== -1){
+                orderItems.splice(index, 1)
+                console.log(orderItems);
+            } else {
+                console.log('removeFoodFromArray error',orderItems);
+            }
+        }
+
+        function saveOrder(event) {
+            event.preventDefault()
+            if(orderItems.length == 0) {
+                $.notify({
+                    icon: 'icon-bell',
+                    title: 'Hãy chọn món',
+                    message: 'Chưa chọn món ăn, không thể lên đơn',
+                },{
+                    type: 'danger',
+                    placement: {
+                        from: "bottom",
+                        align: "right"
+                    },
+                    time: 1000,
+                })
+                return false;
+            }
+            const fullname = document.getElementById('fullname').value
+            const phone = document.getElementById('phone').value
+            const address = document.getElementById('address').value
+            const paymentMethod = document.getElementById('paymentMethod').value
+            const paymentStatus = document.getElementById('paymentStatus').value
+            const orderDate = document.getElementById('orderDate').value
+            const note = document.getElementById('note').value
+
+            $.ajax({
+                url: '/L1/restaurant/orders/new',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    userId: 1,
+                    fullname: fullname,
+                    phone: phone,
+                    address: address,
+                    paymentMethod: paymentMethod,
+                    paymentStatus: paymentStatus,
+                    orderDateTime: orderDate,
+                    totalAmount: totalPrice,
+                    totalDiscount: totalDiscount,
+                    totalPayment: totalPayment,
+                }),
+                success: function(response){
+                    var data = JSON.parse(response)
+                    console.log('saveOrder orderId', data)
+                    saveOrderItem(data.orderId)
+                    return true;
+                },
+                error: function(e){
+                    console.log('saveOrder error', e)
+                    return false;
+                }
+            })
+        }
+
+        function saveOrderItem(orderId){
+            orderItems.forEach(item => item.orderId = orderId)
+            $.ajax({
+                url: '/L1/restaurant/orderitem/save',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(orderItems),
+                success: function(response) {
+                    var data = JSON.parse(response)
+                    if(data.ok){
+                        $.notify({
+                            icon: 'icon-bell',
+                            title: 'Đơn hàng',
+                            message: 'Đã thêm đơn hàng',
+                        },{
+                            type: 'secondary',
+                            placement: {
+                                from: "bottom",
+                                align: "right"
+                            },
+                            time: 1000,
+                        });
+                        
+                        window.location.href = '/L1/restaurant/orders'
+                    }
+                },
+                error: function(e) {
+                    console.log('saveOrderItem error', e.error)
+                }
+            })
         }
     </script>
 </body>

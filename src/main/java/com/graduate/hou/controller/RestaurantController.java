@@ -17,8 +17,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.extern.slf4j.Slf4j;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.graduate.hou.enums.PaymentMethod;
+import com.graduate.hou.enums.PaymentStatus;
 import com.graduate.hou.enums.RoleUsers;
 import java.util.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 @Controller
@@ -79,19 +84,49 @@ public class RestaurantController {
 
     @GetMapping("/orders/new")
     public String goAddNewOrder(Model model) {
-        model.addAttribute("order", new OrderDTO2());
+        OrderDTO2 orderData = new OrderDTO2();
+        orderData.setPaymentMethod(PaymentMethod.CASH_ON_DELIVERY);
+        orderData.setPaymentStatus(PaymentStatus.PENDING);
+        model.addAttribute("order", orderData);
         model.addAttribute("products", productService.getAllProducts());
+        model.addAttribute("paymentMethods", PaymentMethod.values());
+        model.addAttribute("paymentStatuses", PaymentStatus.values());
         return "orders/add";
     }
 
     @PostMapping("/orders/new")
-    public String saveOrder(@ModelAttribute OrderDTO orderDTO) {
-        Order order = orderService.createOrder(orderDTO);
+    @ResponseBody
+    public String saveOrder(@RequestBody OrderDTO2 orderDTO, Model model, Authentication authentication) {
+        User user = userService.findByUserName(authentication.getName()).get();
+        orderDTO.setUserId(user.getUserId());
+        log.info("userId - "+user.getUserId());
+        Order order = orderService.createOrder2(orderDTO);
         if(order == null){
+            model.addAttribute("order", orderDTO);
+            model.addAttribute("products", productService.getAllProducts());
+            model.addAttribute("paymentMethods", PaymentMethod.values());
+            model.addAttribute("paymentStatuses", PaymentStatus.values());
             return "orders/add";
         }
-        return "redirect:/restaurant/orders";
+        return "{\"orderId\": "+order.getOrderId()+"}";
     }
+
+    @PostMapping("/orderitem/save")
+    @ResponseBody
+    public String saveOrderItems(@RequestBody List<OrderItemDTO> orderItems) {
+        boolean ok = true;
+        if(orderItems.isEmpty()){
+            ok = false;
+        } else {
+            for(OrderItemDTO dto : orderItems){
+                if(orderItemService.createOrderItem(dto) == null){
+                    ok = false;
+                }
+            }
+        }
+        return "{\"ok\": "+ok+"}";
+    }
+    
 
     @GetMapping("/orders/{id}/confirm")
     @ResponseBody
@@ -432,5 +467,6 @@ public class RestaurantController {
     public String deleteCoupon(@PathVariable("id") Long id) {
         return "{ \"delete\":"+ couponService.deleteCoupon(id) +"}";
     }
+
 
 }

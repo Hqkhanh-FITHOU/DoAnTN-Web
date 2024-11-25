@@ -96,8 +96,24 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order createOrder2(OrderDTO2 orderDTO) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createOrder2'");
+        User user = usersRepository.findById(orderDTO.getUserId())
+        .orElseThrow(()-> new RuntimeException("Chưa đăng nhập"));
+
+        Payment payment = new Payment();
+        payment.setPaymentMethod(orderDTO.getPaymentMethod());
+        payment.setPaymentStatus(orderDTO.getPaymentStatus());
+        
+        Order order = new Order();
+        order.setStatus(OrderStatus.ON_PROGRESS);
+        order.setUser(user);
+        order.setAddress(orderDTO.getFullname() +" - "+ orderDTO.getPhone() +" - "+ orderDTO.getAddress());
+        order.setPayment(paymentRepository.save(payment));
+        order.setNote(orderDTO.getNote());
+        order.setCreatedAt(orderDTO.getOrderDateTime());
+        order.setTotalAmount(orderDTO.getTotalAmount());
+        order.setTotalDiscount(orderDTO.getTotalDiscount());
+        order.setTotalPayment(orderDTO.getTotalPayment());
+        return orderRepository.save(order);
     }
 
     @Override
