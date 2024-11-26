@@ -168,7 +168,7 @@
                                                 <td th:text="${account.email}"></td>
                                                 <td th:text="${account.phone}"></td>
                                                 <td>
-                                                    <span th:each="role : ${account.roles}" th:text="${role.name()}"></span>
+                                                    <div th:each="role : ${account.roles}" th:text="${role.name()}"></div>
                                                 </td>
 
                                                 <td th:text="${account.userPoint}"></td>
@@ -182,12 +182,12 @@
                                                         <span class="text-success">Đang đăng nhập</span>
                                                     </div>
                                                     <div th:unless="${currentAccountId == account.userId}" class="form-button-action">
-                                                        <button th:each="role : ${account.roles}" type="button" title="See" class="btn btn-outline-dark me-1 btn-sm" data-bs-toggle="modal" data-bs-target="#detailAccountModal"
+                                                        <button type="button" title="See" class="btn btn-outline-dark me-1 btn-sm" data-bs-toggle="modal" data-bs-target="#detailAccountModal"
                                                                 th:data-account-avatar="@{/} + ${account.avatar != null ? account.avatar : 'uploads/avatars/default-avatar.jpg'}"
                                                                 th:data-account-name="${account.fullname}"
                                                                 th:data-account-email="${account.email}"
                                                                 th:data-account-phone="${account.phone}"
-                                                                th:data-account-role="${role.name()}"
+                                                                th:data-account-role="${#strings.arrayJoin(account.roles, ', ')}"
                                                                 th:data-account-create="${account.createdAt}"
                                                                 th:data-account-update="${account.updatedAt}"
 

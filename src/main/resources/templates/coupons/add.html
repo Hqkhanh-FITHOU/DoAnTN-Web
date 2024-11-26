@@ -147,31 +147,31 @@
                                 <div class="row">
                                     <div class="col-md-6 col-lg-6">
                                         <div class="form-group">
-                                            <label for="code">Mã giảm giá</label>
-                                            <input type="text" class="form-control" id="code" th:field="*{code}" placeholder="Nhập mã giảm giá">
+                                            <label for="code">Mã giảm giá<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="code" th:field="*{code}" placeholder="Nhập mã giảm giá" required>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="discountType">Loại giảm giá</label>
-                                            <select class="form-control" id="discountType" th:field="*{discountType}">
-                                                <option value="PERCENTAGE">Phần trăm</option>
-                                                <option value="FIXED">Cố định</option>
+                                            <label for="discountType">Loại hình giảm giá<span class="text-danger">*</span></label>
+                                            <select class="form-control" id="discountType" th:field="*{discountType}" onchange="changerDiscountType()">
+                                                <option value="PERCENTAGE">% Giá tiền</option>
+                                                <option value="FIXED">Giá tiền cố định</option>
                                             </select>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="discountValue">Giá trị giảm</label>
-                                            <input type="number" class="form-control" id="discountValue" th:field="*{discountValue}" placeholder="Nhập giá trị giảm" step="0.01">
+                                            <label for="discountValue" id="discount-value-label">Giá trị giảm<span class="text-danger">*</span></label>
+                                            <input type="number" class="form-control" id="discountValue" th:field="*{discountValue}" placeholder="Nhập giá trị giảm" step="0.01" max="100" required>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="expirationDate">Ngày hết hạn</label>
-                                            <input type="datetime-local" class="form-control" id="expirationDate" th:field="*{expirationDate}">
+                                            <label for="expirationDate">Ngày hết hạn<span class="text-danger">*</span></label>
+                                            <input type="datetime-local" class="form-control" id="expirationDate" th:field="*{expirationDate}" required>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="minPurchase">Giá trị tối thiểu để áp dụng</label>
-                                            <input type="number" class="form-control" id="minPurchase" th:field="*{minPurchase}" placeholder="Nhập giá trị tối thiểu" step="0.01">
+                                            <label for="minPurchase">Giá trị áp dụng tối thiểu<span class="text-danger">*</span></label>
+                                            <input type="number" class="form-control" id="minPurchase" th:field="*{minPurchase}" placeholder="Nhập giá trị tối thiểu" step="0.01" required>
                                         </div>
 
                                     </div>
@@ -214,6 +214,16 @@
         })
         $('#preview-images')
     })
+
+    function changerDiscountType(){
+        const discountTypeElm = document.getElementById('discountType')
+        const discountValueElm = document.getElementById('discountValue')
+        if(discountTypeElm.value === 'PERCENTAGE') {
+            discountValueElm.setAttribute('max', 100)
+        } else {
+            discountValueElm.removeAttribute('max')
+        }
+    }
 </script>
 </body>
 </html>
