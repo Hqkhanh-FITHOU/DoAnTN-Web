@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.util.Set;
 
+import org.springframework.web.multipart.MultipartFile;
+
 @Getter
 @Setter
 @Builder
@@ -24,5 +26,5 @@ public class UserRegisterDTO1 {
 
     private String fullname;
 
-    private String avatar;
+    private MultipartFile avatar;
 }

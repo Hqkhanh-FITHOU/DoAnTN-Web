@@ -175,13 +175,14 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="form-group">
-                                                    <label for="avatar">Ảnh đại diện</label>
-                                                    <input type="file" class="form-control-file" id="avatar" name="avatar" accept="image/*" onchange="previewAvatar(event)">
+                                                    <label for="avatarFile">Tải lên ảnh đại diện</label>
+                                                    <input type="file" class="form-control-file" id="avatarFile" th:field="*{avatar}" onchange="previewAvatar(event)">
                                                 </div>
 
                                                 <!-- Hiển thị ảnh đại diện khi chọn -->
                                                 <div class="form-group">
-                                                    <img id="avatarPreview" src="/L1/uploads/avatars/default-avatar.jpg" alt="Avatar Preview" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;">
+                                                    <label for="avatarPreview">Avatar</label>
+                                                    <img id="avatarPreview" src="#" alt="Avatar Preview" style="display: none; max-width: 200px;">
                                                 </div>
 
                                                 <div class="form-group">

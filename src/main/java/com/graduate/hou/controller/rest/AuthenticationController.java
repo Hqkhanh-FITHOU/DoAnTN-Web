@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 
 @Validated
@@ -59,8 +58,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register1")
-    public ResponseEntity<?> register(@RequestBody UserRegisterDTO1 registerDTO, MultipartFile avatarFile) throws Exception {
-        User userRegister = authenticationService.register1(registerDTO, avatarFile);
+    public ResponseEntity<?> register(@RequestBody UserRegisterDTO1 registerDTO) throws Exception {
+        User userRegister = authenticationService.register1(registerDTO);
         return ResponseEntity.ok(userRegister);
     }
 
