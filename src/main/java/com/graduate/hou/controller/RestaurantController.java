@@ -360,7 +360,7 @@ public class RestaurantController {
 
     @GetMapping("/accounts/{id}/edit")
     public String goEditAccount(@PathVariable("id") Long id, Model model) throws IOException {
-        User  user = userService.findByUserId(id);
+        User user = userService.findByUserId(id);
 
         model.addAttribute("roles", RoleUsers.values());
         model.addAttribute("accounts", UserMapper.toDTO(user));
@@ -375,6 +375,8 @@ public class RestaurantController {
         if(userService.updateUser(id, usersDTO, avatarFile)){
             return "redirect:/restaurant/accounts";
         }
+        model.addAttribute("roles", RoleUsers.values());
+        model.addAttribute("accounts", usersDTO);
         return "accounts/edit";
     }
 
