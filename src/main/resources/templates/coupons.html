@@ -125,10 +125,23 @@
                             <i class="icon-arrow-right"></i>
                         </li>
                         <li class="nav-item">
-                            <a href="#">Quản lý danh mục món ăn</a>
+                            <a href="#">Quản lý danh khuyến mãi</a>
                         </li>
                     </ul>
+
                 </div>
+<!--                nút thông báo-->
+                <div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <span th:text="${message}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <span th:text="${error}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+
 
                 <!--TODO: code main view here  -->
                 <div class="row">
@@ -186,10 +199,17 @@
                                         <tbody>
                                         <tr th:each="coupon: ${coupons}" class="old" role="row">
                                             <td th:text="${coupon.code}"></td>
-                                            <td th:text="${coupon.discountType}"></td>
-                                            <td th:text="${coupon.discountValue}"></td>
-                                            <td th:text="${coupon.expirationDate}"></td>
-                                            <td th:text="${coupon.minPurchase}"></td>
+                                            <td th:classappend="${coupon.discountType.name() == 'PERCENTAGE' ? 'text-danger' : (coupon.discountType.name() == 'FIXED' ? 'text-success' : 'text-secondary')}"
+                                                th:text="${coupon.discountType.name() == 'PERCENTAGE' ? 'Phần trăm' : (coupon.discountType.name() == 'FIXED' ? 'Cố định' : 'Không xác định')}"></td>
+
+                                            <td th:classappend="${coupon.discountType.name() == 'PERCENTAGE' ? 'text-danger' : 'text-success'}"
+                                                th:text="${coupon.discountType.name() == 'PERCENTAGE'? coupon.discountValue + ' %' : #numbers.formatDecimal(coupon.discountValue, 0, 'POINT', 0, 'COMMA') + ' đ'}"></td>
+
+
+                                            <td th:text="${#temporals.format(coupon.expirationDate, 'HH:mm dd/MM/yyyy')}" class="text-center"></td>
+                                            <td th:class="'text-success'"
+                                                th:text="${#numbers.formatDecimal(coupon.minPurchase, 0, 'POINT', 0, 'COMMA') + ' đ'}">
+                                            </td>
                                             <td>
                                                 <div class="form-button-action">
                                                     <a th:href="@{/restaurant/coupons/{id}/edit(id=${coupon.couponId})}" data-bs-toggle="tooltip" title="" class="btn btn-outline-primary me-1 btn-sm">
@@ -198,6 +218,19 @@
                                                     <button type="button" th:onclick="'deleteCoupon('+${coupon.couponId}+')'" data-bs-toggle="tooltip" title="" class="btn btn-outline-danger btn-sm" data-original-title="Delete" data-bs-placement="top" data-bs-title="Xóa">
                                                         <i class="fas fa-trash-alt"></i>
                                                     </button>
+                                                    <form th:if="${coupon.enabled}" th:action="@{/restaurant/coupons/{id}/disable(id=${coupon.couponId})}" method="post">
+                                                        <button type="submit" class="btn btn-outline-warning btn-sm" title="Vô hiệu hóa">
+                                                            <i class="fas fa-ban"></i> <!-- Icon biểu thị Vô hiệu hóa -->
+                                                        </button>
+                                                    </form>
+
+                                                    <!-- Nút Kích hoạt lại -->
+                                                    <form th:if="${!coupon.enabled}" th:action="@{/restaurant/coupons/{id}/enable(id=${coupon.couponId})}" method="post">
+                                                        <button type="submit" class="btn btn-outline-success btn-sm" title="Kích hoạt lại">
+                                                            <i class="fas fa-check"></i> <!-- Icon biểu thị Kích hoạt -->
+                                                        </button>
+                                                    </form>
+
                                                 </div>
                                             </td>
                                         </tr>
@@ -305,6 +338,7 @@
             }
         });
     }
+
 </script>
 </body>
 </html>

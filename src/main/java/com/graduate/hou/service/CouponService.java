@@ -12,4 +12,6 @@ public interface CouponService {
     Coupon createCoupon(CouponDTO couponDTO);
     boolean updateCoupon(Long id, CouponDTO couponDTO);
     boolean deleteCoupon(Long id);
+    void disableCoupon(Long id);
+    void enableCoupon(Long id);
 }

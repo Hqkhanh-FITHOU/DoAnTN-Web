@@ -5,7 +5,10 @@ import com.graduate.hou.entity.Coupon;
 import com.graduate.hou.repository.CouponRepository;
 import com.graduate.hou.service.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +18,17 @@ public class CouponServiceImpl implements CouponService {
     private CouponRepository couponRepository;
     @Override
     public List<Coupon> getAllCoupon() {
-        return couponRepository.findAll();
+
+        List<Coupon> coupons = couponRepository.findAll();
+
+        for (Coupon coupon : coupons) {
+            if (coupon.isExpired() && coupon.isEnabled()) {
+                coupon.setEnabled(false);
+                couponRepository.save(coupon);
+            }
+        }
+
+        return coupons;
     }
 
     @Override
@@ -73,5 +86,39 @@ public class CouponServiceImpl implements CouponService {
             }
         }
         return true;
+    }
+
+    public void save(Coupon coupon) {
+        couponRepository.save(coupon);
+    }
+
+
+    @Override
+    public void disableCoupon(Long id) {
+        Coupon coupon = getCouponById(id);
+        coupon.setEnabled(false);
+        save(coupon);
+    }
+
+    @Override
+    public void enableCoupon(Long id) {
+        Coupon coupon = getCouponById(id);
+        if (coupon.getExpirationDate().isBefore(LocalDateTime.now())) {
+            throw new IllegalStateException("Không thể kích hoạt coupon đã hết hạn.");
+        }
+        coupon.setEnabled(true);
+        save(coupon);
+    }
+
+    @Scheduled(fixedRate = 60000) // Kiểm tra mỗi 60 giây (1 phút)
+    public void disableExpiredCoupons() {
+        LocalDateTime now = LocalDateTime.now();
+        List<Coupon> expiredCoupons = couponRepository.findByExpirationDateBeforeAndEnabledTrue(now);
+
+        for (Coupon coupon : expiredCoupons) {
+            coupon.setEnabled(false);
+        }
+
+        couponRepository.saveAll(expiredCoupons);
     }
 }
