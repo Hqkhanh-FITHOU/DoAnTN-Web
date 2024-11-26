@@ -16,7 +16,7 @@ public interface AuthenticationService {
 
     String logout(HttpServletRequest request);
 
-    User register1(UserRegisterDTO1 registerDTO, MultipartFile avatarFile) throws  Exception;
+    User register1(UserRegisterDTO1 registerDTO) throws  Exception;
 
     User register(UserRegisterDTO registerDTO);
 }

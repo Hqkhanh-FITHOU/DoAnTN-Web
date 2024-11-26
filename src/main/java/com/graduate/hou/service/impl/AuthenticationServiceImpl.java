@@ -74,9 +74,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
     @Override
-    public User register1(UserRegisterDTO1 registerDTO, MultipartFile avatar) throws Exception {
-
-
+    public User register1(UserRegisterDTO1 registerDTO) throws Exception {
         User user = new User();
         user.setFullname(registerDTO.getFullname());
         user.setUsername(registerDTO.getUsername());
@@ -85,9 +83,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
         user.setRoles(registerDTO.getRoles());
         user.setUserPoint(0L);
-        if (avatar != null && !avatar.isEmpty()) {
+        if (registerDTO.getAvatar() != null && !registerDTO.getAvatar().isEmpty()) {
             String uploadDir = "uploads/avatars/";
-            String fileName = System.currentTimeMillis() + "_" + avatar.getOriginalFilename();
+            String fileName = System.currentTimeMillis() + "_" + registerDTO.getAvatar().getOriginalFilename();
             Path uploadPath = Paths.get(uploadDir);
 
             // Tạo thư mục nếu chưa tồn tại
@@ -97,7 +95,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
             // Lưu file vào thư mục
             File avatarFile = new File(uploadDir + fileName);
-            avatar.transferTo(avatarFile);
+            registerDTO.getAvatar().transferTo(avatarFile);
 
             // Lưu đường dẫn ảnh vào database
             user.setAvatar(uploadDir + fileName);

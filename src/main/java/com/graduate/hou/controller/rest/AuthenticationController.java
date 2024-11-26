@@ -59,8 +59,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register1")
-    public ResponseEntity<?> register(@RequestBody UserRegisterDTO1 registerDTO, MultipartFile avatarFile) throws Exception {
-        User userRegister = authenticationService.register1(registerDTO, avatarFile);
+    public ResponseEntity<?> register(@RequestBody UserRegisterDTO1 registerDTO) throws Exception {
+        User userRegister = authenticationService.register1(registerDTO);
         return ResponseEntity.ok(userRegister);
     }
 
