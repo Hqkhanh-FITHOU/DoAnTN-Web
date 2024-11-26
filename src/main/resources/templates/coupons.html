@@ -199,10 +199,17 @@
                                         <tbody>
                                         <tr th:each="coupon: ${coupons}" class="old" role="row">
                                             <td th:text="${coupon.code}"></td>
-                                            <td th:text="${coupon.discountType}"></td>
-                                            <td th:text="${coupon.discountValue}"></td>
-                                            <td th:text="${coupon.expirationDate}"></td>
-                                            <td th:text="${coupon.minPurchase}"></td>
+                                            <td th:classappend="${coupon.discountType.name() == 'PERCENTAGE' ? 'text-danger' : (coupon.discountType.name() == 'FIXED' ? 'text-success' : 'text-secondary')}"
+                                                th:text="${coupon.discountType.name() == 'PERCENTAGE' ? 'Phần trăm' : (coupon.discountType.name() == 'FIXED' ? 'Cố định' : 'Không xác định')}"></td>
+
+                                            <td th:classappend="${coupon.discountType.name() == 'PERCENTAGE' ? 'text-danger' : 'text-success'}"
+                                                th:text="${coupon.discountType.name() == 'PERCENTAGE'? coupon.discountValue + ' %' : #numbers.formatDecimal(coupon.discountValue, 0, 'POINT', 0, 'COMMA') + ' đ'}"></td>
+
+
+                                            <td th:text="${#temporals.format(coupon.expirationDate, 'HH:mm dd/MM/yyyy')}" class="text-center"></td>
+                                            <td th:class="'text-success'"
+                                                th:text="${#numbers.formatDecimal(coupon.minPurchase, 0, 'POINT', 0, 'COMMA') + ' đ'}">
+                                            </td>
                                             <td>
                                                 <div class="form-button-action">
                                                     <a th:href="@{/restaurant/coupons/{id}/edit(id=${coupon.couponId})}" data-bs-toggle="tooltip" title="" class="btn btn-outline-primary me-1 btn-sm">

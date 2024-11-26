@@ -23,7 +23,7 @@ import com.graduate.hou.enums.RoleUsers;
 import java.util.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
@@ -487,7 +487,7 @@ public class RestaurantController {
             redirectAttributes.addFlashAttribute("message", "Coupon đã được kích hoạt lại thành công.");
             return "redirect:/restaurant/coupons"; // Quay lại danh sách coupon
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Đã xảy ra lỗi khi kích hoạt lại coupon.");
+            redirectAttributes.addFlashAttribute("error", "Đã xảy ra lỗi khi kích hoạt lại coupon, vì coupon hết hạn.");
             return "redirect:/restaurant/coupons"; // Quay lại danh sách coupon
         }
     }
