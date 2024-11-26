@@ -43,4 +43,11 @@ public class Coupon {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    private boolean enabled = true;
+
+    public boolean isExpired() {
+        return expirationDate.isBefore(LocalDateTime.now());
+    }
+
 }

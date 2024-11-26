@@ -2,6 +2,7 @@ package com.graduate.hou.dto.request;
 
 import com.graduate.hou.enums.RoleUsers;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Set;
 

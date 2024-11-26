@@ -23,7 +23,7 @@ import com.graduate.hou.enums.RoleUsers;
 import java.util.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
@@ -126,7 +126,7 @@ public class RestaurantController {
         }
         return "{\"ok\": "+ok+"}";
     }
-    
+
 
     @GetMapping("/orders/{id}/confirm")
     @ResponseBody
@@ -398,7 +398,7 @@ public class RestaurantController {
             return "{\"error\": \"Could not serialize products\"}";
         }
     }
-    
+
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestParam("avatar") MultipartFile avatar,
             @RequestParam("fullname") String fullname,
@@ -417,6 +417,7 @@ public class RestaurantController {
             registerDTO.setPassword(password);
             registerDTO.setRoles(roles);
             registerDTO.setAvatar(avatar);
+            
             // Gọi service để lưu người dùng
             User user = authenticationService.register1(registerDTO);
             return ResponseEntity.ok(user);
@@ -467,6 +468,30 @@ public class RestaurantController {
     @ResponseBody
     public String deleteCoupon(@PathVariable("id") Long id) {
         return "{ \"delete\":"+ couponService.deleteCoupon(id) +"}";
+    }
+
+    @PostMapping("/coupons/{id}/disable")
+    public String disableCoupon(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+        try {
+            couponService.disableCoupon(id);
+            redirectAttributes.addFlashAttribute("message", "Coupon đã được vô hiệu hóa thành công.");
+            return "redirect:/restaurant/coupons"; // Quay lại danh sách coupon
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Đã xảy ra lỗi khi vô hiệu hóa coupon.");
+            return "redirect:/restaurant/coupons"; // Quay lại danh sách coupon
+        }
+    }
+
+    @PostMapping("/coupons/{id}/enable")
+    public String enableCoupon(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+        try {
+            couponService.enableCoupon(id);
+            redirectAttributes.addFlashAttribute("message", "Coupon đã được kích hoạt lại thành công.");
+            return "redirect:/restaurant/coupons"; // Quay lại danh sách coupon
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Đã xảy ra lỗi khi kích hoạt lại coupon, vì coupon hết hạn.");
+            return "redirect:/restaurant/coupons"; // Quay lại danh sách coupon
+        }
     }
 
 
