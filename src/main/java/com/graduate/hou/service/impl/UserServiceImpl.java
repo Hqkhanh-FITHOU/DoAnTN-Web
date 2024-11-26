@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
                 throw new IOException("Could not save avatar file: " + e.getMessage(), e);
             }
         }
-        user.setUserPoint(usersDTO.getPoint());
+        //user.setUserPoint(usersDTO.getPoint());
 
         try {
             usersRepository.save(user);
