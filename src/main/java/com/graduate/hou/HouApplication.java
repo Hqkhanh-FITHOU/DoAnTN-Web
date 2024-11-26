@@ -8,9 +8,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import com.graduate.hou.service.StorageService;
 
 @SpringBootApplication
-@EnableScheduling
+@EnableScheduling //schedule
 public class HouApplication {
-
+	
 	public static void main(String[] args) {
 		SpringApplication.run(HouApplication.class, args);
 	}
