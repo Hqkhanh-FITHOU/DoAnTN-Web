@@ -200,10 +200,10 @@
                                         <tr th:each="coupon: ${coupons}" class="old" role="row">
                                             <td th:text="${coupon.code}"></td>
                                             <td th:classappend="${coupon.discountType.name() == 'PERCENTAGE' ? 'text-danger' : (coupon.discountType.name() == 'FIXED' ? 'text-success' : 'text-secondary')}"
-                                                th:text="${coupon.discountType.name() == 'PERCENTAGE' ? 'Phần trăm' : (coupon.discountType.name() == 'FIXED' ? 'Cố định' : 'Không xác định')}"></td>
+                                                th:text="${coupon.discountType.name() == 'PERCENTAGE' ? '% Giá tiền' : (coupon.discountType.name() == 'FIXED' ? 'Giá tiền cố định' : 'Không xác định')}"></td>
 
                                             <td th:classappend="${coupon.discountType.name() == 'PERCENTAGE' ? 'text-danger' : 'text-success'}"
-                                                th:text="${coupon.discountType.name() == 'PERCENTAGE'? coupon.discountValue + ' %' : #numbers.formatDecimal(coupon.discountValue, 0, 'POINT', 0, 'COMMA') + ' đ'}"></td>
+                                                th:text="${coupon.discountType.name() == 'PERCENTAGE'? #numbers.formatDecimal(coupon.discountValue, 0, 'POINT', 0, 'COMMA') + ' %' : #numbers.formatDecimal(coupon.discountValue, 0, 'POINT', 0, 'COMMA') + ' đ'}"></td>
 
 
                                             <td th:text="${#temporals.format(coupon.expirationDate, 'HH:mm dd/MM/yyyy')}" class="text-center"></td>
