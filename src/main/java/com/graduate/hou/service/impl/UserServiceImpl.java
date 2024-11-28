@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateUser(Long id, UsersDTO usersDTO, MultipartFile avatarFile) throws IOException{
+    public boolean updateUser(Long id, UsersDTO usersDTO) throws IOException{
         Optional<User> optionalUser = usersRepository.findById(id);
         User user = optionalUser.get();
 
@@ -73,27 +73,35 @@ public class UserServiceImpl implements UserService {
         user.setPhone(usersDTO.getPhone());
         user.setRoles(usersDTO.getRoles());
 
-        if (avatarFile != null && !avatarFile.isEmpty()) {
+        if (usersDTO.getAvatar() != null && !usersDTO.getAvatar().isEmpty()) {
+            // Sử dụng thư mục cố định để lưu ảnh
+            String uploadDir = System.getProperty("user.dir") + "/uploads/avatars/";
+            String fileName = System.currentTimeMillis() + "_" + usersDTO.getAvatar().getOriginalFilename();
+            Path uploadPath = Paths.get(uploadDir);
+
             // Tạo thư mục nếu chưa tồn tại
-            Path uploadPath = Paths.get(UPLOAD_DIR);
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
-
-            // Tạo tên file duy nhất
-            String filename = System.currentTimeMillis() + "_" + avatarFile.getOriginalFilename();
-            Path filePath = uploadPath.resolve(filename);
-
             try {
-                // Ghi file vào hệ thống
-                Files.write(filePath, avatarFile.getBytes());
-                user.setAvatar(filename); // Lưu tên file vào đối tượng user
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath); // Tạo thư mục nếu cần
+                }
             } catch (IOException e) {
-                // Xử lý lỗi ghi file
-                throw new IOException("Could not save avatar file: " + e.getMessage(), e);
+                throw new RuntimeException("Không thể tạo thư mục tải lên: " + uploadPath, e);
             }
+
+            // Đảm bảo đường dẫn file chính xác
+            Path filePath = uploadPath.resolve(fileName);
+            try {
+                // Lưu file vào thư mục
+                usersDTO.getAvatar().transferTo(filePath.toFile());
+            } catch (IOException e) {
+                throw new RuntimeException("Không thể lưu file: " + filePath, e);
+            }
+
+            // Lưu đường dẫn ảnh vào database
+            user.setAvatar("uploads/avatars/" + fileName); // Đường dẫn tương đối để dễ hiển thị trên frontend
         }
-        //user.setUserPoint(usersDTO.getPoint());
+
+        user.setUserPoint(0L);
 
         try {
             usersRepository.save(user);

@@ -175,8 +175,11 @@
 
                                                 <td>
                                                     <!-- Hiển thị ảnh đại diện -->
-                                                    <img th:src="@{'/'+ ${account.avatar}}" alt="User Avatar" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+                                                    <img th:src="${account.avatar != null ? '/L1/' + account.avatar : '/L1/uploads/avatars/default-avatar.jpg'}"
+                                                         alt="User Avatar"
+                                                         style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
                                                 </td>
+
                                                 <td>
                                                     <div th:if="${currentAccountId == account.userId}">
                                                         <span class="text-success">Đang đăng nhập</span>

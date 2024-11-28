@@ -385,10 +385,9 @@ public class RestaurantController {
 
     @PostMapping("/accounts/{id}/edit")
     public String updateAccount(@PathVariable Long id,
-                                @ModelAttribute UsersDTO usersDTO,
-                                @RequestParam("avatarFile") MultipartFile avatarFile,
+                                @ModelAttribute("user") UsersDTO usersDTO,
                                 Model model) throws IOException{
-        if(userService.updateUser(id, usersDTO, avatarFile)){
+        if(userService.updateUser(id, usersDTO)){
             return "redirect:/restaurant/accounts";
         }
         model.addAttribute("roles", RoleUsers.values());
@@ -505,10 +504,10 @@ public class RestaurantController {
     public String disableCoupon(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
         try {
             couponService.disableCoupon(id);
-            redirectAttributes.addFlashAttribute("message", "Coupon đã được vô hiệu hóa thành công.");
+            redirectAttributes.addFlashAttribute("message", "Khuyến mãi này đã được vô hiệu hóa thành công.");
             return "redirect:/restaurant/coupons"; // Quay lại danh sách coupon
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Đã xảy ra lỗi khi vô hiệu hóa coupon.");
+            redirectAttributes.addFlashAttribute("error", "Đã xảy ra lỗi khi vô hiệu hóa khuyến mãi.");
             return "redirect:/restaurant/coupons"; // Quay lại danh sách coupon
         }
     }
@@ -517,13 +516,11 @@ public class RestaurantController {
     public String enableCoupon(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
         try {
             couponService.enableCoupon(id);
-            redirectAttributes.addFlashAttribute("message", "Coupon đã được kích hoạt lại thành công.");
+            redirectAttributes.addFlashAttribute("message", "Loại khuyến mãi đã được kích hoạt lại thành công.");
             return "redirect:/restaurant/coupons"; // Quay lại danh sách coupon
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Đã xảy ra lỗi khi kích hoạt lại coupon, vì coupon hết hạn.");
+            redirectAttributes.addFlashAttribute("error", "Đã xảy ra lỗi khi kích hoạt lại khuyến mãi, vì khuyến mãi hết hạn.");
             return "redirect:/restaurant/coupons"; // Quay lại danh sách coupon
         }
     }
-
-
 }

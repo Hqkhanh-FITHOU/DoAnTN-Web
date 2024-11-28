@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface UserService {
     List<User> getAllUser();
     User createUser(UsersDTO usersDTO, MultipartFile avatarFile) throws IOException;
-    boolean updateUser(Long id, UsersDTO usersDTO, MultipartFile avatarFile) throws IOException;
+    boolean updateUser(Long id, UsersDTO usersDTO) throws IOException;
     boolean deleteUser(Long id);
 
     Optional<User> findByUserName(String username);
