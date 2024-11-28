@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.extern.slf4j.Slf4j;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.graduate.hou.enums.PaymentMethod;
 import com.graduate.hou.enums.PaymentStatus;
@@ -24,6 +26,9 @@ import java.util.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @Controller
@@ -89,6 +94,7 @@ public class RestaurantController {
         orderData.setPaymentStatus(PaymentStatus.PENDING);
         model.addAttribute("order", orderData);
         model.addAttribute("products", productService.getAllProducts());
+        model.addAttribute("coupons", couponService.getActiveCoupons());
         model.addAttribute("paymentMethods", PaymentMethod.values());
         model.addAttribute("paymentStatuses", PaymentStatus.values());
         return "orders/add";
@@ -104,6 +110,7 @@ public class RestaurantController {
         if(order == null){
             model.addAttribute("order", orderDTO);
             model.addAttribute("products", productService.getAllProducts());
+            model.addAttribute("coupons", couponService.getActiveCoupons());
             model.addAttribute("paymentMethods", PaymentMethod.values());
             model.addAttribute("paymentStatuses", PaymentStatus.values());
             return "orders/add";
@@ -417,7 +424,7 @@ public class RestaurantController {
             registerDTO.setPassword(password);
             registerDTO.setRoles(roles);
             registerDTO.setAvatar(avatar);
-
+            
             // Gọi service để lưu người dùng
             User user = authenticationService.register1(registerDTO);
             return ResponseEntity.ok(user);
@@ -432,6 +439,20 @@ public class RestaurantController {
         model.addAttribute("coupons", coupons);
         return "coupons";
     }
+
+    @GetMapping("/coupons/{id}")
+    @ResponseBody
+    public String getMethodName(@PathVariable("id") Long id) {
+        Coupon coupon = couponService.getCouponById(id);
+        try {
+            return objectMapper.writeValueAsString(coupon);
+        } catch (JsonProcessingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return "{\"error\": \"Could not serialize coupon id "+id+"\"}"; 
+        }
+    }
+    
 
     @GetMapping("/coupons/new")
     public String goAddNewCoupon(Model model) {

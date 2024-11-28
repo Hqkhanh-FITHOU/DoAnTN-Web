@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface CouponService {
     List<Coupon> getAllCoupon();
+    List<Coupon> getActiveCoupons();
     Coupon getCouponById(Long id);
     Coupon createCoupon(CouponDTO couponDTO);
     boolean updateCoupon(Long id, CouponDTO couponDTO);

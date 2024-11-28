@@ -18,7 +18,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -75,6 +74,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register1(UserRegisterDTO1 registerDTO) throws Exception {
+
+
         User user = new User();
         user.setFullname(registerDTO.getFullname());
         user.setUsername(registerDTO.getUsername());

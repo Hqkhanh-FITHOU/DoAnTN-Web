@@ -94,7 +94,8 @@ public class SecurityConfig {
                             "/category/**",
                             "/productimage/**",
                             "/uploads/**",
-                            "/orderItem/**"
+                            "/orderItem/**",
+                            "/coupon/**"
                             ).permitAll()
                         .anyRequest().authenticated())
                 .formLogin(login -> login
