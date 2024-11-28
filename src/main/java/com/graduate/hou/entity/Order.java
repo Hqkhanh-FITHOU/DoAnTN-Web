@@ -69,5 +69,7 @@ public class Order {
     @JsonIgnore
     private List<OrderItem> orderItems;
 
-
+    public int getTotalQuantity() {
+        return orderItems.stream().mapToInt(OrderItem::getQuantity).sum();
+    }
 }

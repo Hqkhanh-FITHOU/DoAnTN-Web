@@ -128,4 +128,12 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> getPendingOrder() {
         return orderRepository.findByStatus(OrderStatus.PENDING);
     }
+
+    @Override
+    public boolean updateState(Long id, OrderStatus status) {
+        Optional<Order> optionalOrder = orderRepository.findById(id);
+        Order order = optionalOrder.get();
+        order.setStatus(status);
+        return orderRepository.save(order) != null;
+    }
 }

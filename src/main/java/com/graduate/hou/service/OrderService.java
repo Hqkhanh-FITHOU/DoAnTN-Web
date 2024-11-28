@@ -4,6 +4,7 @@ package com.graduate.hou.service;
 import com.graduate.hou.dto.request.OrderDTO;
 import com.graduate.hou.dto.request.OrderDTO2;
 import com.graduate.hou.entity.Order;
+import com.graduate.hou.enums.OrderStatus;
 
 import java.util.List;
 
@@ -16,4 +17,5 @@ public interface OrderService {
     boolean updateOrder(Long id, OrderDTO orderDTO);
     boolean deleteOrder(Long id);
     boolean confirmOrder(Long id);
+    boolean updateState(Long id, OrderStatus status);
 }

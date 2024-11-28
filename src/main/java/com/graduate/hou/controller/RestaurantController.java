@@ -19,15 +19,13 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.graduate.hou.enums.OrderStatus;
 import com.graduate.hou.enums.PaymentMethod;
 import com.graduate.hou.enums.PaymentStatus;
 import com.graduate.hou.enums.RoleUsers;
 import java.util.*;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -139,6 +137,18 @@ public class RestaurantController {
     @ResponseBody
     public String confirmOrder(@PathVariable("id") Long id) {
         return "{ \"confirm\":"+ orderService.confirmOrder(id) +"}";
+    }
+
+    @GetMapping("/orders/{id}/updateDeliveryState")
+    @ResponseBody
+    public String updateDeliveryState(@PathVariable("id") Long id) {
+        return "{ \"updated\":"+ orderService.updateState(id, OrderStatus.WILLING_DELIVERY) +"}";
+    }
+    
+    @GetMapping("/orders/{id}/cancelOrder")
+    @ResponseBody
+    public String cancelOrder(@PathVariable("id") Long id) {
+        return "{ \"canceled\":"+ orderService.updateState(id, OrderStatus.CANCELED) +"}";
     }
 
 
