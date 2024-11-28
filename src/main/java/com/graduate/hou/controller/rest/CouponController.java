@@ -23,7 +23,7 @@ public class CouponController {
 
     @GetMapping
     List<Coupon> getAllCoupon(){
-        return couponService.getAllCoupon();
+        return couponService.getActiveCoupons();
     }
 
     @PutMapping("/{id}")

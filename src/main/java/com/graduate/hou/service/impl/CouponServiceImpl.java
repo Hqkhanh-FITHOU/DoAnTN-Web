@@ -104,7 +104,7 @@ public class CouponServiceImpl implements CouponService {
     public void enableCoupon(Long id) {
         Coupon coupon = getCouponById(id);
         if (coupon.getExpirationDate().isBefore(LocalDateTime.now())) {
-            throw new IllegalStateException("Không thể kích hoạt coupon đã hết hạn.");
+            throw new IllegalStateException("Không thể kích hoạt khuyến đã hết hạn.");
         }
         coupon.setEnabled(true);
         save(coupon);
@@ -120,5 +120,11 @@ public class CouponServiceImpl implements CouponService {
         }
 
         couponRepository.saveAll(expiredCoupons);
+    }
+
+    @Override
+    public List<Coupon> getActiveCoupons() {
+        LocalDateTime now = LocalDateTime.now();
+        return couponRepository.findByEnabledTrueAndExpirationDateAfter(now);
     }
 }

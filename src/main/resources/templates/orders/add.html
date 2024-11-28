@@ -282,7 +282,13 @@
                                                                 <td class="text-end" id="totalAmount">0đ</td>
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="3" class="text-end">Tổng khuyến mãi</td>
+                                                                <td colspan="2">
+                                                                    <select class="form-select" id="couponSelects">
+                                                                        <option value="-1" selected>Không áp dụng</option>
+                                                                        <option th:each="coupon : ${coupons}" th:value="${coupon.couponId}" th:text="${coupon.code}"></option>
+                                                                    </select>
+                                                                </td>
+                                                                <td class="text-end">Tổng khuyến mãi</td>
                                                                 <td class="text-end" id="totalDiscount">0đ</td>
                                                             </tr>
                                                             <tr>
@@ -324,6 +330,7 @@
         $(document).ready(function(){
             updateSelectedList()
         })
+        var selectedValue = -1
 
         const now = new Date();
         const year = now.getFullYear();
@@ -347,10 +354,16 @@
                 if (checkbox.checked) {
                     // Nếu được tick, thêm món vào danh sách gọi món
                     addToOrder(checkbox.value, checkbox.dataset.price);
+                    getCoupon(selectedValue)
                 } else {
                     // Nếu bỏ tick, xóa món khỏi danh sách gọi món
                     removeFromOrder(checkbox.value, checkbox.dataset.price);
                     removeFoodFromArray(checkbox.value)
+                    if(orderItems.length == 0){
+                        selectedValue = -1
+                        document.querySelector('#couponSelects option[value="-1"]').selected = true;
+                    }
+                    getCoupon(selectedValue)
                 }
             });
         });
@@ -358,7 +371,7 @@
         var totalPrice = 0.0
         var totalDiscount = 0.0
         var totalPayment = 0.0
-
+        
         function addToOrder(productId, unitPrice) {
             totalPrice += parseFloat(unitPrice)
             //console.log(totalPrice);
@@ -411,6 +424,7 @@
                     updateTotolPrice()
                     updateTotalDiscount()
                     updateTotalPayment()
+                    getCoupon(selectedValue)
                     updateFoodInArray(productId, quantityInput.value, parseFloat(unitPrice))
                     total.textContent = numberFotmater.format(quantityInput.value * unitPrice) + 'đ'
                 }
@@ -423,6 +437,7 @@
                 updateTotolPrice()
                 updateTotalDiscount()
                 updateTotalPayment()
+                getCoupon(selectedValue)
                 updateFoodInArray(productId, quantityInput.value, parseFloat(unitPrice))
                 total.textContent = numberFotmater.format(quantityInput.value * unitPrice) + 'đ'
             });
@@ -611,6 +626,69 @@
                 }
             })
         }
+
+
+        $('#couponSelects').change(function() {
+            selectedValue = parseInt($(this).val()) // Lấy giá trị được chọn
+            console.log('Bạn đã chọn coupon:', selectedValue)
+
+            // Ví dụ: xử lý thêm
+            if(selectedValue == -1){
+                totalDiscount = 0.0
+                updateTotalDiscount()
+                updateTotalPayment()
+            } else {
+                if(orderItems.length == 0) {
+                    totalDiscount = 0.0
+                    updateTotalDiscount()
+                    updateTotalPayment()
+                } else {
+                    getCoupon(selectedValue)
+                }
+            }
+        })
+
+        function getCoupon(id){
+            $.ajax({
+                url: '/L1/restaurant/coupons/'+selectedValue,
+                method: 'GET',
+                contentType: 'application/json',
+                success: function(response) {
+                    data = JSON.parse(response)
+                    console.log('get coupon' + selectedValue, data)
+                    if(data.discountType == 'PERCENTAGE') {
+                        totalDiscount = totalPrice * parseFloat(data.discountValue) / 100.0
+                    } else {
+                        totalDiscount = parseFloat(data.discountValue)
+                    }
+                    //update ui
+                    if(data.minPurchase <= totalPrice) {
+                        updateTotalDiscount()
+                        updateTotalPayment()
+                    } else {
+                        $.notify({
+                            icon: 'icon-bell',
+                            title: 'Không đủ điều kiện áp dụng khuyến mãi',
+                            message: 'Tổng tiền hàng tối thiểu ' + numberFotmater.format(data.minPurchase) + 'đ',
+                        },{
+                            type: 'warning',
+                            placement: {
+                                from: "bottom",
+                                align: "right"
+                            },
+                            time: 500,
+                        });
+                        totalDiscount = 0.0
+                        updateTotalDiscount()
+                        updateTotalPayment()
+                    }
+                }, 
+                error: function(e) {
+                    console.log('error get coupon', e)
+                }
+            })
+        }
+
     </script>
 </body>
 </html>
