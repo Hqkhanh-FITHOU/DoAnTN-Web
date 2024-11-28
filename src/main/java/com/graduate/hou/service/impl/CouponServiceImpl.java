@@ -110,15 +110,15 @@ public class CouponServiceImpl implements CouponService {
         save(coupon);
     }
 
-    @Scheduled(fixedRate = 60000) // Kiểm tra mỗi 60 giây (1 phút)
-    public void disableExpiredCoupons() {
-        LocalDateTime now = LocalDateTime.now();
-        List<Coupon> expiredCoupons = couponRepository.findByExpirationDateBeforeAndEnabledTrue(now);
-
-        for (Coupon coupon : expiredCoupons) {
-            coupon.setEnabled(false);
-        }
-
-        couponRepository.saveAll(expiredCoupons);
-    }
+//    @Scheduled(fixedRate = 60000) // Kiểm tra mỗi 60 giây (1 phút)
+//    public void disableExpiredCoupons() {
+//        LocalDateTime now = LocalDateTime.now();
+//        List<Coupon> expiredCoupons = couponRepository.findByExpirationDateBeforeAndEnabledTrue(now);
+//
+//        for (Coupon coupon : expiredCoupons) {
+//            coupon.setEnabled(false);
+//        }
+//
+//        couponRepository.saveAll(expiredCoupons);
+//    }
 }

@@ -43,8 +43,8 @@ public class UsersController {
     }
 
     @PutMapping("/update/{id}")
-    boolean updateUser (@PathVariable Long id, @RequestBody UsersDTO usersDTO, MultipartFile avatarFile)throws IOException{
-        return userService.updateUser(id, usersDTO, avatarFile);
+    boolean updateUser (@PathVariable Long id, @RequestBody UsersDTO usersDTO)throws IOException{
+        return userService.updateUser(id, usersDTO);
     }
 
     @DeleteMapping("/delete/{id}")

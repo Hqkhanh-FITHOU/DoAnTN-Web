@@ -20,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -84,22 +85,33 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setRoles(registerDTO.getRoles());
         user.setUserPoint(0L);
         if (registerDTO.getAvatar() != null && !registerDTO.getAvatar().isEmpty()) {
-            String uploadDir = "uploads/avatars/";
+            // Sử dụng thư mục cố định để lưu ảnh
+            String uploadDir = System.getProperty("user.dir") + "/uploads/avatars/";
             String fileName = System.currentTimeMillis() + "_" + registerDTO.getAvatar().getOriginalFilename();
             Path uploadPath = Paths.get(uploadDir);
 
             // Tạo thư mục nếu chưa tồn tại
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
+            try {
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath); // Tạo thư mục nếu cần
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("Không thể tạo thư mục tải lên: " + uploadPath, e);
             }
 
-            // Lưu file vào thư mục
-            File avatarFile = new File(uploadDir + fileName);
-            registerDTO.getAvatar().transferTo(avatarFile);
+            // Đảm bảo đường dẫn file chính xác
+            Path filePath = uploadPath.resolve(fileName);
+            try {
+                // Lưu file vào thư mục
+                registerDTO.getAvatar().transferTo(filePath.toFile());
+            } catch (IOException e) {
+                throw new RuntimeException("Không thể lưu file: " + filePath, e);
+            }
 
             // Lưu đường dẫn ảnh vào database
-            user.setAvatar(uploadDir + fileName);
+            user.setAvatar("uploads/avatars/" + fileName); // Đường dẫn tương đối để dễ hiển thị trên frontend
         }
+
 
         return usersRepository.save(user);
     }

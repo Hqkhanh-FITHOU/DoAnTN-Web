@@ -175,14 +175,14 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="form-group">
-                                                    <label for="avatarFile">Tải lên ảnh đại diện</label>
-                                                    <input type="file" class="form-control-file" id="avatarFile" th:field="*{avatar}" onchange="previewAvatar(event)">
+                                                    <label>Avatar:</label>
+                                                    <input type="file" th:field="*{avatar}" id="avatarInput" accept="image/*" onchange="previewAvatar(event)">
                                                 </div>
 
                                                 <!-- Hiển thị avatar đã chọn -->
                                                 <div class="form-group">
                                                     <label for="avatarPreview">Avatar</label>
-                                                    <img id="avatarPreview" src="#" alt="Avatar Preview" style="display: none; max-width: 200px;">
+                                                    <img id="avatarPreview" src="#" alt="Avatar Preview" style="display: none; max-width: 150px; max-height: 150px; margin-top: 10px;">
                                                 </div>
 
                                                 <div class="form-group">
@@ -235,20 +235,21 @@
 
     <script>
         function previewAvatar(event) {
-            const input = event.target; // Input file
-            const preview = document.getElementById('avatarPreview'); // Image preview
+            const file = event.target.files[0];
+            const preview = document.getElementById('avatarPreview');
 
-            if (input.files && input.files[0]) {
-                const reader = new FileReader(); // Tạo đối tượng FileReader để đọc file
+            if (file) {
+                const reader = new FileReader();
 
-                reader.onload = function (e) {
-                    preview.src = e.target.result; // Gán kết quả đọc file vào thuộc tính src
+                reader.onload = function(e) {
+                    preview.src = e.target.result; // Gán src của ảnh
+                    preview.style.display = 'block'; // Hiển thị ảnh
                 };
 
-                reader.readAsDataURL(input.files[0]); // Đọc file dưới dạng Data URL
+                reader.readAsDataURL(file); // Đọc tệp dưới dạng URL
             } else {
-                // Nếu không có file, gán lại ảnh mặc định
-                preview.src = '/uploads/avatars/default-avatar.jpg';
+                preview.src = '#';
+                preview.style.display = 'none';
             }
         }
     </script>
