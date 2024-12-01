@@ -70,6 +70,9 @@ public class Order {
     private List<OrderItem> orderItems;
 
     public int getTotalQuantity() {
+        if (orderItems == null) {
+            return 0;
+        }
         return orderItems.stream().mapToInt(OrderItem::getQuantity).sum();
     }
 }

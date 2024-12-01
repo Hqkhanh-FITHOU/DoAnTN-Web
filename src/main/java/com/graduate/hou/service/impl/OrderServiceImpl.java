@@ -4,12 +4,16 @@ import com.graduate.hou.dto.request.OrderDTO;
 import com.graduate.hou.dto.request.OrderDTO2;
 import com.graduate.hou.entity.*;
 import com.graduate.hou.enums.OrderStatus;
+import com.graduate.hou.enums.PaymentStatus;
+import com.graduate.hou.mapper.OrderMapper;
 import com.graduate.hou.repository.OrderRepository;
 import com.graduate.hou.repository.PaymentRepository;
 import com.graduate.hou.repository.UsersRepository;
 import com.graduate.hou.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -133,7 +137,72 @@ public class OrderServiceImpl implements OrderService {
     public boolean updateState(Long id, OrderStatus status) {
         Optional<Order> optionalOrder = orderRepository.findById(id);
         Order order = optionalOrder.get();
+        if(status == OrderStatus.CANCELED) {
+            if(order.getPayment().getPaymentStatus() == PaymentStatus.COMPLETED){
+                Payment payment = order.getPayment();
+                payment.setPaymentStatus(PaymentStatus.REFUNDED);
+                paymentRepository.save(payment);
+            }
+        }
         order.setStatus(status);
+        return orderRepository.save(order) != null;
+    }
+
+    @Override
+    public List<Order> getOrderByStatusList(List<OrderStatus> list) {
+        return orderRepository.findByStatusIn(list);
+    }
+
+    @Override
+    public List<OrderDTO> getOrderDtoByStatusList(List<OrderStatus> list) {
+        List<Order> orders = orderRepository.findByStatusIn(list);
+        List<OrderDTO> ordersDto = new ArrayList<>();
+        for(Order order : orders) {
+            ordersDto.add(OrderMapper.toDTO(order));
+        }
+        return ordersDto;
+    }
+
+    @Override
+    public List<OrderDTO> getOrderDtoByStatusesAndUserId(List<OrderStatus> list, Long userId) {
+        List<Order> orders = orderRepository.findOrdersByUserAndStatuses(userId, list);
+        List<OrderDTO> ordersDto = new ArrayList<>();
+        for(Order order : orders) {
+            ordersDto.add(OrderMapper.toDTO(order));
+        }
+        return ordersDto;
+    }
+
+    @Override
+    public List<OrderDTO> getOrderDtoByStatusesAndDeliveryId(List<OrderStatus> list, Long userId) {
+        List<Order> orders = orderRepository.findOrdersByDeliveryAndStatuses(userId , list);
+        List<OrderDTO> ordersDto = new ArrayList<>();
+        for(Order order : orders) {
+            ordersDto.add(OrderMapper.toDTO(order));
+        }
+        return ordersDto;
+    }
+
+
+    @Override
+    public boolean saveOrderWithDelivery(Long orderId, Long userId) {
+        Order order = orderRepository.findById(orderId).get();
+        User delivery = usersRepository.findById(userId).get();
+        order.setDelivery(delivery);
+        order.setStatus(OrderStatus.ON_DELIVERY);
+        return orderRepository.save(order) != null;
+    }
+
+    @Override
+    public boolean confirmCompleteOrder(Long id) {
+        Optional<Order> optionalOrder = orderRepository.findById(id);
+        Order order = optionalOrder.get();
+        Payment p = order.getPayment();
+        if(p.getPaymentStatus() == PaymentStatus.PENDING){
+            p.setPaymentStatus(PaymentStatus.COMPLETED);
+        }
+        paymentRepository.save(p);
+        order.setStatus(OrderStatus.COMPLETED);
         return orderRepository.save(order) != null;
     }
 }

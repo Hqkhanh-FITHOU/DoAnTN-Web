@@ -95,6 +95,12 @@ public class SecurityConfig {
                             "/productimage/**",
                             "/uploads/**",
                             "/orderItem/**",
+                            "/order/**",
+                            "/notification/**",
+                            "/user/**",
+                            "/response/**",
+                            "/category/**",
+                            "/review/**",
                             "/coupon/**"
                             ).permitAll()
                         .anyRequest().authenticated())

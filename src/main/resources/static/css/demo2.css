@@ -23,9 +23,13 @@ input[type=number] {
 }
 
 .text-red {
-    color: red;
+    color: red !important; 
 }
 
 .text-darkgreen {
-    color: darkgreen;
+    color: darkgreen !important;
+}
+
+.text-darkslateblue {
+    color: darkslateblue !important;
 }

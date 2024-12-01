@@ -366,12 +366,20 @@ public class RestaurantController {
     }
 
     @PostMapping("/accounts/new")
-    public String saveAccount(@ModelAttribute("user") UserRegisterDTO1 usersDTO) throws Exception {
-        User user = authenticationService.register1(usersDTO);
-        if (user == null) {
+    public String saveAccount(@ModelAttribute("user") UserRegisterDTO1 usersDTO, Model model) throws Exception {
+        try {
+            User user = authenticationService.register1(usersDTO);
+            if (user == null) {
+                model.addAttribute("user", usersDTO);
+                model.addAttribute("roles", RoleUsers.values());
+                return "accounts/add";
+            }
+            return "redirect:/restaurant/accounts";
+        } catch (Exception e) {
+            model.addAttribute("user", usersDTO);
+            model.addAttribute("roles", RoleUsers.values());
             return "accounts/add";
         }
-        return "redirect:/restaurant/accounts";
     }
 
     @GetMapping("/accounts/{id}/edit")

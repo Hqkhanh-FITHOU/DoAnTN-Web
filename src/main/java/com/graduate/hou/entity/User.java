@@ -1,5 +1,6 @@
 package com.graduate.hou.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.graduate.hou.enums.RoleUsers;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -58,15 +59,19 @@ public class User {
     private String avatar;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     List<Notification> notifications;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     List<Order> orders;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     List<Review> reviews;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     List<Response> respone;
 
 

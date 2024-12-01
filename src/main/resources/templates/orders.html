@@ -263,7 +263,7 @@
                                             </tfoot>
                                             <tbody>
                                             <tr th:each="order : ${orders}" class="old" role="row">
-                                                <td th:text="'#'+${order.orderId}"></td>
+                                                <td th:text="${order.orderId}"></td>
                                                 <!-- Hiển thị số điện thoại người dùng -->
                                                 <td th:text="${order.user.fullname}"></td>
 
@@ -282,8 +282,8 @@
                                                     th:text="${order.payment.paymentStatus.name() == 'PENDING' ? 'Chưa thanh toán' : (order.payment.paymentStatus.name() == 'COMPLETED' ? 'Đã thanh toán' : 'Thanh toán thất bại')}"></td>
 
                                                 <!-- Hiển thị trạng thái đơn hàng -->
-                                                <td th:classappend="${order.status.name() == 'PENDING' ? 'text-warning text-center' : (order.status.name() == 'COMPLETED' ? 'text-success text-center' : (order.status.name() == 'ON_PROGRESS' ? 'text-primary text-center' : (order.status.name() == 'WILLING_DELIVERY' ? 'text-darkgreen text-center' : 'text-danger text-center')))}"
-                                                    th:text="${order.status.name() == 'PENDING' ? 'Chờ xác nhận' : (order.status.name() == 'COMPLETED' ? 'Hoàn thành' : (order.status.name() == 'ON_PROGRESS' ? 'Đang xử lý' : (order.status.name() == 'WILLING_DELIVERY' ? 'Sẵn sàng giao' : 'Đã hủy')))}"></td>
+                                                <td th:classappend="${order.status.name() == 'PENDING' ? 'text-warning text-center' : (order.status.name() == 'COMPLETED' ? 'text-success text-center' : (order.status.name() == 'ON_PROGRESS' ? 'text-primary text-center' : (order.status.name() == 'WILLING_DELIVERY' ? 'text-darkgreen text-center' : (order.status.name() == 'ON_DELIVERY' ? 'text-center text-darkslateblue' : 'text-center text-danger'))))}"
+                                                    th:text="${order.status.name() == 'PENDING' ? 'Chờ xác nhận' : (order.status.name() == 'COMPLETED' ? 'Hoàn thành' : (order.status.name() == 'ON_PROGRESS' ? 'Đang xử lý' : (order.status.name() == 'WILLING_DELIVERY' ? 'Sẵn sàng giao' : (order.status.name() == 'ON_DELIVERY' ? 'Đang giao':'Đã hủy'))))}"></td>
 
                                                 <!-- Các hành động trên đơn hàng -->
                                                 <td>
@@ -322,7 +322,7 @@
                                                             <i class="fas fa-shipping-fast"></i>
                                                         </button>
 
-                                                        <button th:if="${order.status.name() != 'CANCELED'}" 
+                                                        <button th:unless="${order.status.name() == 'CANCELED' || order.status.name() == 'COMPLETED'}" 
                                                                 th:href="@{/restaurant/orders/{id}/edit(id=${order.orderId})}" 
                                                                 data-bs-toggle="tooltip" title="Hủy đơn"
                                                                 class="btn btn-outline-danger me-1 btn-sm"
