@@ -122,6 +122,14 @@
                             </li>
                         </ul>
                     </div>
+                    <div th:if="${message}" class="alert alert-success" role="alert">
+                        <i class="fas fa-check-circle"></i> <span th:text="${message}"></span>
+                    </div>
+
+                    <!-- Hiển thị thông báo lỗi -->
+                    <div th:if="${error}" class="alert alert-danger" role="alert">
+                        <i class="fas fa-times-circle"></i> <span th:text="${error}"></span>
+                    </div>
 
                 <!--TODO: code main view here  -->
                     <div class="row">
@@ -203,6 +211,23 @@
                                                         <button type="button" data-bs-toggle="tooltip" th:onclick="'deleteAccount(' + ${account.userId} + ')'" title="Delete" class="btn btn-outline-danger btn-sm" data-bs-placement="top" data-bs-title="Vô hiệu hóa">
                                                             <i class="fas fa-times"></i>
                                                         </button>
+
+                                                        <!-- Form vô hiệu hóa tài khoản nếu tài khoản đang hoạt động (active = true) -->
+                                                        <form th:action="@{/restaurant/accounts/{id}/disable(id=${account.userId})}" method="post">
+                                                            <button type="submit" class="btn btn-warning btn-sm" th:if="${account.active}" title="Vô hiệu hóa">
+                                                                <i class="fas fa-ban"></i>
+                                                            </button>
+                                                        </form>
+
+                                                        <!-- Form kích hoạt lại tài khoản nếu tài khoản đang bị vô hiệu hóa (active = false) -->
+                                                        <form th:action="@{/restaurant/accounts/{id}/enable(id=${account.userId})}" method="post">
+                                                            <button type="submit" class="btn btn-success btn-sm" th:if="${!account.active}" title="Kích hoạt lại">
+                                                                <i class="fas fa-check-circle"></i>
+                                                            </button>
+                                                        </form>
+
+
+
                                                     </div>
                                                 </td>
                                             </tr>

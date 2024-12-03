@@ -69,5 +69,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     List<Response> respone;
 
+    @Column(nullable = false)
+    private boolean active = true;
 
 }
