@@ -60,7 +60,7 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
-    List<Notification> notifications;
+    List<Notification1> notifications;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
