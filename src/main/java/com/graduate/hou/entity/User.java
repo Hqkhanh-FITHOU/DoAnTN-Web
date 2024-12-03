@@ -74,5 +74,7 @@ public class User {
     @JsonIgnore
     List<Response> respone;
 
+    @Column(nullable = false)
+    private boolean active = true;
 
 }

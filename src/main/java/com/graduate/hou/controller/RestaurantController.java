@@ -33,6 +33,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/restaurant")
 @Slf4j
 public class RestaurantController {
+
+    @Autowired
+    private ReviewService reviewService;
     @Autowired
     private CouponService couponService;
 
@@ -409,6 +412,40 @@ public class RestaurantController {
         return "{ \"delete\":"+ userService.deleteUser(id) +"}";
     }
 
+    @PostMapping("/accounts/{id}/disable")
+    public String disableAccount(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+        try {
+            boolean isDisabled = userService.disableUser(id); // Gọi service để vô hiệu hóa tài khoản
+            if (isDisabled) {
+                redirectAttributes.addFlashAttribute("message", "Tài khoản đã được vô hiệu hóa thành công.");
+            } else {
+                redirectAttributes.addFlashAttribute("error", "Không thể vô hiệu hóa tài khoản. Tài khoản không tồn tại.");
+            }
+            return "redirect:/restaurant/accounts"; // Quay lại danh sách tài khoản
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Đã xảy ra lỗi khi vô hiệu hóa tài khoản.");
+            return "redirect:/restaurant/accounts"; // Quay lại danh sách tài khoản
+        }
+    }
+
+    @PostMapping("/accounts/{id}/enable")
+    public String enableAccount(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+        try {
+            boolean isEnabled = userService.enableUser(id); // Gọi service để kích hoạt lại tài khoản
+            if (isEnabled) {
+                redirectAttributes.addFlashAttribute("message", "Tài khoản đã được kích hoạt lại thành công.");
+            } else {
+                redirectAttributes.addFlashAttribute("error", "Không thể kích hoạt lại tài khoản. Tài khoản không tồn tại.");
+            }
+            return "redirect:/restaurant/accounts"; // Quay lại danh sách tài khoản
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Đã xảy ra lỗi khi kích hoạt lại tài khoản.");
+            return "redirect:/restaurant/accounts"; // Quay lại danh sách tài khoản
+        }
+    }
+
+
+
 
     @GetMapping("/orderitems/{orderId}")
     @ResponseBody
@@ -530,5 +567,27 @@ public class RestaurantController {
             redirectAttributes.addFlashAttribute("error", "Đã xảy ra lỗi khi kích hoạt lại khuyến mãi, vì khuyến mãi hết hạn.");
             return "redirect:/restaurant/coupons"; // Quay lại danh sách coupon
         }
+    }
+
+
+    @GetMapping("/reviews")
+    public String goReviewsManagement(Model model) {
+        List<Review> reviews = reviewService.getAllReviews();
+        model.addAttribute("reviews", reviews);
+        return "reviews";
+    }
+
+
+    @GetMapping("/reviews/new")
+    public String goAddNewReviews(Model model) {
+        model.addAttribute("reviews", new ReviewDTO());
+        model.addAttribute("userssss", userService.getAllUser());
+        model.addAttribute("product", productService.getAllProducts());
+        return "reviews";
+    }
+
+    @GetMapping("/revenue")
+    public String goRevenueManagement(Model model) {
+        return "revenue";
     }
 }

@@ -16,4 +16,6 @@ public interface UserService {
     Optional<User> findByPhone(String phone);
 
     User findByUserId(Long id);
+    boolean disableUser(Long userId);
+    boolean enableUser(Long userId);
 }

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security6">
+<head th:replace="~{fragments/head :: head}"></head>
+<body>
+<div class="wrapper">
+    <!-- Sidebar -->
+    <div class="sidebar" data-background-color="dark">
+        <div class="sidebar-logo">
+            <!-- Logo Header -->
+            <div th:replace="~{fragments/head :: logo_header}">
+            </div>
+            <!-- End Logo Header -->
+        </div>
+        <div class="sidebar-wrapper scrollbar scrollbar-inner">
+            <div class="sidebar-content">
+                <ul class="nav nav-secondary">
+                    <li class="nav-item">
+                        <a th:href="@{/restaurant/dashboard}" class="py-3">
+                            <i class="fas fa-home"></i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/restaurant/orders}" class="py-3">
+                            <i class="fas fa-clipboard"></i>
+                            <p>Quản lý đơn hàng</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/restaurant/products}" class="py-3">
+                            <i class="fas fa-utensils"></i>
+                            <p>Quản lý món ăn</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/restaurant/categories}" class="py-3">
+                            <i class="fas fa-grip-horizontal"></i>
+                            <p>Quản lý danh mục món ăn</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/restaurant/coupons}" class="py-3">
+                            <i class="fas fa-percentage"></i>
+                            <p>Quản lý khuyến mãi</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/restaurant/accounts}" class="py-3">
+                            <i class="fas fa-users"></i>
+                            <p>Quản lý tài khoản</p>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a data-bs-toggle="collapse" href="#report" class="collapsed py-3" aria-expanded="false">
+                            <i class="fas fa-chart-pie"></i>
+                            <p>Quản lý thống kê</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="report">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a th:href="@{/restaurant/revenue}" class="py-2">
+                                        <span class="sub-item">Doanh số</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a th:href="@{/restaurant/reviews}" class="py-2">
+                                        <span class="sub-item active">Đánh giá</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- End Sidebar -->
+
+    <div class="main-panel">
+        <!-- Header -->
+        <div class="main-header">
+            <div class="main-header-logo">
+                <!-- Logo Header -->
+                <div th:replace="~{fragments/head :: logo_header}">
+                </div>
+                <!-- End Logo Header -->
+            </div>
+            <!-- Navbar Header -->
+            <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+                <div class="container-fluid">
+                    <nav
+                            class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
+                        <!-- <div class="input-group">
+                            <div class="input-group-prepend">
+                                <button type="submit" class="btn btn-search pe-1">
+                                    <i class="fa fa-search search-icon"></i>
+                                </button>
+                            </div>
+                            <input type="text" placeholder="Search ..." class="form-control" />
+                        </div> -->
+                        <h3 class="fw-bold mb-0">Quản lý danh mục thống kê</h3>
+                    </nav>
+                    <ul th:replace="~{fragments/head :: user_box}"></ul>
+                </div>
+            </nav>
+            <!-- End Navbar -->
+        </div>
+        <!-- End header -->
+
+
+
+        <!-- Main content -->
+        <div class="container">
+            <div class="page-inner">
+                <!-- Breadcrum -->
+                <div class="page-header">
+                    <ul class="breadcrumbs mb-3">
+                        <li class="nav-home">
+                            <a th:href="@{/restaurant/dashboard}">
+                                <i class="icon-home"></i>
+                            </a>
+                        </li>
+                        <li class="separator">
+                            <i class="icon-arrow-right"></i>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#">Quản lý danh mục thống kê</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!--TODO: code main view here  -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <!-- Tiêu đề -->
+                            <div class="card-header d-flex align-items-center">
+                                <h4 class="card-title">Danh mục thống kê</h4>
+                            </div>
+
+                            <div class="container mt-5">
+                                <div class="row">
+                                    <!-- Tổng số đánh giá -->
+                                    <div class="col-md-4 mb-4">
+                                        <div class="card shadow-sm">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Tổng số đánh giá</h5>
+                                                <p class="card-text display-4">150</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Điểm đánh giá trung bình -->
+                                    <div class="col-md-4 mb-4">
+                                        <div class="card shadow-sm">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Điểm đánh giá trung bình</h5>
+                                                <p class="card-text display-4">4.5</p>
+                                                <div class="d-flex justify-content-center">
+                                                    <span class="badge badge-warning p-2">★★★★★</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Số lượng sản phẩm đã bán -->
+                                    <div class="col-md-4 mb-4">
+                                        <div class="card shadow-sm">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Số lượng sản phẩm đã bán</h5>
+                                                <p class="card-text display-4">1200</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- End main content -->
+
+
+
+
+        <!-- Footer -->
+        <footer th:replace="~{fragments/footer :: footer}">
+        </footer>
+        <!-- End footer -->
+    </div>
+</div>
+
+<div th:replace="~{fragments/script :: script}">
+</div>
+<script>
+    $(document).ready(function(){
+        $("#multi-filter-select").DataTable({
+            pageLength: 10,
+            stateSave: true,
+            language: {
+                paginate: {
+                    next: '&rsaquo;',
+                    previous: '&lsaquo;',
+                },
+                info: '_START_ đến _END_ / _TOTAL_ bản ghi',
+                infoFiltered: '(Lọc từ _MAX_ bản ghi)',
+                search: 'Tìm kiếm',
+                searchPlaceholer: 'Nhận từ khóa...',
+                lengthMenu: 'Hiện _MENU_',
+                zeroRecords: 'Không tìm thấy kết quả phù hợp',
+                emptyTable: 'Không có dữ liệu'
+            }
+        });
+    })
+
+    function deleteCategory(categoryId) {
+        swal({
+            title: 'Bạn có chắc muốn xóa?',
+            text: "Bạn sẽ không thể hoàn tác sau khi thực hiện việc này!",
+            icon: 'warning',
+            buttons:{
+                confirm: {
+                    text : 'Có, xóa!',
+                    className : 'btn btn-success'
+                },
+                cancel: {
+                    visible: true,
+                    text : 'Không',
+                    className: 'btn btn-danger'
+                },
+            }
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    url: 'categories/'+categoryId+'/delete',
+                    method: 'GET',
+                    success: function(response) {
+                        result = JSON.parse(response)
+                        //console.log('delete', result)
+                        if(result.delete){
+                            swal("Danh mục đã bị xóa!", {
+                                icon: "success",
+                                buttons : {
+                                    confirm : {
+                                        className: 'btn btn-success'
+                                    }
+                                }
+                            }).then((ok) => {
+                                if(ok){
+                                    window.location.href = 'categories'
+                                }
+                                window.location.href = 'categories'
+                            })
+                        } else {
+                            swal("Danh mục đã có món ăn, không thể xóa", {
+                                icon: "error",
+                                buttons : {
+                                    confirm : {
+                                        className: 'btn btn-danger'
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    error: function(error) {
+                        alert('Đã có lỗi xảy ra!')
+                        console.log('delete category',error)
+                    }
+                })
+            } else {
+                //do nothing when cancel
+                swal.close()
+            }
+        });
+    }
+</script>
+</body>
+</html>

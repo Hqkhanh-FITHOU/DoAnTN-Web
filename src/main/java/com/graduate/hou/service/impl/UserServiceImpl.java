@@ -145,4 +145,28 @@ public class UserServiceImpl implements UserService {
         return usersRepository.findById(id).get();
     }
 
+    public boolean disableUser(Long userId) {
+        Optional<User> userOptional = usersRepository.findById(userId);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            // Vô hiệu hóa tài khoản (set active = false)
+            user.setActive(false);
+            usersRepository.save(user);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean enableUser(Long userId) {
+        Optional<User> userOptional = usersRepository.findById(userId);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            // Kích hoạt lại tài khoản (set active = true)
+            user.setActive(true);
+            usersRepository.save(user);
+            return true;
+        }
+        return false;
+    }
+
 }

@@ -18,6 +18,4 @@ public class ReviewDTO {
     private Float rating;
 
     private String comment;
-
-    private LocalDateTime createdAt;
 }
