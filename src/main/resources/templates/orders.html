@@ -172,9 +172,12 @@
 												<span th:classappend="${order.payment.paymentStatus.name() == 'PENDING' ? 'text-danger text-center' : (order.payment.paymentStatus.name() == 'COMPLETED' ? 'text-success text-center' : 'text-warning text-center')}"
                                                 th:text="${order.payment.paymentStatus.name() == 'PENDING' ? 'Chưa thanh toán' : (order.payment.paymentStatus.name() == 'COMPLETED' ? 'Đã thanh toán' : 'Thanh toán thất bại')}">Đã thanh toán</span>
 											</div>
-											<!-- <div>
-												<button class="nav-link text-primary" data-bs-toggle="modal" data-bs-target="#detailOrderModal" th:data-order-user-name="${order.user.username}"
+											<div>
+												<button class="nav-link text-primary fw-bold" data-bs-toggle="modal" data-bs-target="#detailOrderModal" 
+                                                th:data-order-id="${order.orderId}"
+                                                th:data-order-user-name="${order.user.username}"
                                                 th:data-order-user-fullname="${order.user.fullname}"
+                                                th:data-order-cancel-reason="${order.cancelReason}"
                                                 th:data-order-user-phone="${order.user.phone}"
                                                 th:data-order-create="${order.createdAt}"
                                                 th:data-order-address="${order.address}"
@@ -185,8 +188,9 @@
                                                 th:data-order-payment-method="${order.payment.paymentMethod.name() == 'CREDIT_CARD' ? 'Thẻ tín dụng' : 'Khi nhận hàng'}"
                                                 th:data-order-payment-status="${order.payment.paymentStatus.name() == 'PENDING' ? 'Chưa thanh toán' : (order.payment.paymentStatus.name() == 'COMPLETED' ? 'Đã thanh toán' : 'Thanh toán thất bại')}"
                                                 th:data-order-status="${order.status.name() == 'PENDING' ? 'Chờ xác nhận' : (order.status.name() == 'COMPLETED' ? 'Hoàn thành' : (order.status.name() == 'ON_PROGRESS' ? 'Đang xử lý' : 'Đã hủy'))}"
-                                                th:data-order-update="${order.updatedAt}">Xem chi tiết</button>
-											</div> -->
+                                                th:data-order-update="${order.updatedAt}"
+                                                th:onclick="'loadOrderItemToModal('+${order.orderId}+')'">Xem chi tiết</button>
+											</div>
                                             <div class="separator-dashed"></div>
 										</div>
 										<div class="float-end pt-1">
@@ -310,8 +314,11 @@
                                                         </button>
 
                                                         <!-- Nút chỉnh sửa đơn hàng -->
-
-                                                        <a th:if="${order.status.name() == 'PENDING' || order.status.name() == 'ON_PROGRESS'}" th:href="@{/restaurant/orders/{id}/edit(id=${order.orderId})}" data-bs-toggle="tooltip" title="Chỉnh sửa đơn hàng" class="btn btn-outline-primary me-1 btn-sm">
+                                                        
+                                                        <!-- <a th:if="${order.status.name() == 'PENDING' || order.status.name() == 'ON_PROGRESS'}" th:href="@{/restaurant/orders/{id}/edit(id=${order.orderId})}" data-bs-toggle="tooltip" title="Chỉnh sửa đơn hàng" class="btn btn-outline-primary me-1 btn-sm">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a> -->
+                                                        <a th:if="${order.status.name() == 'PENDING' || order.status.name() == 'ON_PROGRESS'}"  data-bs-toggle="tooltip" title="Chỉnh sửa đơn hàng" class="btn btn-outline-primary me-1 btn-sm" onclick="onFutureFeature()">
                                                             <i class="fa fa-edit"></i>
                                                         </a>
 
@@ -813,7 +820,7 @@
                 }
             }).then((willDelete) => {
                 if (willDelete) {
-                    const cancelReason = $('#cancel-reason').val()
+                    const cancelReason = $('#cancel-reason').val()+''
                     $.ajax({
                         url: '/L1/restaurant/orders/'+id+'/cancelOrder',
                         method: 'GET',
@@ -849,6 +856,21 @@
                     swal.close()
                 }
             });
+        }
+
+        function onFutureFeature(){
+            $.notify({
+                icon: 'icon-bell',
+                title: 'Chỉnh sửa đơn hàng',
+                message: 'Tính năng đang được phát triển',
+            },{
+                type: 'info',
+                placement: {
+                    from: "top",
+                    align: "right"
+                },
+                time: 1000,
+            })
         }
     </script>
 </body>
