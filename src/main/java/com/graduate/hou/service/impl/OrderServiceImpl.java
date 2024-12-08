@@ -12,8 +12,8 @@ import com.graduate.hou.repository.UsersRepository;
 import com.graduate.hou.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -128,6 +128,7 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.save(order);
     }
 
+
     @Override
     public boolean confirmOrder(Long id) {
         Optional<Order> optionalOrder = orderRepository.findById(id);
@@ -236,4 +237,20 @@ public class OrderServiceImpl implements OrderService {
         firebaseNotificationService.sendNotification(TARGET_EMULATOR_TOKEN, "Hủy đơn", "Đơn hàng của bạn được hủy");
         return orderRepository.save(order) != null;
     }
+
+    @Override
+    public Long getTotalOrdersToday() {
+        return orderRepository.countTotalOrdersToday();
+    }
+
+    @Override
+    public BigDecimal getTotalRevenueToday() {
+        return orderRepository.sumTotalRevenueToday();
+    }
+
+    @Override
+    public Long getTotalSuccessfulOrdersToday() {
+        return orderRepository.countTotalSuccessfulOrdersToday();
+    }
+
 }

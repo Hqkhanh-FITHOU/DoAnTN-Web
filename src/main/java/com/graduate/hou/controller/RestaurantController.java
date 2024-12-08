@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.extern.slf4j.Slf4j;
@@ -66,7 +67,15 @@ public class RestaurantController {
     private ObjectMapper objectMapper;
 
     @GetMapping("/dashboard")
-    public String goDashBoard() {
+    public String goDashBoard(Model model) {
+        Long totalOrdersToday = orderService.getTotalOrdersToday();
+        BigDecimal totalRevenueToday = orderService.getTotalRevenueToday();
+        Long totalSuccessfulOrdersToday = orderService.getTotalSuccessfulOrdersToday();
+
+        model.addAttribute("totalOrdersToday", totalOrdersToday);
+        model.addAttribute("totalRevenueToday", totalRevenueToday);
+        model.addAttribute("totalSuccessfulOrdersToday", totalSuccessfulOrdersToday);
+
         return "index";
     }
 

@@ -5,7 +5,7 @@ import com.graduate.hou.dto.request.OrderDTO;
 import com.graduate.hou.dto.request.OrderDTO2;
 import com.graduate.hou.entity.Order;
 import com.graduate.hou.enums.OrderStatus;
-
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface OrderService {
@@ -25,4 +25,7 @@ public interface OrderService {
     boolean confirmCompleteOrder(Long id);
     boolean updateState(Long id, OrderStatus status);
     boolean saveOrderWithDelivery(Long orderId, Long userId);
+    Long getTotalOrdersToday();
+    BigDecimal getTotalRevenueToday();
+    Long getTotalSuccessfulOrdersToday();
 }
