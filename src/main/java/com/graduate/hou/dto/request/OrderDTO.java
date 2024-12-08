@@ -16,6 +16,8 @@ public class OrderDTO {
 
     private Long userId;
 
+    private Long deliveryId;
+
     private BigDecimal totalAmount;
 
     private BigDecimal totalDiscount;
@@ -27,6 +29,10 @@ public class OrderDTO {
     private Long paymentId;
 
     private String address;
+
+    private String note;
+
+    private String cancelReason;
 
     private LocalDateTime createdDate;
 

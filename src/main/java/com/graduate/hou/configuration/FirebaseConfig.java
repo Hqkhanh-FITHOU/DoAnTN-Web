@@ -7,8 +7,12 @@ import org.springframework.context.annotation.Configuration;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
+@RequiredArgsConstructor
 public class FirebaseConfig {
 
     @PostConstruct
@@ -22,9 +26,11 @@ public class FirebaseConfig {
                     .build();
 
             FirebaseApp.initializeApp(options);
+            FirebaseMessaging.getInstance();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }   
-    
+
+
 }

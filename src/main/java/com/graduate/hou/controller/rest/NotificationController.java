@@ -1,7 +1,8 @@
 package com.graduate.hou.controller.rest;
 
+
 import com.graduate.hou.dto.request.NotificationDTO;
-import com.graduate.hou.entity.Notification;
+import com.graduate.hou.entity.Notification1;
 import com.graduate.hou.service.impl.NotificationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -15,18 +16,24 @@ public class NotificationController {
     @Autowired
     private NotificationServiceImpl notificationService;
 
+
+    // @PostMapping("/send-notification")
+    // public BatchResponse sendNotification(@RequestBody Notice notice){
+    //     return notificationService.sendNotification(notice);
+    // }
+
     @PostMapping
-    Notification createNotification(@RequestBody NotificationDTO notificationDTO){
+    Notification1 createNotification(@RequestBody NotificationDTO notificationDTO){
         return notificationService.createNotification(notificationDTO);
     }
 
     @GetMapping
-    List<Notification> getAllNotification(){
+    List<Notification1> getAllNotification(){
         return notificationService.getAllNotification();
     }
 
     @PutMapping("/{id}")
-    Notification updateNotification (@PathVariable Long id, @RequestBody NotificationDTO notificationDTO){
+    Notification1 updateNotification (@PathVariable Long id, @RequestBody NotificationDTO notificationDTO){
         return notificationService.updateNotification(id, notificationDTO);
     }
 

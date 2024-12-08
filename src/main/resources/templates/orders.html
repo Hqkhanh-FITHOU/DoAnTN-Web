@@ -153,17 +153,17 @@
 								<div class="card-body">
 									<div class="d-flex align-items-center" th:each="order : ${pendingOrders}" th:id="${order.orderId}+'pending'">
 										<div class="flex-1">
-                                            <h5 class="fw-bold mb-1" th:text="'#'+${order.user.orderId}"></h5>
-											<h6 class="fw-bold mb-1" th:text="${order.user.fullname}">
-												Nguyễn Ngọc Ngạn
-												<span class="ps-3 fw-normal" th:text="${#temporals.format(order.createdAt, 'HH:mm dd/MM/yyyy')}">8:40 PM</span>
-											</h6>
-											<div>
-												<!-- <span class="text-muted">0983746573</span>
-												<span> - </span> -->
-												<span class="text-muted" th:text="${order.address}">84/2 Đàm Quang Trung, Long Biên, Long Biên, Hà Nội</span>
+                                            <div>
+                                                <span class="fw-bold mb-1 h-6" th:text="'#'+${order.orderId}"></span>
+                                                <span class="ps-3 fw-normal" th:text="${#temporals.format(order.createdAt, 'HH:mm dd/MM/yyyy')}">8:40 PM</span>
+                                                <span class="ps-3 fw-normal text-success" th:text="${order.getTotalQuantity + ' món'}"></span>
+                                            </div>
+											<div class="fw-bold mb-1" th:text="${'Người đặt hàng: '+ order.user.fullname +' - '+order.user.phone}"></div>
+                                            <div>
+                                                <span>Thông tin giao hàng: </span>
+												<span class="text-muted ps-2" th:text="${order.address}">84/2 Đàm Quang Trung, Long Biên, Long Biên, Hà Nội</span>
 											</div>
-											<div class="text-dark" th:text="${#numbers.formatDecimal(order.totalPayment, 0, 'POINT', 0, 'COMMA') + ' đ'}">
+											<div class="text-dark" th:text="${'Tổng thanh toán: '+ #numbers.formatDecimal(order.totalPayment, 0, 'POINT', 0, 'COMMA') + ' đ'}">
 												189,000đ
 											</div>
 											<div >
@@ -172,9 +172,12 @@
 												<span th:classappend="${order.payment.paymentStatus.name() == 'PENDING' ? 'text-danger text-center' : (order.payment.paymentStatus.name() == 'COMPLETED' ? 'text-success text-center' : 'text-warning text-center')}"
                                                 th:text="${order.payment.paymentStatus.name() == 'PENDING' ? 'Chưa thanh toán' : (order.payment.paymentStatus.name() == 'COMPLETED' ? 'Đã thanh toán' : 'Thanh toán thất bại')}">Đã thanh toán</span>
 											</div>
-											<!-- <div>
-												<button class="nav-link text-primary" data-bs-toggle="modal" data-bs-target="#detailOrderModal" th:data-order-user-name="${order.user.username}"
+											<div>
+												<button class="nav-link text-primary fw-bold" data-bs-toggle="modal" data-bs-target="#detailOrderModal" 
+                                                th:data-order-id="${order.orderId}"
+                                                th:data-order-user-name="${order.user.username}"
                                                 th:data-order-user-fullname="${order.user.fullname}"
+                                                th:data-order-cancel-reason="${order.cancelReason}"
                                                 th:data-order-user-phone="${order.user.phone}"
                                                 th:data-order-create="${order.createdAt}"
                                                 th:data-order-address="${order.address}"
@@ -185,8 +188,9 @@
                                                 th:data-order-payment-method="${order.payment.paymentMethod.name() == 'CREDIT_CARD' ? 'Thẻ tín dụng' : 'Khi nhận hàng'}"
                                                 th:data-order-payment-status="${order.payment.paymentStatus.name() == 'PENDING' ? 'Chưa thanh toán' : (order.payment.paymentStatus.name() == 'COMPLETED' ? 'Đã thanh toán' : 'Thanh toán thất bại')}"
                                                 th:data-order-status="${order.status.name() == 'PENDING' ? 'Chờ xác nhận' : (order.status.name() == 'COMPLETED' ? 'Hoàn thành' : (order.status.name() == 'ON_PROGRESS' ? 'Đang xử lý' : 'Đã hủy'))}"
-                                                th:data-order-update="${order.updatedAt}">Xem chi tiết</button>
-											</div> -->
+                                                th:data-order-update="${order.updatedAt}"
+                                                th:onclick="'loadOrderItemToModal('+${order.orderId}+')'">Xem chi tiết</button>
+											</div>
                                             <div class="separator-dashed"></div>
 										</div>
 										<div class="float-end pt-1">
@@ -263,7 +267,7 @@
                                             </tfoot>
                                             <tbody>
                                             <tr th:each="order : ${orders}" class="old" role="row">
-                                                <td th:text="'#'+${order.orderId}"></td>
+                                                <td th:text="${order.orderId}"></td>
                                                 <!-- Hiển thị số điện thoại người dùng -->
                                                 <td th:text="${order.user.fullname}"></td>
 
@@ -282,8 +286,8 @@
                                                     th:text="${order.payment.paymentStatus.name() == 'PENDING' ? 'Chưa thanh toán' : (order.payment.paymentStatus.name() == 'COMPLETED' ? 'Đã thanh toán' : 'Thanh toán thất bại')}"></td>
 
                                                 <!-- Hiển thị trạng thái đơn hàng -->
-                                                <td th:classappend="${order.status.name() == 'PENDING' ? 'text-warning text-center' : (order.status.name() == 'COMPLETED' ? 'text-success text-center' : (order.status.name() == 'ON_PROGRESS' ? 'text-primary text-center' : 'text-danger text-center'))}"
-                                                    th:text="${order.status.name() == 'PENDING' ? 'Chờ xác nhận' : (order.status.name() == 'COMPLETED' ? 'Hoàn thành' : (order.status.name() == 'ON_PROGRESS' ? 'Đang xử lý' : 'Đã hủy'))}"></td>
+                                                <td th:classappend="${order.status.name() == 'PENDING' ? 'text-warning text-center' : (order.status.name() == 'COMPLETED' ? 'text-success text-center' : (order.status.name() == 'ON_PROGRESS' ? 'text-primary text-center' : (order.status.name() == 'WILLING_DELIVERY' ? 'text-darkgreen text-center' : (order.status.name() == 'ON_DELIVERY' ? 'text-center text-darkslateblue' : 'text-center text-danger'))))}"
+                                                    th:text="${order.status.name() == 'PENDING' ? 'Chờ xác nhận' : (order.status.name() == 'COMPLETED' ? 'Hoàn thành' : (order.status.name() == 'ON_PROGRESS' ? 'Đang xử lý' : (order.status.name() == 'WILLING_DELIVERY' ? 'Sẵn sàng giao' : (order.status.name() == 'ON_DELIVERY' ? 'Đang giao':'Đã hủy'))))}"></td>
 
                                                 <!-- Các hành động trên đơn hàng -->
                                                 <td>
@@ -293,6 +297,7 @@
                                                                 th:data-order-id="${order.orderId}"
                                                                 th:data-order-user-name="${order.user.username}"
                                                                 th:data-order-user-fullname="${order.user.fullname}"
+                                                                th:data-order-cancel-reason="${order.cancelReason}"
                                                                 th:data-order-user-phone="${order.user.phone}"
                                                                 th:data-order-create="${order.createdAt}"
                                                                 th:data-order-address="${order.address}"
@@ -309,9 +314,29 @@
                                                         </button>
 
                                                         <!-- Nút chỉnh sửa đơn hàng -->
-                                                        <a th:href="@{/restaurant/orders/{id}/edit(id=${order.orderId})}" data-bs-toggle="tooltip" title="Chỉnh sửa đơn hàng" class="btn btn-outline-primary me-1 btn-sm">
+                                                        
+                                                        <!-- <a th:if="${order.status.name() == 'PENDING' || order.status.name() == 'ON_PROGRESS'}" th:href="@{/restaurant/orders/{id}/edit(id=${order.orderId})}" data-bs-toggle="tooltip" title="Chỉnh sửa đơn hàng" class="btn btn-outline-primary me-1 btn-sm">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a> -->
+                                                        <a th:if="${order.status.name() == 'PENDING' || order.status.name() == 'ON_PROGRESS'}"  data-bs-toggle="tooltip" title="Chỉnh sửa đơn hàng" class="btn btn-outline-primary me-1 btn-sm" onclick="onFutureFeature()">
                                                             <i class="fa fa-edit"></i>
                                                         </a>
+
+                                                        <button th:if="${order.status.name() == 'ON_PROGRESS'}" 
+                                                                th:href="@{/restaurant/orders/{id}/edit(id=${order.orderId})}" 
+                                                                data-bs-toggle="tooltip" title="Sẵn sàng giao hàng" 
+                                                                class="btn btn-outline-success me-1 btn-sm"
+                                                                th:onclick="'onUpdateDeliveryState('+${order.orderId}+')'">
+                                                            <i class="fas fa-shipping-fast"></i>
+                                                        </button>
+
+                                                        <button th:unless="${order.status.name() == 'CANCELED' || order.status.name() == 'COMPLETED'}" 
+                                                                th:href="@{/restaurant/orders/{id}/edit(id=${order.orderId})}" 
+                                                                data-bs-toggle="tooltip" title="Hủy đơn"
+                                                                class="btn btn-outline-danger me-1 btn-sm"
+                                                                th:onclick="'onCancelOrder('+${order.orderId}+')'">
+                                                            <i class="fas fa-times"></i>
+                                                        </button>
 
                                                         <!-- Nút xóa đơn hàng -->
                                                         <!-- <button type="button" data-bs-toggle="tooltip" th:onclick="'deleteOrder(' + ${order.orderId} + ')'" title="Xóa đơn hàng" class="btn btn-outline-danger btn-sm">
@@ -351,6 +376,10 @@
                                                                 <div class="d-flex justify-content-between">
                                                                     <p class="fw-bold">Trạng thái đơn hàng</p>
                                                                     <p class="text-muted" id="modal-order-status"></p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between" id="cancel-container">
+                                                                    <p class="fw-bold">Lý do hủy đơn</p>
+                                                                    <p class="text-muted" id="modal-order-cancel-reason"></p>
                                                                 </div>
                                                                 <div class="d-flex justify-content-between">
                                                                     <p class="fw-bold">Thông tin nhận hàng</p>
@@ -527,6 +556,7 @@
             const orderStatus = button.getAttribute('data-order-status')
             const orderCreate = button.getAttribute('data-order-create')
             const orderUpdate = button.getAttribute('data-order-update')
+            const cancelReason = button.getAttribute('data-order-cancel-reason')
 
 
             detailOrderModal.querySelector('#modal-order-fullname').textContent = orderFullname;
@@ -536,6 +566,7 @@
             } else {
                 detailOrderModal.querySelector('#modal-order-address').textContent = orderAddress;
             }
+            detailOrderModal.querySelector('#modal-order-cancel-reason').textContent = cancelReason
             
             detailOrderModal.querySelector('#exampleModalLabel').textContent = '#' + orderId
             detailOrderModal.querySelector('#modal-order-payment-method').textContent = orderPaymentMethod;
@@ -555,8 +586,11 @@
             const createAt = new Date(orderCreate)
             const updateAt = new Date(orderUpdate)
             const paymentAt = new Date(paymentDate)
-            if(orderPaymentStatus == 'Đã thanh toán'){
+            if(orderPaymentStatus == 'Đã thanh toán' && paymentDate != ''){
                 detailOrderModal.querySelector('#modal-order-payment-date').textContent = new Intl.DateTimeFormat('vi-VN',options).format(paymentAt)
+            } else {
+                detailOrderModal.querySelector('#modal-order-payment-date').textContent = ''
+
             }
 
             detailOrderModal.querySelector('#modal-order-createDate').textContent = new Intl.DateTimeFormat('vi-VN',options).format(createAt)
@@ -703,6 +737,140 @@
             orderItems.forEach((item, index) => {
                 item.remove();
             });
+        }
+
+        function onUpdateDeliveryState(id){
+            swal({
+                title: 'Xác nhận đơn hàng có thể giao',
+                text: "Bạn sẽ không thể hoàn tác sau khi thực hiện việc này!",
+                icon: 'info',
+                buttons:{
+                    confirm: {
+                        text : 'Xác nhận',
+                        className : 'btn btn-success'
+                    },
+                    cancel: {
+                        visible: true,
+                        text : 'Không',
+                        className: 'btn btn-danger'
+                    },
+                }
+            }).then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        url: '/L1/restaurant/orders/'+id+'/updateDeliveryState',
+                        method: 'GET',
+                        success: function(response){
+                            result = JSON.parse(response)
+                            if(result.updated){
+                                swal({
+                                    icon: "success",
+                                    buttons : {
+                                        confirm : {
+                                            className: 'btn btn-success'
+                                        }
+                                    }
+                                }).then((ok) => {
+                                    if(ok){
+                                        window.location.href = 'orders'
+                                    }
+                                    window.location.href = 'orders'
+                                })
+                            } else {
+                                setTimeout(function() {
+                                }, 500)
+                                window.location.reload(true);
+                            }
+                        },
+                        error: function(e) {
+                            console.log(e.error)
+                        }
+                    })
+                } else {
+                    //do nothing when cancel
+                    swal.close()
+                }
+            });
+        }
+
+        function onCancelOrder(id) {
+            swal({
+                title: 'Xác nhận hủy đơn hàng',
+                text: "Bạn sẽ không thể hoàn tác sau khi thực hiện việc này!",
+                icon: 'warning',
+                content: {
+                    element: "input",
+                    attributes: {
+                        placeholder: 'Lý do hủy đơn',
+                        type: "text",
+                        id: 'cancel-reason',
+                        className: "form-control"
+                    },
+                },
+                buttons:{
+                    confirm: {
+                        text : 'Xác nhận',
+                        className : 'btn btn-success'
+                    },
+                    cancel: {
+                        visible: true,
+                        text : 'Không',
+                        className: 'btn btn-danger'
+                    },
+                }
+            }).then((willDelete) => {
+                if (willDelete) {
+                    const cancelReason = $('#cancel-reason').val()+''
+                    $.ajax({
+                        url: '/L1/restaurant/orders/'+id+'/cancelOrder',
+                        method: 'GET',
+                        data: {cancelReason: cancelReason},
+                        success: function(response){
+                            result = JSON.parse(response)
+                            if(result.canceled){
+                                swal('Đã hủy đơn hàng',{
+                                    icon: "success",
+                                    buttons : {
+                                        confirm : {
+                                            className: 'btn btn-success'
+                                        }
+                                    }
+                                }).then((ok) => {
+                                    if(ok){
+                                        window.location.href = 'orders'
+                                    }
+                                    window.location.href = 'orders'
+                                })
+                            } else {
+                                setTimeout(function() {
+                                }, 500)
+                                window.location.reload(true);
+                            }
+                        },
+                        error: function(e) {
+                            console.log(e.error)
+                        }
+                    })
+                } else {
+                    //do nothing when cancel
+                    swal.close()
+                }
+            });
+        }
+
+        function onFutureFeature(){
+            $.notify({
+                icon: 'icon-bell',
+                title: 'Chỉnh sửa đơn hàng',
+                message: 'Tính năng đang được phát triển',
+            },{
+                type: 'info',
+                placement: {
+                    from: "top",
+                    align: "right"
+                },
+                time: 1000,
+            })
         }
     </script>
 </body>

@@ -5,9 +5,11 @@ import com.graduate.hou.dto.request.OrderItemDTO;
 import com.graduate.hou.entity.OrderItem;
 import com.graduate.hou.service.impl.OrderItemServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+
 
 @Validated
 @RestController
@@ -25,6 +27,13 @@ public class OrderItemController {
     List<OrderItem> getAllOrderItem(){
         return orderItemService.getAllOrderItem();
     }
+
+    @GetMapping("/order/{orderId}")
+    public ResponseEntity<List<OrderItem>> getMethodName(@PathVariable("orderId") Long orderId) {
+        List<OrderItem> orderItems = orderItemService.getOrderItemsByOrderId(orderId);
+        return ResponseEntity.ok(orderItems);
+    }
+    
 
     @PutMapping("/{id}")
     OrderItem updateOrderItem (@PathVariable Long id, @RequestBody OrderItemDTO orderItemDTO){

@@ -12,7 +12,6 @@ public interface UserService {
     User createUser(UsersDTO usersDTO, MultipartFile avatarFile) throws IOException;
     boolean updateUser(Long id, UsersDTO usersDTO) throws IOException;
     boolean deleteUser(Long id);
-
     Optional<User> findByUserName(String username);
     Optional<User> findByPhone(String phone);
 
