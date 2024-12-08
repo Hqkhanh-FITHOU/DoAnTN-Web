@@ -293,6 +293,7 @@
                                                                 th:data-order-id="${order.orderId}"
                                                                 th:data-order-user-name="${order.user.username}"
                                                                 th:data-order-user-fullname="${order.user.fullname}"
+                                                                th:data-order-cancel-reason="${order.cancelReason}"
                                                                 th:data-order-user-phone="${order.user.phone}"
                                                                 th:data-order-create="${order.createdAt}"
                                                                 th:data-order-address="${order.address}"
@@ -368,6 +369,10 @@
                                                                 <div class="d-flex justify-content-between">
                                                                     <p class="fw-bold">Trạng thái đơn hàng</p>
                                                                     <p class="text-muted" id="modal-order-status"></p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between" id="cancel-container">
+                                                                    <p class="fw-bold">Lý do hủy đơn</p>
+                                                                    <p class="text-muted" id="modal-order-cancel-reason"></p>
                                                                 </div>
                                                                 <div class="d-flex justify-content-between">
                                                                     <p class="fw-bold">Thông tin nhận hàng</p>
@@ -544,6 +549,7 @@
             const orderStatus = button.getAttribute('data-order-status')
             const orderCreate = button.getAttribute('data-order-create')
             const orderUpdate = button.getAttribute('data-order-update')
+            const cancelReason = button.getAttribute('data-order-cancel-reason')
 
 
             detailOrderModal.querySelector('#modal-order-fullname').textContent = orderFullname;
@@ -553,6 +559,7 @@
             } else {
                 detailOrderModal.querySelector('#modal-order-address').textContent = orderAddress;
             }
+            detailOrderModal.querySelector('#modal-order-cancel-reason').textContent = cancelReason
             
             detailOrderModal.querySelector('#exampleModalLabel').textContent = '#' + orderId
             detailOrderModal.querySelector('#modal-order-payment-method').textContent = orderPaymentMethod;
@@ -572,8 +579,11 @@
             const createAt = new Date(orderCreate)
             const updateAt = new Date(orderUpdate)
             const paymentAt = new Date(paymentDate)
-            if(orderPaymentStatus == 'Đã thanh toán'){
+            if(orderPaymentStatus == 'Đã thanh toán' && paymentDate != ''){
                 detailOrderModal.querySelector('#modal-order-payment-date').textContent = new Intl.DateTimeFormat('vi-VN',options).format(paymentAt)
+            } else {
+                detailOrderModal.querySelector('#modal-order-payment-date').textContent = ''
+
             }
 
             detailOrderModal.querySelector('#modal-order-createDate').textContent = new Intl.DateTimeFormat('vi-VN',options).format(createAt)
@@ -781,6 +791,15 @@
                 title: 'Xác nhận hủy đơn hàng',
                 text: "Bạn sẽ không thể hoàn tác sau khi thực hiện việc này!",
                 icon: 'warning',
+                content: {
+                    element: "input",
+                    attributes: {
+                        placeholder: 'Lý do hủy đơn',
+                        type: "text",
+                        id: 'cancel-reason',
+                        className: "form-control"
+                    },
+                },
                 buttons:{
                     confirm: {
                         text : 'Xác nhận',
@@ -794,9 +813,11 @@
                 }
             }).then((willDelete) => {
                 if (willDelete) {
+                    const cancelReason = $('#cancel-reason').val()
                     $.ajax({
                         url: '/L1/restaurant/orders/'+id+'/cancelOrder',
                         method: 'GET',
+                        data: {cancelReason: cancelReason},
                         success: function(response){
                             result = JSON.parse(response)
                             if(result.canceled){

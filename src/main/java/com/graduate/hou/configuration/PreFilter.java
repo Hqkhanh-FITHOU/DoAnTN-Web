@@ -56,7 +56,7 @@ public class PreFilter extends OncePerRequestFilter {
                 UserDetails userDetails = customUserDetailsService.loadUserByUsername(userName);
 
                 if (jwtService.isValidate(token, TokenType.ACCESS_TOKEN, userDetails)) {
-                    log.info("PreFilter: validate token {true}");
+                    //log.info("PreFilter: validate token {true}");
                     SecurityContext context = SecurityContextHolder.createEmptyContext();
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                             userDetails, null, userDetails.getAuthorities());

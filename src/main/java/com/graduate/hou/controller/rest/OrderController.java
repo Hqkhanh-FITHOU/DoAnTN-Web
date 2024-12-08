@@ -129,12 +129,12 @@ public class OrderController {
         return orderService.getOrderDtoByStatusList(statuses);
     }
 
-    // @PutMapping("update/{id}")
-    // Order updateOrder (@PathVariable Long id, @RequestBody OrderDTO orderDTO){
-    //     return orderService.updateOrder(id, orderDTO);
-    // }
+    @GetMapping("/cancel/{id}")
+    public boolean updateOrder (@PathVariable("id") Long id, @RequestParam("cancelReason") String cancelReason){
+        return orderService.updateCancelReason(id, cancelReason);
+    }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public String deleteOrder(@PathVariable Long id){
         orderService.deleteOrder(id);
         return "Xóa thành công";

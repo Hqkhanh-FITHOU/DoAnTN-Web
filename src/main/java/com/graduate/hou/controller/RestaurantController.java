@@ -150,7 +150,8 @@ public class RestaurantController {
     
     @GetMapping("/orders/{id}/cancelOrder")
     @ResponseBody
-    public String cancelOrder(@PathVariable("id") Long id) {
+    public String cancelOrder(@PathVariable("id") Long id, @RequestParam("cancelReason") String cancelReason) {
+        orderService.updateCancelReason(id, cancelReason);
         return "{ \"canceled\":"+ orderService.updateState(id, OrderStatus.CANCELED) +"}";
     }
 

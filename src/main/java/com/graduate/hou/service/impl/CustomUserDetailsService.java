@@ -31,13 +31,13 @@ public class CustomUserDetailsService implements UserDetailsService{
         Optional<User> user = Optional.ofNullable(userService.findByUserName(username)
                                 .orElseGet(() -> userService.findByPhone(username)
                                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username or phone: " + username))));
-        log.info(user.get().toString());
+        //log.info(user.get().toString());
         Collection<GrantedAuthority> authorities = new HashSet<>();
         Set<RoleUsers> roles = user.get().getRoles();
         for(RoleUsers role : roles){
             authorities.add(new SimpleGrantedAuthority(role.name()));
         }
-        log.info(roles.toString());
+        //log.info(roles.toString());
         return new CustomUserDetails(user.get(), authorities);
     }
 

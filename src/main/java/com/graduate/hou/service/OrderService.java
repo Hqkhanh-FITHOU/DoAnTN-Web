@@ -19,6 +19,7 @@ public interface OrderService {
     Order createOrder(OrderDTO orderDTO);
     Order createOrder2(OrderDTO2 orderDTO);
     boolean updateOrder(Long id, OrderDTO orderDTO);
+    boolean updateCancelReason(Long id, String cancelReason);
     boolean deleteOrder(Long id);
     boolean confirmOrder(Long id);
     boolean confirmCompleteOrder(Long id);

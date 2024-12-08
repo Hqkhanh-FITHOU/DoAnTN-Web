@@ -1,7 +1,6 @@
 package com.graduate.hou.controller.rest;
 
-import com.google.firebase.messaging.BatchResponse;
-import com.graduate.hou.dto.Notice;
+
 import com.graduate.hou.dto.request.NotificationDTO;
 import com.graduate.hou.entity.Notification1;
 import com.graduate.hou.service.impl.NotificationServiceImpl;
